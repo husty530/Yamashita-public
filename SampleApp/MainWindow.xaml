@@ -8,6 +8,35 @@
         Title="SampleApp" Height="450" Width="800"
         Background="Black">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="5">
+            <Button x:Name="StartPauseButton" Content="{Binding StartButtonFace.Value}" Foreground="Green" Width="50" Click="StartPauseButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="1" Margin="5">
+            <Button x:Name="ShutterButton" Content="Shutter" Width="50" Click="ShutterButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="2" Margin="5">
+            <Button x:Name="SelectDirButton" Content="SaveDir" Width="50" Click="SelectDirButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="5">
+            <Label Content="{Binding SaveDir.Value}" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10">
+            <Image Source="{Binding ColorFrame.Value}"/>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Margin="10">
+            <Image Source="{Binding DepthFrame.Value}"/>
+        </Viewbox>
     </Grid>
 </Window>

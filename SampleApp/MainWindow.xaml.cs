@@ -21,9 +21,9 @@ namespace SampleApp
         private enum Device { None, Kinect, Realsense }
         private Device _device;
         private Kinect _kinect;
+        private Realsense _realsense;
         private Yamashita.Kinect.Converter _kinectConverter;
         private Yamashita.Realsense.Converter _realsenseConverter;
-        private Realsense _realsense;
         private bool _isConnected;
         private IDisposable _kinectReceiver;
         private IDisposable _realsenseReceiver;

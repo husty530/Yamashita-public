@@ -10,23 +10,12 @@ namespace Yamashita.Kinect
     public class Kinect : IDisposable
     {
 
-        private IDisposable _cameraDisposer;
         private readonly Device _device;
         private readonly Transformation _transformation;
 
-        public Kinect()
-            : this(new DeviceConfiguration
-            {
-                ColorFormat = ImageFormat.ColorBGRA32,
-                ColorResolution = ColorResolution.R720p,
-                DepthMode = DepthMode.NFOV_2x2Binned,
-                SynchronizedImagesOnly = true,
-                CameraFPS = FPS.FPS15
-            })
-        {
-
-        }
-
+        /// <summary>
+        /// デバイスの接続を開始
+        /// </summary>
         public Kinect(DeviceConfiguration config)
         {
             _device = Device.Open();
@@ -37,10 +26,25 @@ namespace Yamashita.Kinect
             Config = config;
         }
 
+        public Kinect()
+            : this(new DeviceConfiguration
+            {
+                ColorFormat = ImageFormat.ColorBGRA32,
+                ColorResolution = ColorResolution.R720p,
+                DepthMode = DepthMode.NFOV_2x2Binned,
+                SynchronizedImagesOnly = true,
+                CameraFPS = FPS.FPS15
+            })
+        { }
+
         public DeviceConfiguration Config { private set; get; }
         public Size FrameSize { private set; get; }
 
-        public IObservable<(Image colorImg, Image depthImg, Image pointCloudImg)> StartStream()
+        /// <summary>
+        /// 映像配信を開始
+        /// </summary>
+        /// <returns>KinectネイティブのImage型, ConverterクラスでMatに直す</returns>
+        public IObservable<(Image ColorFrame, Image DepthFrame, Image PointCloudFrame)> StartStream()
         {
             var observable = Observable.Range(0, int.MaxValue, ThreadPoolScheduler.Instance)
                 .Select(i =>
@@ -52,19 +56,16 @@ namespace Yamashita.Kinect
                     var imgs = (colorImg, depthImg, pointCloudImg);
                     return imgs;
                 })
-                .Publish();
-            _cameraDisposer = observable.Connect();
+                .Publish()
+                .RefCount();
             return observable;
         }
 
-        public void Pause()
-        {
-            if (_cameraDisposer != null) _cameraDisposer.Dispose();
-        }
-
+        /// <summary>
+        /// デバイスを閉じる
+        /// </summary>
         public void Dispose()
         {
-            _cameraDisposer.Dispose();
             if (_device != null) _device.Dispose();
         }
 

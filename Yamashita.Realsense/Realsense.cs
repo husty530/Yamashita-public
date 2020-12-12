@@ -15,10 +15,10 @@ namespace Yamashita.Realsense
         private readonly SpatialFilter _sfill;
         private readonly TemporalFilter _tfill;
         private readonly HoleFillingFilter _hfill;
-        private IDisposable _cameraDisposer;
 
-        public Realsense() : this(640, 480) { }
-
+        /// <summary>
+        /// デバイスの接続を開始
+        /// </summary>
         public Realsense(int width, int height)
         {
             FrameSize = (width, height);
@@ -36,8 +36,14 @@ namespace Yamashita.Realsense
             _hfill = new HoleFillingFilter();
         }
 
+        public Realsense() : this(640, 480) { }
+
         public (int Width, int Height) FrameSize { private set; get; }
 
+        /// <summary>
+        /// 映像配信を開始
+        /// </summary>
+        /// <returns>KinectネイティブのImage型, ConverterクラスでMatに直す</returns>
         public IObservable<(VideoFrame ColorFrame, DepthFrame DepthFrame)> CaptureStream()
         {
             var observable = Observable.Range(0, int.MaxValue, ThreadPoolScheduler.Instance)
@@ -55,19 +61,16 @@ namespace Yamashita.Realsense
                     depth = _hfill.Process<DepthFrame>(filterd);
                     return (color, depth);
                 })
-                .Publish();
-            _cameraDisposer = observable.Connect();
+                .Publish()
+                .RefCount();
             return observable;
         }
 
-        public void Pause()
-        {
-            if (_cameraDisposer != null) _cameraDisposer.Dispose();
-        }
-
+        /// <summary>
+        /// デバイスを閉じる
+        /// </summary>
         public void Dispose()
         {
-            if (_cameraDisposer != null) _cameraDisposer.Dispose();
             if (_pipeline != null) _pipeline.Dispose();
         }
     }

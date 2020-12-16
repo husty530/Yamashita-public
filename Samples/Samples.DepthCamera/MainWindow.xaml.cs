@@ -11,7 +11,7 @@ using OpenCvSharp.WpfExtensions;
 using Yamashita.Kinect;
 using Yamashita.Realsense;
 
-namespace SampleApp
+namespace Samples
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

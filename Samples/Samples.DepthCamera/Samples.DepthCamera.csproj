@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Yamashita.Kinect\Yamashita.Kinect.csproj" />
-    <ProjectReference Include="..\Yamashita.Realsense\Yamashita.Realsense.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.Kinect\Yamashita.Kinect.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.Realsense\Yamashita.Realsense.csproj" />
   </ItemGroup>
 
 </Project>

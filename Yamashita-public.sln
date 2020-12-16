@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.TcpSocket", "Yama
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Yolo", "Yamashita.Yolo\Yamashita.Yolo.csproj", "{F3B4AC77-EA1F-4BD5-AC8F-B8DBD9FAC459}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{CF9C2414-501E-4BC8-A517-A298D701E247}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{F3B4AC77-EA1F-4BD5-AC8F-B8DBD9FAC459}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F3B4AC77-EA1F-4BD5-AC8F-B8DBD9FAC459}.Release|x64.ActiveCfg = Release|Any CPU
 		{F3B4AC77-EA1F-4BD5-AC8F-B8DBD9FAC459}.Release|x64.Build.0 = Release|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Debug|x64.Build.0 = Debug|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Release|x64.ActiveCfg = Release|Any CPU
+		{CF9C2414-501E-4BC8-A517-A298D701E247}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

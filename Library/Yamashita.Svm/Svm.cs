@@ -107,7 +107,7 @@ namespace Yamashita.Svm
                 int count = 0;
                 foreach (var f in _features)
                 {
-                    for (int i = 0; i < _features.Count; i++)
+                    for (int i = 0; i < f.Length; i++)
                     {
                         sw.Write($"{f[i]},");
                     }

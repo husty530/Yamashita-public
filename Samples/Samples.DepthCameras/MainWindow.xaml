@@ -1,12 +1,11 @@
-﻿<Window x:Class="Samples.MainWindow"
+﻿<Window x:Class="Samples.DepthCameras.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Samples"
+        xmlns:local="clr-namespace:Samples.DepthCameras"
         mc:Ignorable="d"
-        Title="SampleApp" Height="450" Width="800"
-        Background="Black">
+        Title="Depth Cameras" Height="450" Width="800" Background="Black">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

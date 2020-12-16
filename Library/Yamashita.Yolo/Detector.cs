@@ -44,17 +44,17 @@ namespace Yamashita.Yolo
         /// <summary>
         /// 一枚の画像に対する処理
         /// </summary>
-        /// <param name="inputImg">入力画像</param>
+        /// <param name="image">入力画像</param>
         /// <returns></returns>
-        public (List<string> classNames, List<Point> Centers, List<float> Confidences, List<Rect2d> Boxes) Run(ref Mat inputImg)
+        public (List<string> classNames, List<Point> Centers, List<float> Confidences, List<Rect2d> Boxes) Run(ref Mat image)
         {
             if (!_initialized) throw new ApplicationException("Detector is not Initialized yet!");
-            var blob = CvDnn.BlobFromImage(inputImg, 1.0 / 255, BlobSize, new Scalar(), true, false);
+            var blob = CvDnn.BlobFromImage(image, 1.0 / 255, BlobSize, new Scalar(), true, false);
             _net.SetInput(blob);
             var outNames = _net.GetUnconnectedOutLayersNames();
             var outs = outNames.Select(_ => new Mat()).ToArray();
             _net.Forward(outs, outNames);
-            return GetResult(outs, ref inputImg, _threshold, _nmsThreshold);
+            return GetResult(outs, ref image, _threshold, _nmsThreshold);
         }
 
         private static (List<string>, List<Point>, List<float>, List<Rect2d>) GetResult(IEnumerable<Mat> output, ref Mat image, float threshold, float nmsThreshold)

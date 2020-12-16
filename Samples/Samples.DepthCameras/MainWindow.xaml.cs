@@ -11,7 +11,7 @@ using OpenCvSharp.WpfExtensions;
 using Yamashita.Kinect;
 using Yamashita.Realsense;
 
-namespace Samples
+namespace Samples.DepthCameras
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -48,8 +48,8 @@ namespace Samples
                 GC.Collect();
                 if (_kinectReceiver != null) _kinectReceiver.Dispose();
                 if (_realsenseReceiver != null) _realsenseReceiver.Dispose();
-                if(_kinect != null) _kinect.Dispose();
-                if(_realsense != null) _realsense.Dispose();
+                if (_kinect != null) _kinect.Dispose();
+                if (_realsense != null) _realsense.Dispose();
             };
         }
 
@@ -114,10 +114,10 @@ namespace Samples
                             ColorFrame.Value = imgs.colorMat.ToBitmapSource();
                             DepthFrame.Value = imgs.depthMat.ToBitmapSource();
                         });
-                        
+
                 }
                 // Realsense
-                else if(_device == Device.Realsense)
+                else if (_device == Device.Realsense)
                 {
                     _realsenseReceiver = _realsense.CaptureStream()
                         .Select(imgs =>
@@ -213,6 +213,5 @@ namespace Samples
                 SaveDir.Value = fbd.SelectedPath;
             }
         }
-
     }
 }

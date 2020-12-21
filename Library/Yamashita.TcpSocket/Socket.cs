@@ -46,11 +46,11 @@ namespace Yamashita.TcpSocket
                 }
                 ms.Write(resBytes, 0, resSize);
             } while (_stream.DataAvailable || resBytes[resSize - 1] != '\n');
-            var resmsg = Encoding.UTF8.GetString(ms.ToArray());
+            var receivedMsg = Encoding.UTF8.GetString(ms.ToArray());
             ms.Close();
-            resmsg = resmsg.TrimEnd('\n');
-            Console.WriteLine($"Receive : {resmsg}");
-            return resmsg;
+            receivedMsg = receivedMsg.TrimEnd('\n');
+            Console.WriteLine($"Receive : {receivedMsg}");
+            return receivedMsg;
         }
 
         /// <summary>

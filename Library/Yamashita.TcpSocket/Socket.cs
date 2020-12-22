@@ -17,21 +17,20 @@ namespace Yamashita.TcpSocket
         public abstract void Close();
 
         /// <summary>
-        /// 文字列を送る
+        /// 送る
         /// </summary>
         /// <param name="sendmsg"></param>
-        public void SendMessage(string sendmsg)
+        public void Send<T>(T sendmsg)
         {
-            var sendBytes = Encoding.UTF8.GetBytes(sendmsg);
+            var sendBytes = Encoding.UTF8.GetBytes($"{sendmsg}\n");
             _stream.Write(sendBytes, 0, sendBytes.Length);
-            Console.WriteLine($"Send : {sendmsg}");
         }
 
         /// <summary>
-        /// 文字列を受け取る
+        /// 受け取る
         /// </summary>
         /// <returns></returns>
-        public string ReceiveMessage()
+        public T Receive<T>()
         {
             var ms = new MemoryStream();
             byte[] resBytes = new byte[256];
@@ -39,18 +38,13 @@ namespace Yamashita.TcpSocket
             do
             {
                 resSize = _stream.Read(resBytes, 0, resBytes.Length);
-                if (resSize == 0)
-                {
-                    Console.WriteLine("Disconnect");
-                    break;
-                }
+                if (resSize == 0) break;
                 ms.Write(resBytes, 0, resSize);
             } while (_stream.DataAvailable || resBytes[resSize - 1] != '\n');
             var receivedMsg = Encoding.UTF8.GetString(ms.ToArray());
             ms.Close();
             receivedMsg = receivedMsg.TrimEnd('\n');
-            Console.WriteLine($"Receive : {receivedMsg}");
-            return receivedMsg;
+            return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(receivedMsg);
         }
 
         /// <summary>
@@ -70,7 +64,6 @@ namespace Yamashita.TcpSocket
             sb.Append("\n");
             var sendBytes = Encoding.UTF8.GetBytes(sb.ToString());
             _stream.Write(sendBytes, 0, sendBytes.Length);
-            Console.WriteLine($"Send : Array");
         }
 
         /// <summary>
@@ -80,13 +73,12 @@ namespace Yamashita.TcpSocket
         /// <returns></returns>
         public T[] ReceiveArray<T>()
         {
-            var stringArray = ReceiveMessage().Split(",");
+            var stringArray = Receive<string>().Split(",");
             var tArray = new T[stringArray.Length];
             for (int i = 0; i < stringArray.Length; i++)
             {
                 tArray[i] = (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(stringArray[i]);
             }
-            Console.WriteLine("Receive : Array");
             return tArray;
         }
 
@@ -99,8 +91,7 @@ namespace Yamashita.TcpSocket
             Cv2.ImEncode(".png", image, out byte[] buf);
             var data = Convert.ToBase64String(buf);
             var sendmsg = $"data:image/png;base64,{data}";
-            SendMessage(sendmsg);
-            Console.WriteLine("Send : Image");
+            Send(sendmsg);
         }
 
         /// <summary>
@@ -109,10 +100,9 @@ namespace Yamashita.TcpSocket
         /// <returns></returns>
         public Mat ReceiveImage()
         {
-            var res = ReceiveMessage();
+            var res = Receive<string>();
             var data = res.Split(",")[1];
             var bytes = Convert.FromBase64String(data);
-            Console.WriteLine("Receive : Image");
             return Cv2.ImDecode(bytes, ImreadModes.Color);
         }
 

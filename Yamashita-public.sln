@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Svm", "Library\Ya
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Yolo-tiny", "Samples\Samples.Yolo-tiny\Samples.Yolo-tiny.csproj", "{0785E885-8E07-4975-890A-65D8BD189188}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Socket", "Samples\Samples.Socket\Samples.Socket.csproj", "{C6FA6925-AFEB-4EED-8728-FAD444A63FD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Socket", "Samples\Samples.Socket\Samples.Socket.csproj", "{C6FA6925-AFEB-4EED-8728-FAD444A63FD9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Yolo-Labeller", "Samples\Samples.Yolo-Labeller\Samples.Yolo-Labeller.csproj", "{D675636B-1A6E-4FDA-910C-2EF1456F2708}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,14 @@ Global
 		{C6FA6925-AFEB-4EED-8728-FAD444A63FD9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6FA6925-AFEB-4EED-8728-FAD444A63FD9}.Release|x64.ActiveCfg = Release|Any CPU
 		{C6FA6925-AFEB-4EED-8728-FAD444A63FD9}.Release|x64.Build.0 = Release|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Debug|x64.Build.0 = Debug|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Release|x64.ActiveCfg = Release|Any CPU
+		{D675636B-1A6E-4FDA-910C-2EF1456F2708}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,8 +21,7 @@ namespace Samples.Yolo_tiny
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            var detector = new Detector();
-            detector.InitializeDetector("yolov4-tiny.cfg", "coco.names", "yolov4-tiny.weights", new OpenCvSharp.Size(640, 480));
+            var detector = new Yolo("yolov4-tiny.cfg", "coco.names", "yolov4-tiny.weights", new OpenCvSharp.Size(640, 480));
             var op = new OpenFileDialog();
             op.Filter = "Image or Video(*.png, *.jpg, *.mp4)|*.png;*.jpg;*mp4";
             if(op.ShowDialog() == true)
@@ -36,7 +35,7 @@ namespace Samples.Yolo_tiny
                     {
                         while (v.Read(frame))
                         {
-                            detector.Run(ref frame);
+                            detector.Run(ref frame, out var results);
                             Dispatcher.Invoke(() =>
                             {
                                 Image.Source = frame.ToBitmapSource();
@@ -48,7 +47,7 @@ namespace Samples.Yolo_tiny
                 else
                 {
                     var img = Cv2.ImRead(file);
-                    detector.Run(ref img);
+                    detector.Run(ref img, out var results);
                     Image.Source = img.ToBitmapSource();
                 }
             }

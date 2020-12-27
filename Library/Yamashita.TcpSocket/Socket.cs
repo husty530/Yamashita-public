@@ -7,7 +7,7 @@ using OpenCvSharp;
 
 namespace Yamashita.TcpSocket
 {
-    public abstract class Socket
+    public abstract class Socket : ISocket
     {
 
         protected TcpListener _listener;
@@ -16,20 +16,12 @@ namespace Yamashita.TcpSocket
 
         public abstract void Close();
 
-        /// <summary>
-        /// 送る
-        /// </summary>
-        /// <param name="sendmsg"></param>
         public void Send<T>(T sendmsg)
         {
             var sendBytes = Encoding.UTF8.GetBytes($"{sendmsg}\n");
             _stream.Write(sendBytes, 0, sendBytes.Length);
         }
 
-        /// <summary>
-        /// 受け取る
-        /// </summary>
-        /// <returns></returns>
         public T Receive<T>()
         {
             var ms = new MemoryStream();
@@ -47,11 +39,6 @@ namespace Yamashita.TcpSocket
             return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(receivedMsg);
         }
 
-        /// <summary>
-        /// 配列を送る
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
         public void SendArray<T>(T[] array)
         {
             var sb = new StringBuilder();
@@ -66,11 +53,6 @@ namespace Yamashita.TcpSocket
             _stream.Write(sendBytes, 0, sendBytes.Length);
         }
 
-        /// <summary>
-        /// 配列を受け取る
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
         public T[] ReceiveArray<T>()
         {
             var stringArray = Receive<string>().Split(",");
@@ -82,10 +64,6 @@ namespace Yamashita.TcpSocket
             return tArray;
         }
 
-        /// <summary>
-        /// 画像を送る
-        /// </summary>
-        /// <param name="image"></param>
         public void SendImage(Mat image)
         {
             Cv2.ImEncode(".png", image, out byte[] buf);
@@ -94,10 +72,6 @@ namespace Yamashita.TcpSocket
             Send(sendmsg);
         }
 
-        /// <summary>
-        /// 画像を受け取る
-        /// </summary>
-        /// <returns></returns>
         public Mat ReceiveImage()
         {
             var res = Receive<string>();

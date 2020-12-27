@@ -6,10 +6,9 @@ using OpenCvSharp.ML;
 
 namespace Yamashita.Svm
 {
-    public class Svm
+    public class Svm : ISvm
     {
 
-        public enum Mode { Train, Inference }
         private Mode _mode;
         private string _modelPath;
         private string _dataPath;
@@ -40,8 +39,6 @@ namespace Yamashita.Svm
             }
         }
 
-        // 以下、学習フェーズ
-
         private void LoadDataset()
         {
             if (File.Exists(_dataPath))
@@ -60,11 +57,6 @@ namespace Yamashita.Svm
             }
         }
 
-        /// <summary>
-        /// データを1つ追加
-        /// </summary>
-        /// <param name="feature">float配列にした特徴量ベクトル</param>
-        /// <param name="label">0 or 1</param>
         public void AddData(float[] feature, int label)
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -73,9 +65,6 @@ namespace Yamashita.Svm
             _labels.Add(label);
         }
 
-        /// <summary>
-        /// データの末尾を削除
-        /// </summary>
         public void RemoveLastData()
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -86,9 +75,6 @@ namespace Yamashita.Svm
             }
         }
 
-        /// <summary>
-        /// データセットをクリア
-        /// </summary>
         public void ClearDataset()
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -96,9 +82,6 @@ namespace Yamashita.Svm
             _labels.Clear();
         }
 
-        /// <summary>
-        /// 明示的にデータセットをセーブ
-        /// </summary>
         public void SaveDataset()
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -116,10 +99,6 @@ namespace Yamashita.Svm
             }
         }
 
-        /// <summary>
-        /// 現在のデータセットで学習
-        /// </summary>
-        /// <param name="gamma">RBFのパラメータ</param>
         public void Train(double gamma = 0.1)
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -140,19 +119,11 @@ namespace Yamashita.Svm
             }
         }
 
-
-        // 以下、推論フェーズ
-
         private void LoadModel()
         {
             _classifier = SVM.Load(_modelPath);
         }
 
-        /// <summary>
-        /// 推論処理
-        /// </summary>
-        /// <param name="input">float配列にした入力特徴量ベクトル</param>
-        /// <param name="result">出力ラベル (0 or 1)</param>
         public void Predict(float[] input, out float result)
         {
             if (_mode != Mode.Inference) new Exception("Mode should be 'Inference'.");

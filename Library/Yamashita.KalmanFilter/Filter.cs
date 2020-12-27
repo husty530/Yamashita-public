@@ -229,7 +229,8 @@ namespace Yamashita.Kalman
         /// </summary>
         /// <param name="measurementVec">観測値のベクトル (m * 1)</param>
         /// <param name="controlVec">制御入力 (n * 1)</param>
-        public double[] Apply(double[] measurementVec, double[] controlVec = null)
+        /// <returns>予測した状態ベクトル</returns>
+        public double[] Update(double[] measurementVec, double[] controlVec = null)
         {
             _kalman.Correct(new Mat(m, 1, type, measurementVec));
             var controlMat = controlVec != null ? new Mat(n, 1, type, controlVec) : null;

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.1.20201226" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.1.20201226" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\Yamashita.MultiTracker\Yamashita.MultiTracker.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.Yolo\Yamashita.Yolo.csproj" />
+  </ItemGroup>
+
+</Project>

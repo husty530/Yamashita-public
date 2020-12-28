@@ -20,7 +20,7 @@ namespace Yamashita.MultiTracker
         /// <param name="iouThresh">重なり度合いの閾値</param>
         /// <param name="maxMissCount">消えたとみなす連続見落とし数</param>
         /// <param name="minDetectCount">発見とみなす最小検出数</param>
-        public MultiTracker(float iouThresh = 0.5f, int maxMissCount = 1, int minDetectCount = 1)
+        public MultiTracker(float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1)
         {
             if (iouThresh < 0 || iouThresh > 1 || maxMissCount < 1 || minDetectCount < 1) throw new Exception("");
             _iouThresh = iouThresh;
@@ -69,10 +69,10 @@ namespace Yamashita.MultiTracker
                 {
                     tracker.MissCount++;
                     if (tracker.MissCount > _maxMissCount ||
-                        tracker.Box.Left < 10 ||
-                        tracker.Box.Right > frame.Width - 10 ||
-                        tracker.Box.Top < 10 ||
-                        tracker.Box.Bottom > frame.Height - 10)
+                        tracker.Box.X - tracker.Box.Width / 2 < 10 ||
+                        tracker.Box.X + tracker.Box.Width / 2 > frame.Width - 10 ||
+                        tracker.Box.Y - tracker.Box.Height / 2 < 10 ||
+                        tracker.Box.Y + tracker.Box.Height / 2 > frame.Height - 10)
                     {
                         removeList.Add(tracker);
                         continue;

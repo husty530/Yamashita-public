@@ -14,6 +14,8 @@ namespace Samples.Yolo_tiny
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+        VideoCapture cap;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -21,19 +23,20 @@ namespace Samples.Yolo_tiny
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            var detector = new Yolo("yolov4-tiny.cfg", "coco.names", "yolov4-tiny.weights", new OpenCvSharp.Size(640, 480));
+            var detector = new Yolo("..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.cfg", "..\\..\\..\\..\\YoloModel-tiny\\coco.names", "..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.weights", new OpenCvSharp.Size(640, 480));
             var op = new OpenFileDialog();
-            op.Filter = "Image or Video(*.png, *.jpg, *.mp4)|*.png;*.jpg;*mp4";
+            op.Filter = "Image or Video(*.png, *.jpg, *.mp4, *.avi)|*.png;*.jpg;*mp4;*.avi";
             if(op.ShowDialog() == true)
             {
+                cap?.Dispose();
                 var file = op.FileName;
-                if(Path.GetExtension(file) == ".mp4")
+                if(Path.GetExtension(file) == ".mp4" || Path.GetExtension(file) == ".avi")
                 {
-                    var v = new VideoCapture(file);
-                    var frame = new Mat();
+                    cap = new VideoCapture(file);
                     Task.Run(() =>
                     {
-                        while (v.Read(frame))
+                        var frame = new Mat();
+                        while (cap.Read(frame))
                         {
                             detector.Run(ref frame, out var results);
                             Dispatcher.Invoke(() =>

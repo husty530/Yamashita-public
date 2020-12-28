@@ -29,12 +29,12 @@ namespace Yamashita.MultiTracker
         public string Mark { private set; get; }
 
 
-        public Individual(Rect2d box, float iou = 1f, int id = 0, string label = "", string mark = "")
+        public Individual(Rect2d box, float confidence = 1f, int id = 0, string label = "", string mark = "")
         {
             Id = id;
             Label = label;
             Box = box;
-            Iou = iou;
+            Iou = confidence;
             DetectCount = 1;
             Mark = mark;
             var state = new double[] { Box.X, Box.Y, 0.0, 0.0, Box.Width, Box.Height };

@@ -82,10 +82,10 @@ namespace Yamashita.Svm
             _labels.Clear();
         }
 
-        public void SaveDataset()
+        public void SaveDataset(bool append)
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
-            using (var sw = new StreamWriter(_dataPath, true))
+            using (var sw = new StreamWriter(_dataPath, append))
             {
                 int count = 0;
                 foreach (var f in _features)
@@ -99,10 +99,10 @@ namespace Yamashita.Svm
             }
         }
 
-        public void Train(double gamma = 0.1)
+        public void Train(double gamma = 0.1, bool append = true)
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
-            SaveDataset();
+            SaveDataset(append);
             using (var svm = SVM.Create())
             {
                 svm.KernelType = SVM.KernelTypes.Rbf;

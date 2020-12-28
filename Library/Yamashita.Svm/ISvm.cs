@@ -27,13 +27,13 @@
         /// <summary>
         /// 明示的にデータセットをセーブ
         /// </summary>
-        public void SaveDataset();
+        public void SaveDataset(bool append);
 
         /// <summary>
         /// 現在のデータセットで学習
         /// </summary>
         /// <param name="gamma">RBFのパラメータ</param>
-        public void Train(double gamma = 0.1);
+        public void Train(double gamma = 0.1, bool append = true);
 
 
         // 推論フェーズ

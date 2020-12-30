@@ -113,12 +113,12 @@ namespace Yamashita.MultiTracker
             return (double)and / (area1 + area2 - and);
         }
 
-        private static void DrawPoint(ref Mat image, int id, double centerX, double centerY)
+        private void DrawPoint(ref Mat image, int id, double centerX, double centerY)
         {
             image.Circle((int)centerX, (int)centerY, 3, Colors[id], 5);
         }
 
-        private static void DrawRect(ref Mat image, string labelName, int id, float iou, Rect2d rect)
+        private void DrawRect(ref Mat image, string labelName, int id, float iou, Rect2d rect)
         {
             var label = $"{labelName}{iou * 100: 0}%";
             Console.WriteLine($"Iou {iou * 100: 0}% , {label}");

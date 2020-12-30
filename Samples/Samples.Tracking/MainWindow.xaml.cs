@@ -47,10 +47,7 @@ namespace Samples.Tracking
                         if (frame.Empty()) break;
                         detector.Run(ref frame, out var yoloResults);
                         tracker.Update(ref frame, yoloResults, out var results);
-                        Dispatcher.Invoke(() =>
-                        {
-                            Image.Source = frame.ToBitmapSource();
-                        });
+                        Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     }
                 });
             }
@@ -70,10 +67,7 @@ namespace Samples.Tracking
                     if (frame.Empty()) break;
                     detector.Run(ref frame, out var yoloResults);
                     tracker.Update(ref frame, yoloResults, out var results);
-                    Dispatcher.Invoke(() =>
-                    {
-                        Image.Source = frame.ToBitmapSource();
-                    });
+                    Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                 }
             });
         }

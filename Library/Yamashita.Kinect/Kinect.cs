@@ -66,7 +66,7 @@ namespace Yamashita.Kinect
         /// </summary>
         public void Dispose()
         {
-            if (_device != null) _device.Dispose();
+            _device?.Dispose();
         }
 
     }

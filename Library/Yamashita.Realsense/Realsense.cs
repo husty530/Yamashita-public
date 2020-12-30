@@ -71,7 +71,7 @@ namespace Yamashita.Realsense
         /// </summary>
         public void Dispose()
         {
-            if (_pipeline != null) _pipeline.Dispose();
+            _pipeline?.Dispose();
         }
     }
 }

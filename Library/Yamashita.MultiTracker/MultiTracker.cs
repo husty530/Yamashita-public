@@ -31,9 +31,8 @@ namespace Yamashita.MultiTracker
 
         public void Update(ref Mat frame, List<(string Label, float Confidence, Rect2d Box)> detections, out List<(int Id, string Label, float Iou, Rect2d Box)> results)
         {
-            results = new List<(int Id, string Label, float Iou, Rect2d Box)>();
             Assign(detections);
-            UpdateMemory(ref frame, ref results);
+            UpdateMemory(ref frame, out results);
         }
 
         private void Assign(List<(string Label, float Confidence, Rect2d Box)> detections)
@@ -60,8 +59,9 @@ namespace Yamashita.MultiTracker
             }
         }
 
-        private void UpdateMemory(ref Mat frame, ref List<(int Id, string Label, float Confidence, Rect2d Box)> results)
+        private void UpdateMemory(ref Mat frame, out List<(int Id, string Label, float Confidence, Rect2d Box)> results)
         {
+            results = new List<(int Id, string Label, float Confidence, Rect2d Box)>();
             var removeList = new List<Individual>();
             foreach (var tracker in _trackers)
             {

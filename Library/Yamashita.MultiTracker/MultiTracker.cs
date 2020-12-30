@@ -17,7 +17,7 @@ namespace Yamashita.MultiTracker
         /// <summary>
         /// トラッカーを生成
         /// </summary>
-        /// <param name="iouThresh">重なり度合いの閾値</param>
+        /// <param name="iouThresh">同一物体とみなす重なり度合いの閾値</param>
         /// <param name="maxMissCount">消えたとみなす連続見落とし数</param>
         /// <param name="minDetectCount">発見とみなす最小検出数</param>
         public MultiTracker(float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1)

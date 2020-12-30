@@ -32,7 +32,7 @@ namespace Yamashita.MultiTracker
         public void Update(ref Mat frame, List<(string Label, float Confidence, Rect2d Box)> detections, out List<(int Id, string Label, float Iou, Rect2d Box)> results)
         {
             Assign(detections);
-            UpdateMemory(ref frame, out results);
+            results = UpdateMemory(frame).ToList();
         }
 
         private void Assign(List<(string Label, float Confidence, Rect2d Box)> detections)
@@ -59,9 +59,8 @@ namespace Yamashita.MultiTracker
             }
         }
 
-        private void UpdateMemory(ref Mat frame, out List<(int Id, string Label, float Confidence, Rect2d Box)> results)
+        private IEnumerable<(int Id, string Label, float Confidence, Rect2d Box)> UpdateMemory(Mat frame)
         {
-            results = new List<(int Id, string Label, float Confidence, Rect2d Box)>();
             var removeList = new List<Individual>();
             foreach (var tracker in _trackers)
             {
@@ -82,7 +81,7 @@ namespace Yamashita.MultiTracker
                 if (tracker.DetectCount > _minDetectCount - 1)
                 {
                     DrawRect(ref frame, tracker.Label, tracker.Id, tracker.Iou, tracker.Box);
-                    results.Add((tracker.Id, tracker.Label, tracker.Iou, tracker.Box));
+                    yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.Box);
                 }
                 tracker.Iou = _iouThresh;
             }

@@ -31,18 +31,20 @@ namespace Samples.Tracking
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
+            cap?.Dispose();
             var op = new OpenFileDialog();
             op.Filter = "Video(*.mp4, *.avi)|*.mp4;*.avi";
             if (op.ShowDialog() == true)
             {
-                cap?.Dispose();
                 cap = new VideoCapture(op.FileName);
                 var tracker = new MultiTracker(0.2f, 7, 3);
                 Task.Run(() =>
                 {
                     var frame = new Mat();
-                    while (cap.Read(frame))
+                    while (!cap.IsDisposed)
                     {
+                        cap.Read(frame);
+                        if (frame.Empty()) break;
                         detector.Run(ref frame, out var yoloResults);
                         tracker.Update(ref frame, yoloResults, out var results);
                         Dispatcher.Invoke(() =>
@@ -62,8 +64,10 @@ namespace Samples.Tracking
             Task.Run(() =>
             {
                 var frame = new Mat();
-                while (cap.Read(frame))
+                while (!cap.IsDisposed)
                 {
+                    cap.Read(frame);
+                    if (frame.Empty()) break;
                     detector.Run(ref frame, out var yoloResults);
                     tracker.Update(ref frame, yoloResults, out var results);
                     Dispatcher.Invoke(() =>

@@ -68,7 +68,7 @@ namespace Yamashita.MultiTracker
                 if (tracker.Iou <= _iouThresh)
                 {
                     tracker.MissCount++;
-                    if (tracker.MissCount >= _maxMissCount ||
+                    if (tracker.MissCount > _maxMissCount ||
                         tracker.Box.X - tracker.Box.Width / 2 < 10 ||
                         tracker.Box.X + tracker.Box.Width / 2 > frame.Width - 10 ||
                         tracker.Box.Y - tracker.Box.Height / 2 < 10 ||

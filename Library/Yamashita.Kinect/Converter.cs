@@ -49,14 +49,6 @@ namespace Yamashita.Kinect
             }
         }
 
-        public Short3 GetPointCloudCoordinate(Image PointCloudImg, System.Drawing.Point p, System.Drawing.Size resizedSize)
-        {
-            int x = p.X * _width / resizedSize.Width;
-            int y = p.Y * _height / resizedSize.Height;
-            if (x > _width || y > _height) throw new ApplicationException("No pixel!");
-            return PointCloudImg.GetPixel<Short3>(y, x);
-        }
-
         private void ToColorMat(Image colorImg, ref Mat colorMat)
         {
             if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(_height, _width, MatType.CV_8UC3);

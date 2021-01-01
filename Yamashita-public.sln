@@ -5,10 +5,6 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.KalmanFilter", "Library\Yamashita.KalmanFilter\Yamashita.KalmanFilter.csproj", "{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Kinect", "Library\Yamashita.Kinect\Yamashita.Kinect.csproj", "{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Realsense", "Library\Yamashita.Realsense\Yamashita.Realsense.csproj", "{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.TcpSocket", "Library\Yamashita.TcpSocket\Yamashita.TcpSocket.csproj", "{55ECE49A-7BE9-4F4D-AE92-80F48328A053}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Yolo", "Library\Yamashita.Yolo\Yamashita.Yolo.csproj", "{C7796BE3-F3BA-4F71-A383-3DEBA1C18313}"
@@ -27,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.MultiTracker", "L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Tracking", "Samples\Samples.Tracking\Samples.Tracking.csproj", "{40032ACB-E15B-41DB-8C1B-7C185AA835BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.DepthCameras", "Library\Yamashita.DepthCameras\Yamashita.DepthCameras.csproj", "{66A9E725-6D5A-48A3-9F24-DD872104517C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,22 +41,6 @@ Global
 		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|x64.ActiveCfg = Release|Any CPU
 		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|x64.Build.0 = Release|Any CPU
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Debug|Any CPU.Build.0 = Debug|x64
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Debug|x64.ActiveCfg = Debug|x64
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Debug|x64.Build.0 = Debug|x64
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Release|x64.ActiveCfg = Release|x64
-		{F9BEA149-B825-470F-8F3F-7B85DF0ED49A}.Release|x64.Build.0 = Release|x64
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Debug|x64.Build.0 = Debug|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Release|x64.ActiveCfg = Release|Any CPU
-		{5CC36FA0-E2AC-43CA-A387-D2C88C8AA067}.Release|x64.Build.0 = Release|Any CPU
 		{55ECE49A-7BE9-4F4D-AE92-80F48328A053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{55ECE49A-7BE9-4F4D-AE92-80F48328A053}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55ECE49A-7BE9-4F4D-AE92-80F48328A053}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -131,6 +113,14 @@ Global
 		{40032ACB-E15B-41DB-8C1B-7C185AA835BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40032ACB-E15B-41DB-8C1B-7C185AA835BD}.Release|x64.ActiveCfg = Release|Any CPU
 		{40032ACB-E15B-41DB-8C1B-7C185AA835BD}.Release|x64.Build.0 = Release|Any CPU
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Debug|Any CPU.Build.0 = Debug|x64
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Debug|x64.Build.0 = Debug|Any CPU
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Release|x64.ActiveCfg = Release|Any CPU
+		{66A9E725-6D5A-48A3-9F24-DD872104517C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

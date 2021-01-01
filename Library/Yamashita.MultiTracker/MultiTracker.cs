@@ -80,7 +80,7 @@ namespace Yamashita.MultiTracker
                 tracker.Predict(tracker.Box);
                 if (tracker.DetectCount > _minDetectCount - 1)
                 {
-                    DrawRect(ref frame, tracker.Label, tracker.Id, tracker.Iou, tracker.Box);
+                    DrawRect(frame, tracker.Label, tracker.Id, tracker.Iou, tracker.Box);
                     yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.Box);
                 }
                 tracker.Iou = _iouThresh;
@@ -112,12 +112,12 @@ namespace Yamashita.MultiTracker
             return (double)and / (area1 + area2 - and);
         }
 
-        private void DrawPoint(ref Mat image, int id, double centerX, double centerY)
+        private void DrawPoint(Mat image, int id, double centerX, double centerY)
         {
             image.Circle((int)centerX, (int)centerY, 3, Colors[id], 5);
         }
 
-        private void DrawRect(ref Mat image, string labelName, int id, float iou, Rect2d rect)
+        private void DrawRect(Mat image, string labelName, int id, float iou, Rect2d rect)
         {
             var label = $"{labelName}{iou * 100: 0}%";
             Console.WriteLine($"Iou {iou * 100: 0}% , {label}");

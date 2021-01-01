@@ -30,9 +30,9 @@ namespace Samples.Socket
                 await Task.Run(() =>
                 {
                     var recv = _server.Receive<string>();
-                    if(recv.Length > 6 && recv.Substring(0, 6) == "image:")
+                    if(recv.Length > 6 && recv.Substring(0, 6) == "image;")
                     {
-                        var path = recv.Split(":")[1];
+                        var path = recv.Split(";")[1];
                         if (File.Exists(path))
                         {
                             Cv2.ImShow(" ", Cv2.ImRead(path));

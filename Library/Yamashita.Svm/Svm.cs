@@ -9,11 +9,11 @@ namespace Yamashita.Svm
     public class Svm : ISvm
     {
 
-        private Mode _mode;
-        private string _modelPath;
-        private string _dataPath;
-        private List<float[]> _features;
-        private List<int> _labels;
+        private readonly Mode _mode;
+        private readonly string _modelPath;
+        private readonly string _dataPath;
+        private readonly List<float[]> _features;
+        private readonly List<int> _labels;
         private SVM _classifier;
 
         /// <summary>

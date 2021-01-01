@@ -10,14 +10,14 @@ namespace Yamashita.Yolo
     public class Yolo : IYolo
     {
         
-        private DrawingMode _draw;
-        private Net _net;
-        private float _threshold;
-        private float _nmsThreshold;
-        private static string[] _labels;
+        private readonly DrawingMode _draw;
+        private readonly Net _net;
+        private readonly float _threshold;
+        private readonly float _nmsThreshold;
+        private readonly string[] _labels;
 
-        private static readonly Scalar[] Colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
-        private static Size BlobSize { set; get; }
+        private readonly Scalar[] Colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
+        private Size BlobSize { set; get; }
 
         /// <summary>
         /// 検出器の初期化
@@ -103,12 +103,12 @@ namespace Yamashita.Yolo
             }
         }
 
-        private static void DrawPoint(Mat image, int classes, Point center)
+        private void DrawPoint(Mat image, int classes, Point center)
         {
             image.Circle(center.X, center.Y, 3, Colors[classes], 5);
         }
 
-        private static void DrawRect(Mat image, int classes, float confidence, Point center, Size size)
+        private void DrawRect(Mat image, int classes, float confidence, Point center, Size size)
         {
             var label = $"{_labels[classes]}{confidence * 100:0}%";
             Console.WriteLine($"confidence {confidence * 100:0}% , {label}");

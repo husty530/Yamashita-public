@@ -6,8 +6,8 @@ namespace Yamashita.Svm
     public class SimpleHog
     {
 
-        private HOGDescriptor _hog;
-        private Size _imageSize;
+        private readonly HOGDescriptor _hog;
+        private readonly Size _imageSize;
 
         /// <summary>
         /// 簡易版HOG。分類には使えるが検出には使えない。

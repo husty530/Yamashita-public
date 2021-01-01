@@ -21,11 +21,11 @@ namespace Yamashita.Kalman
     /// </summary>
     public class Filter
     {
-        private KalmanFilter _kalman;
-        private MatType type = MatType.CV_64F;
-        private int k;
-        private int m;
-        private int n;
+        private readonly KalmanFilter _kalman;
+        private readonly MatType type = MatType.CV_64F;
+        private readonly int k;
+        private readonly int m;
+        private readonly int n;
 
         /// <summary>
         /// 一番シンプルなもの

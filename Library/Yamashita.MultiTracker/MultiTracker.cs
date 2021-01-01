@@ -12,7 +12,7 @@ namespace Yamashita.MultiTracker
         private readonly int _minDetectCount;
         private readonly int _maxMissCount;
         private readonly List<Individual> _trackers;
-        private static readonly Scalar[] Colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
+        private readonly Scalar[] Colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
 
         /// <summary>
         /// トラッカーを生成

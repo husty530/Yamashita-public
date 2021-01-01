@@ -6,14 +6,14 @@ namespace Yamashita.MultiTracker
     class Individual
     {
         private readonly Filter _kalman;
-        private double[] transitionMatrix = new double[]
+        private readonly double[] transitionMatrix = new double[]
                         {   1, 0, 1, 0, 0, 0,
                             0, 1, 0, 1, 0, 0,
                             0, 0, 1, 0, 0, 0,
                             0, 0, 0, 1, 0, 0,
                             0, 0, 0, 0, 1, 0,
                             0, 0, 0, 0, 0, 1  };
-        private double[] measurementMatrix = new double[]
+        private readonly double[] measurementMatrix = new double[]
                         {   1, 0, 0, 0, 0, 0,
                             0, 1, 0, 0, 0, 0,
                             0, 0, 0, 0, 1, 0,

@@ -41,14 +41,14 @@ namespace Yamashita.Yolo
             _net.SetPreferableTarget(Net.Target.CPU);
         }
 
-        public void Run(ref Mat frame, out List<(string Label, float Confidence, Point Center, Size Size)> results)
+        public void Run(ref Mat frame, out YoloResults results)
         {
             var blob = CvDnn.BlobFromImage(frame, 1.0 / 255, BlobSize, new Scalar(), true, false);
             _net.SetInput(blob);
             var outNames = _net.GetUnconnectedOutLayersNames();
             var outs = outNames.Select(_ => new Mat()).ToArray();
             _net.Forward(outs, outNames);
-            results = GetResults(outs, frame).ToList();
+            results = new YoloResults(GetResults(outs, frame).ToList());
         }
 
         private IEnumerable<(string Label, float Confidence, Point Center, Size Size)> GetResults(IEnumerable<Mat> output, Mat image)

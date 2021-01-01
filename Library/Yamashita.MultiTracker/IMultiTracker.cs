@@ -13,8 +13,8 @@ namespace Yamashita.MultiTracker
         /// <param name="results">更新結果</param>
         public void Update(
             ref Mat frame,
-            List<(string Label, Rect2d Box)> detections,
-            out List<(int Id, string Label, float Iou, Rect2d Box)> results
+            List<(string Label, Point Center, Size Size)> detections,
+            out List<(int Id, string Label, float Iou, Point Center, Size Size)> results
             );
     }
 }

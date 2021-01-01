@@ -47,8 +47,8 @@ namespace Samples.Tracking
                         cap.Read(frame);
                         if (frame.Empty()) break;
                         detector.Run(ref frame, out var yoloResults);
-                        var inputs = new List<(string, Rect2d)>();
-                        foreach (var detection in yoloResults) inputs.Add((detection.Label, detection.Box));
+                        var inputs = new List<(string, OpenCvSharp.Point, OpenCvSharp.Size)>();
+                        foreach (var detection in yoloResults) inputs.Add((detection.Label, detection.Center, detection.Size));
                         tracker.Update(ref frame, inputs, out var results);
                         Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     }
@@ -69,8 +69,8 @@ namespace Samples.Tracking
                     cap.Read(frame);
                     if (frame.Empty()) break;
                     detector.Run(ref frame, out var yoloResults);
-                    var inputs = new List<(string, Rect2d)>();
-                    foreach (var detection in yoloResults) inputs.Add((detection.Label, detection.Box));
+                    var inputs = new List<(string, OpenCvSharp.Point, OpenCvSharp.Size)>();
+                    foreach (var detection in yoloResults) inputs.Add((detection.Label, detection.Center, detection.Size));
                     tracker.Update(ref frame, inputs, out var results);
                     Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                 }

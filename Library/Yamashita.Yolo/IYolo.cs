@@ -13,7 +13,7 @@ namespace Yamashita.Yolo
         /// </summary>
         /// <param name="frame">入出力画像</param>
         /// <param name="results">検出結果</param>
-        public void Run(ref Mat frame, out List<(string Label, float Confidence, Point Centers, Rect2d Box)> results);
+        public void Run(ref Mat frame, out List<(string Label, float Confidence, Point Center, Size Size)> results);
 
     }
 }

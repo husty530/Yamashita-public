@@ -41,21 +41,22 @@ namespace Yamashita.Yolo
             _net.SetPreferableTarget(Net.Target.CPU);
         }
 
-        public void Run(ref Mat frame, out List<(string Label, float Confidence, Point Centers, Rect2d Box)> results)
+        public void Run(ref Mat frame, out List<(string Label, float Confidence, Point Center, Size Size)> results)
         {
             var blob = CvDnn.BlobFromImage(frame, 1.0 / 255, BlobSize, new Scalar(), true, false);
             _net.SetInput(blob);
             var outNames = _net.GetUnconnectedOutLayersNames();
             var outs = outNames.Select(_ => new Mat()).ToArray();
             _net.Forward(outs, outNames);
-            results = GetResult(outs, frame, _threshold, _nmsThreshold).ToList();
+            results = GetResults(outs, frame).ToList();
         }
 
-        private IEnumerable<(string Label, float Confidence, Point Centers, Rect2d Box)> GetResult(IEnumerable<Mat> output, Mat image, float threshold, float nmsThreshold)
+        private IEnumerable<(string Label, float Confidence, Point Center, Size Size)> GetResults(IEnumerable<Mat> output, Mat image)
         {
             var classIds = new List<int>();
             var confidences = new List<float>();
             var probabilities = new List<float>();
+            var centers = new List<Point>();
             var boxes = new List<Rect2d>();
             var w = image.Width;
             var h = image.Height;
@@ -64,11 +65,11 @@ namespace Yamashita.Yolo
                 for (var i = 0; i < pred.Rows; i++)
                 {
                     var confidence = pred.At<float>(i, 4);
-                    if (confidence > threshold)
+                    if (confidence > _threshold)
                     {
                         Cv2.MinMaxLoc(pred.Row(i).ColRange(5, pred.Cols), out _, out Point classIdPoint);
                         var probability = pred.At<float>(i, classIdPoint.X + 5);
-                        if (probability > threshold)
+                        if (probability > _threshold)
                         {
                             var centerX = pred.At<float>(i, 0) * w;
                             var centerY = pred.At<float>(i, 1) * h;
@@ -77,13 +78,14 @@ namespace Yamashita.Yolo
                             classIds.Add(classIdPoint.X);
                             confidences.Add(confidence);
                             probabilities.Add(probability);
-                            boxes.Add(new Rect2d(centerX, centerY, width, height));
+                            centers.Add(new Point(centerX, centerY));
+                            boxes.Add(new Rect2d(centerX - width / 2, centerY - height / 2, width, height));
                         }
                     }
                 }
             }
 
-            CvDnn.NMSBoxes(boxes, confidences, threshold, nmsThreshold, out int[] indices);
+            CvDnn.NMSBoxes(boxes, confidences, _threshold, _nmsThreshold, out int[] indices);
             foreach (var i in indices)
             {
                 switch (_draw)
@@ -91,32 +93,35 @@ namespace Yamashita.Yolo
                     case (DrawingMode.Off):
                         break;
                     case (DrawingMode.Point):
-                        DrawPoint(image, classIds[i], boxes[i].X, boxes[i].Y);
+                        DrawPoint(image, classIds[i], centers[i]);
                         break;
                     case (DrawingMode.Rectangle):
-                        DrawRect(image, classIds[i], confidences[i], boxes[i]);
+                        DrawRect(image, classIds[i], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height));
                         break;
                 }
-                yield return (_labels[classIds[i]], confidences[i], new Point((int)boxes[i].X, (int)boxes[i].Y), boxes[i]);
+                yield return (_labels[classIds[i]], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height));
             }
         }
 
-        private static void DrawPoint(Mat image, int classes, double centerX, double centerY)
+        private static void DrawPoint(Mat image, int classes, Point center)
         {
-            image.Circle((int)centerX, (int)centerY, 3, Colors[classes], 5);
+            image.Circle(center.X, center.Y, 3, Colors[classes], 5);
         }
 
-        private static void DrawRect(Mat image, int classes, float confidence, Rect2d rect)
+        private static void DrawRect(Mat image, int classes, float confidence, Point center, Size size)
         {
-            var label = $"{_labels[classes]}{confidence * 100 : 0}%";
-            Console.WriteLine($"confidence {confidence * 100 : 0}% , {label}");
-            var x1 = (rect.X - rect.Width / 2) < 0 ? 0 : rect.X - rect.Width / 2;
-            image.Rectangle(new Point(x1, rect.Y - rect.Height / 2), new Point((int)(rect.X + rect.Width / 2), rect.Y + rect.Height / 2), Colors[classes], 2);
+            var label = $"{_labels[classes]}{confidence * 100:0}%";
+            Console.WriteLine($"confidence {confidence * 100:0}% , {label}");
+            var x1 = (center.X - size.Width / 2) < 0 ? 0 : center.X - size.Width / 2;
+            var y1 = (center.Y - size.Height / 2) < 0 ? 0 : center.Y - size.Height / 2;
+            var x2 = (center.X + size.Width / 2) < 0 ? 0 : center.X + size.Width / 2;
+            var y2 = (center.Y + size.Height / 2) < 0 ? 0 : center.Y + size.Height / 2;
+            image.Rectangle(new Point(x1, y1), new Point(x2, y2), Colors[classes], 2);
             var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
-            Cv2.Rectangle(image, new Rect(new Point((int)x1, rect.Y - rect.Height / 2 - textSize.Height - baseline),
+            Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),
                 new Size(textSize.Width, textSize.Height + baseline)), Colors[classes], Cv2.FILLED);
             var textColor = Cv2.Mean(Colors[classes]).Val0 < 70 ? Scalar.White : Scalar.Black;
-            Cv2.PutText(image, label, new Point((int)x1, rect.Y - rect.Height / 2 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
+            Cv2.PutText(image, label, new Point(x1, y1 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
         }
     }
 }

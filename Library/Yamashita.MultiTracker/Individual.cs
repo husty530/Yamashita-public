@@ -22,29 +22,33 @@ namespace Yamashita.MultiTracker
 
         public string Label { set; get; }
         public float Iou { set; get; }
-        public Rect2d Box { set; get; }
+        public Point Center { set; get; }
+        public Size Size { set; get; }
         public int DetectCount { set; get; }
         public int MissCount { set; get; }
         public int Id { private set; get; }
         public string Mark { private set; get; }
 
 
-        public Individual(Rect2d box, int id = 0, string label = "", string mark = "")
+        public Individual(Point center, Size size, int id = 0, string label = "", string mark = "")
         {
             Id = id;
             Label = label;
-            Box = box;
+            Center = center;
+            Size = size;
             Iou = 1f;
             DetectCount = 1;
             Mark = mark;
-            var state = new double[] { Box.X, Box.Y, 0.0, 0.0, Box.Width, Box.Height };
+            var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
             _kalman = new Filter(state, transitionMatrix, measurementMatrix, 0.5);
         }
 
-        public void Predict(Rect2d box)
+        public void Predict(Point center, Size size)
         {
-            var output = _kalman.Update(new double[] { box.X, box.Y, box.Width, box.Height });
-            Box = new Rect2d(output[0], output[1], output[4], output[5]);
+            var output = _kalman.Update(new double[] { center.X, center.Y, size.Width, size.Height });
+            Center = new Point(output[0], output[1]);
+            Size = new Size(output[4], output[5]);
         }
+
     }
 }

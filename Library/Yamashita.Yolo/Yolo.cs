@@ -41,25 +41,22 @@ namespace Yamashita.Yolo
             _net.SetPreferableTarget(Net.Target.CPU);
         }
 
-        public void Run(ref Mat frame, out List<(string Label, float Confidence, Rect2d Box)> results)
+        public void Run(ref Mat frame, out List<(string Label, float Confidence, Point Centers, Rect2d Box)> results)
         {
             var blob = CvDnn.BlobFromImage(frame, 1.0 / 255, BlobSize, new Scalar(), true, false);
             _net.SetInput(blob);
             var outNames = _net.GetUnconnectedOutLayersNames();
             var outs = outNames.Select(_ => new Mat()).ToArray();
             _net.Forward(outs, outNames);
-            results = GetResult(outs, ref frame, _threshold, _nmsThreshold);
+            results = GetResult(outs, frame, _threshold, _nmsThreshold).ToList();
         }
 
-        private List<(string Label, float Confidence, Rect2d Box)> GetResult(IEnumerable<Mat> output, ref Mat image, float threshold, float nmsThreshold)
+        private IEnumerable<(string Label, float Confidence, Point Centers, Rect2d Box)> GetResult(IEnumerable<Mat> output, Mat image, float threshold, float nmsThreshold)
         {
             var classIds = new List<int>();
-            var classNames = new List<string>();
             var confidences = new List<float>();
             var probabilities = new List<float>();
             var boxes = new List<Rect2d>();
-            var selectedBoxes = new List<Rect2d>();
-            var selectedConf = new List<float>();
             var w = image.Width;
             var h = image.Height;
             foreach (var pred in output)
@@ -89,36 +86,27 @@ namespace Yamashita.Yolo
             CvDnn.NMSBoxes(boxes, confidences, threshold, nmsThreshold, out int[] indices);
             foreach (var i in indices)
             {
-                var box = boxes[i];
-                selectedBoxes.Add(box);
-                selectedConf.Add(confidences[i]);
-                classNames.Add(_labels[classIds[i]]);
                 switch (_draw)
                 {
                     case (DrawingMode.Off):
                         break;
                     case (DrawingMode.Point):
-                        DrawPoint(ref image, classIds[i], box.X, box.Y);
+                        DrawPoint(image, classIds[i], boxes[i].X, boxes[i].Y);
                         break;
                     case (DrawingMode.Rectangle):
-                        DrawRect(ref image, classIds[i], confidences[i], box);
+                        DrawRect(image, classIds[i], confidences[i], boxes[i]);
                         break;
                 }
+                yield return (_labels[classIds[i]], confidences[i], new Point((int)boxes[i].X, (int)boxes[i].Y), boxes[i]);
             }
-            var results = new List<(string, float, Rect2d)>();
-            for (int i = 0; i < classNames.Count; i++)
-            {
-                results.Add((classNames[i], selectedConf[i], selectedBoxes[i]));
-            }
-            return results;
         }
 
-        private static void DrawPoint(ref Mat image, int classes, double centerX, double centerY)
+        private static void DrawPoint(Mat image, int classes, double centerX, double centerY)
         {
             image.Circle((int)centerX, (int)centerY, 3, Colors[classes], 5);
         }
 
-        private static void DrawRect(ref Mat image, int classes, float confidence, Rect2d rect)
+        private static void DrawRect(Mat image, int classes, float confidence, Rect2d rect)
         {
             var label = $"{_labels[classes]}{confidence * 100 : 0}%";
             Console.WriteLine($"confidence {confidence * 100 : 0}% , {label}");

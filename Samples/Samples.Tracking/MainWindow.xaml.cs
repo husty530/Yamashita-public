@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -46,7 +47,9 @@ namespace Samples.Tracking
                         cap.Read(frame);
                         if (frame.Empty()) break;
                         detector.Run(ref frame, out var yoloResults);
-                        tracker.Update(ref frame, yoloResults, out var results);
+                        var inputs = new List<(string, Rect2d)>();
+                        foreach (var detection in yoloResults) inputs.Add((detection.Label, detection.Box));
+                        tracker.Update(ref frame, inputs, out var results);
                         Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     }
                 });
@@ -66,7 +69,9 @@ namespace Samples.Tracking
                     cap.Read(frame);
                     if (frame.Empty()) break;
                     detector.Run(ref frame, out var yoloResults);
-                    tracker.Update(ref frame, yoloResults, out var results);
+                    var inputs = new List<(string, Rect2d)>();
+                    foreach (var detection in yoloResults) inputs.Add((detection.Label, detection.Box));
+                    tracker.Update(ref frame, inputs, out var results);
                     Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                 }
             });

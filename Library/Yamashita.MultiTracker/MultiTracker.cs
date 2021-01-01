@@ -29,13 +29,13 @@ namespace Yamashita.MultiTracker
             _trackers = new List<Individual>();
         }
 
-        public void Update(ref Mat frame, List<(string Label, float Confidence, Rect2d Box)> detections, out List<(int Id, string Label, float Iou, Rect2d Box)> results)
+        public void Update(ref Mat frame, List<(string Label, Rect2d Box)> detections, out List<(int Id, string Label, float Iou, Rect2d Box)> results)
         {
             Assign(detections);
             results = UpdateMemory(frame).ToList();
         }
 
-        private void Assign(List<(string Label, float Confidence, Rect2d Box)> detections)
+        private void Assign(List<(string Label, Rect2d Box)> detections)
         {
             foreach (var detection in detections)
             {
@@ -54,7 +54,7 @@ namespace Yamashita.MultiTracker
                 }
                 if (first)
                 {
-                    _trackers.Add(new Individual(detection.Box, 1f, _id++, detection.Label));
+                    _trackers.Add(new Individual(detection.Box, _id++, detection.Label));
                 }
             }
         }

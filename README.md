@@ -24,10 +24,6 @@ Yamashita専用ライブラリを一部公開しているところです。
 ----- [Yolo-tiny](/Samples/Samples.Yolo-tiny)  
 ----- [YoloModel-tiny](/Samples/YoloModel-tiny)  
 
-### tinyじゃないYOLOモデル
-
-* [yolov4.weights](https://github.com/AlexeyAB/darknet/releases/download/darknet_yolo_v3_optimal/yolov4.weights)
-
 ### YOLO独自モデルの作り方
 
 [YoloSamples](https://github.com/husty530/YoloSamples)で説明しています。tinyじゃない方の説明ですがほぼ同じです。  

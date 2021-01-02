@@ -37,7 +37,7 @@ namespace Yamashita.Yolo
             }
         }
 
-        private int position = 0;
+        private int position = -1;
         public List<string> Labels { private set; get; }
         public List<float> Confidences { private set; get; }
         public List<Point> Centers { private set; get; }
@@ -52,7 +52,7 @@ namespace Yamashita.Yolo
             => (Labels[position], Confidences[position], Centers[position], Sizes[position]);
         object IEnumerator.Current => Current;
         public void Dispose() { }
-        public void Reset() { position = 0; }
+        public void Reset() { position = -1; }
 
     }
 }

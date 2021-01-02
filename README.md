@@ -18,13 +18,8 @@ Yamashita専用ライブラリを一部公開しているところです。
 ## Samples
 
 ----- [DepthCameras](/Samples/Samples.DepthCameras)  
------ [Socket](/Samples/Samples.Socket)　→　多言語との連携は[SocketSamples](https://github.com/husty530/SocketSamples)へ。  
+----- [Socket](/Samples/Samples.Socket) ... 多言語との連携は[SocketSamples](https://github.com/husty530/SocketSamples)へ。  
 ----- [Tracking](/Samples/Samples.Tracking)  
------ [Yolo-Labeller](/Samples/Samples.Yolo-Labeller)  
+----- [Yolo-Labeller](/Samples/Samples.Yolo-Labeller) ... Yoloの学習データを作るラベリングツール  
 ----- [Yolo-tiny](/Samples/Samples.Yolo-tiny)  
------ [YoloModel-tiny](/Samples/YoloModel-tiny)  
-
-### YOLO独自モデルの作り方
-
-[YoloSamples](https://github.com/husty530/YoloSamples)で説明しています。tinyじゃない方の説明ですがほぼ同じです。  
-ラベリング作業には[Yolo-Labeller](/Samples/Samples.Yolo-Labeller)を使いましょう。  
+----- [YoloModel-tiny](/Samples/YoloModel-tiny) ... tinyじゃない方のモデル・独自モデルの作り方は[YoloSamples](https://github.com/husty530/YoloSamples)で。  

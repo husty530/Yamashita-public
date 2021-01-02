@@ -15,8 +15,8 @@ namespace Samples.Tracking
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
-        VideoCapture cap;
-        Yolo detector;
+        private VideoCapture cap;
+        private readonly IYolo detector;
 
         public MainWindow()
         {
@@ -48,7 +48,7 @@ namespace Samples.Tracking
                         if (frame.Empty()) break;
                         detector.Run(ref frame, out var yolo);
                         var inputs = new List<(string, OpenCvSharp.Point, OpenCvSharp.Size)>();
-                        for(int i = 0; i < yolo.Count; i++) inputs.Add((yolo[i].Label, yolo[i].Center, yolo[i].Size));
+                        foreach (var y in yolo) inputs.Add((y.Label, y.Center, y.Size));
                         tracker.Update(ref frame, inputs, out var results);
                         Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,10 +47,8 @@ namespace Samples.Tracking
                     {
                         cap.Read(frame);
                         if (frame.Empty()) break;
-                        detector.Run(ref frame, out var yolo);
-                        var inputs = new List<(string, OpenCvSharp.Point, OpenCvSharp.Size)>();
-                        foreach (var y in yolo) inputs.Add((y.Label, y.Center, y.Size));
-                        tracker.Update(ref frame, inputs, out var results);
+                        detector.Run(ref frame, out var results);
+                        tracker.Update(ref frame, results.Select(r => (r.Label, r.Center, r.Size)).ToList(), out var _);
                         Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     }
                 });

@@ -45,24 +45,14 @@ namespace Yamashita.Yolo
         public int Count { private set; get; }
         public (string Label, float Confidence, Point Center, Size Size) this[int i]
             => (Labels[i], Confidences[i], Centers[i], Sizes[i]);
-
         public IEnumerator<(string Label, float Confidence, Point Center, Size Size)> GetEnumerator() => this;
-
         IEnumerator IEnumerable.GetEnumerator() => this;
-
         public bool MoveNext() => ++position < Count;
-
         public (string Label, float Confidence, Point Center, Size Size) Current
             => (Labels[position], Confidences[position], Centers[position], Sizes[position]);
-
         object IEnumerator.Current => Current;
-
         public void Dispose() { }
-
-        public void Reset()
-        {
-            position = 0;
-        }
+        public void Reset() { position = 0; }
 
     }
 }

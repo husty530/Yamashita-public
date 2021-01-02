@@ -13,7 +13,7 @@
 
 ### Samples
 ----- [DepthCameras](/Samples/Samples.DepthCameras)  
------ [Socket](/Samples/Samples.Socket) ... [SocketSamples](https://github.com/husty530/SocketSamples)で他言語(Node.js, C++, Python)との連携やってます。  
+----- [Socket](/Samples/Samples.Socket) ... 昔作った[SocketSamples](https://github.com/husty530/SocketSamples)で他言語(Node.js, C++, Python)との連携やってます。  
 ----- [Tracking](/Samples/Samples.Tracking)  
 ----- [Yolo-Labeller](/Samples/Samples.Yolo-Labeller) ... Yoloの学習データを作るラベリングツール  
 ----- [Yolo-tiny](/Samples/Samples.Yolo-tiny)  

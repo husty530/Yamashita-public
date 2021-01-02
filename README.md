@@ -64,4 +64,4 @@ var centers = results
 　　.Select(r => r.Center)  
 　　.ToList();  
 ```  
-↑↑↑　条件検索をかけることも可能になります。  
+↑↑↑　条件検索をかけることが可能になります。  

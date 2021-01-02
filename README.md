@@ -25,29 +25,34 @@
 # YOLOの仕様
 <使用例>  
 ```
-var detector = new Yolo(cfg, names, weights, new Size(640, 480), DrawingMode.Point, 0.5f, 0.3f); //DrawingModeはOff, Point, Rectangle  
-detector.Run(ref frame, out var yolo); //frameはMat  
+var detector = new Yolo(cfg, names, weights, new Size(640, 480), DrawingMode.Rectangle, 0.5f, 0.3f);  
+detector.Run(ref frame, out var results);  
 ```  
   
 出力のYoloResultsクラスはそれぞれList型のLabels, Confidences, Centers, Sizesに加え、インデクサを実装、IEnumerable<>・IEnumerator<>を継承しているのでfor文・foreach文が使えます。  
 これの何がありがたいかというと、  
   
 ```
-detector.Run(ref frame, out var yolo);  
-AnyFunction(yolo.Centers);  
+detector.Run(ref frame, out var results);  
+AnyFunction(results.Centers);  
 ```
 ↑↑↑　のように中心座標のリストだけを取り出したり、  
   
 ```  
-detector.Run(ref frame, out var yolo);  
+detector.Run(ref frame, out var results);  
 var list = new List<(string, Point, Size)>();  
-foreach (var y in yolo) list.Add((y.Label, y.Center, y.Size));  
+foreach (var r in results)  
+{  
+　　list.Add((r.Label, r.Center, r.Size));  
+}  
 ```  
 ↑↑↑　foreach文で要素を取り出せたり、  
   
 ```  
 detector.Run(ref frame, out var yolo);
-var list = yolo.Select(y => (y.Label, y.Center, y.Size)).ToList();
+var list = yolo  
+　　.Select(y => (y.Label, y.Center, y.Size))  
+　　.ToList();  
 ``` 
 ↑↑↑　なんならLinq使えばforeachすら要らなかったり、  
   

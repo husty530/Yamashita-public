@@ -49,19 +49,19 @@ foreach (var r in results)
 ↑↑↑　foreach文で要素を取り出せたり、  
   
 ```  
-detector.Run(ref frame, out var yolo);
-var list = yolo  
-　　.Select(y => (y.Label, y.Center, y.Size))  
+detector.Run(ref frame, out var results);
+var list = results  
+　　.Select(r => (r.Label, r.Center, r.Size))  
 　　.ToList();  
 ``` 
 ↑↑↑　なんならLinq使えばforeachすら要らなかったり、  
   
 ```
-detector.Run(ref frame, out var yolo);  
-var centers = yolo  
-　　.Where(y => y.Label == "pumpkin")  
-　　.Where(y => y.Confidence > 0.8)
-　　.Select(y => y.Center)  
+detector.Run(ref frame, out var results);  
+var centers = results  
+　　.Where(r => r.Label == "pumpkin")  
+　　.Where(r => r.Confidence > 0.8)
+　　.Select(r => r.Center)  
 　　.ToList();  
 ```  
 ↑↑↑　条件検索をかけることも可能になります。  

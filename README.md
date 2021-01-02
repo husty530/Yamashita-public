@@ -6,7 +6,7 @@ Yamashita専用ライブラリを一部公開しているところです。
 
 (編集中です。バグなどあれば報告ください。)  
 
-### Library
+## Library
 
 ----- [DepthCameras](/Library/Yamashita.DepthCameras)  
 ----- [KalmanFilter](/Library/Yamashita.KalmanFilter)  
@@ -15,7 +15,7 @@ Yamashita専用ライブラリを一部公開しているところです。
 ----- [TcpSocket](/Library/Yamashita.TcpSocket)  
 ----- [Yolo](/Library/Yamashita.Yolo)  
 
-### Samples
+## Samples
 
 ----- [DepthCameras](/Samples/Samples.DepthCameras)  
 ----- [Socket](/Samples/Samples.Socket)　→　多言語との連携は[SocketSamples](https://github.com/husty530/SocketSamples)へ。  

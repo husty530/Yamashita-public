@@ -37,12 +37,18 @@ namespace Yamashita.Yolo
             }
         }
 
-        private int position = -1;
         public List<string> Labels { private set; get; }
+
         public List<float> Confidences { private set; get; }
+
         public List<Point> Centers { private set; get; }
+
         public List<Size> Sizes { private set; get; }
+
         public int Count { private set; get; }
+
+
+        private int position = -1;
         public (string Label, float Confidence, Point Center, Size Size) this[int i]
             => (Labels[i], Confidences[i], Centers[i], Sizes[i]);
         public IEnumerator<(string Label, float Confidence, Point Center, Size Size)> GetEnumerator() => this;

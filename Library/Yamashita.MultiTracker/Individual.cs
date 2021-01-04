@@ -40,7 +40,7 @@ namespace Yamashita.MultiTracker
             DetectCount = 1;
             Mark = mark;
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
-            _kalman = new Filter(state, transitionMatrix, measurementMatrix, 0.5);
+            _kalman = new Filter(state, transitionMatrix, measurementMatrix);
         }
 
         public void Predict(Point center, Size size)

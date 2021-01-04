@@ -1,6 +1,6 @@
 # Yamashita-public 
 
-[![](https://img.youtube.com/vi/Ov_aY8wiDdg&ab_channel=TAKUMIYAMASHITA/0.jpg)](https://www.youtube.com/watch?v=Ov_aY8wiDdg&ab_channel=TAKUMIYAMASHITA)
+[![](https://img.youtube.com/vi/Ov_aY8wiDdg/0.jpg)](https://www.youtube.com/watch?v=Ov_aY8wiDdg)
 
 # Contents
 (編集中です。バグなどあれば報告ください。)  

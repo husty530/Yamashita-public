@@ -19,7 +19,6 @@ namespace Yamashita.DepthCameras
         private readonly TemporalFilter _tfill;
         private readonly HoleFillingFilter _hfill;
         private readonly RealsenseConverter _converter;
-        private IDisposable _cameraDisposer;
 
         public Realsense(int width, int height)
         {
@@ -66,19 +65,13 @@ namespace Yamashita.DepthCameras
                     depthMat = pointCloudMat.Split()[2].Clone();
                     return (colorMat, depthMat, pointCloudMat);
                 })
-                .Publish();
-            _cameraDisposer = observable.Connect();
+                .Publish()
+                .RefCount();
             return observable;
-        }
-
-        public void PauseStream()
-        {
-            _cameraDisposer?.Dispose();
         }
 
         public void Disconnect()
         {
-            _cameraDisposer?.Dispose();
             _pipeline?.Dispose();
         }
 

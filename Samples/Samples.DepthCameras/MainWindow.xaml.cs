@@ -19,6 +19,7 @@ namespace Samples.DepthCameras
     {
 
         private IDepthCamera _camera;
+        private IDisposable _cameraConnector;
         private bool _isConnected;
 
         public ReactiveProperty<string> StartButtonFace { private set; get; } = new ReactiveProperty<string>();
@@ -37,6 +38,7 @@ namespace Samples.DepthCameras
             this.Closed += (sender, args) =>
             {
                 GC.Collect();
+                _cameraConnector?.Dispose();
                 _camera?.Disconnect();
             };
         }
@@ -49,7 +51,7 @@ namespace Samples.DepthCameras
                 _isConnected = AttemptConnection();
                 if (!_isConnected) new Exception("Device Connection Failed.");
                 ShutterButton.IsEnabled = true;
-                _camera.Connect()
+                _cameraConnector = _camera.Connect()
                         .ObserveOnDispatcher()
                         .Subscribe(imgs =>
                         {
@@ -62,13 +64,14 @@ namespace Samples.DepthCameras
                 StartButtonFace.Value = "▶";
                 ShutterButton.IsEnabled = false;
                 _isConnected = false;
-                _camera.Disconnect();
+                _cameraConnector?.Dispose();
+                _camera?.Disconnect();
             }
         }
 
         private void ShutterButton_Click(object sender, RoutedEventArgs e)
         {
-            _camera.Connect()
+            _camera?.Connect()
                     .TakeWhile(imgs =>
                     {
                         if (imgs.ColorMat.Empty()) return true;

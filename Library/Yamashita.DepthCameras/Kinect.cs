@@ -13,7 +13,6 @@ namespace Yamashita.DepthCameras
         private readonly Device _device;
         private readonly Transformation _transformation;
         private readonly KinectConverter _converter;
-        private IDisposable _cameraDisposer;
 
         public Kinect(DeviceConfiguration config)
         {
@@ -57,19 +56,13 @@ namespace Yamashita.DepthCameras
                     depthMat = pointCloudMat.Split()[2].Clone();
                     return (colorMat, depthMat, pointCloudMat);
                 })
-                .Publish();
-            _cameraDisposer = observable.Connect();
+                .Publish()
+                .RefCount();
             return observable;
-        }
-
-        public void PauseStream()
-        {
-            _cameraDisposer?.Dispose();
         }
 
         public void Disconnect()
         {
-            _cameraDisposer?.Dispose();
             _device?.Dispose();
         }
 

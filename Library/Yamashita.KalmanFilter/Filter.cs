@@ -230,14 +230,19 @@ namespace Yamashita.Kalman
         /// <param name="measurementVec">観測値のベクトル (m * 1)</param>
         /// <param name="controlVec">制御入力 (n * 1)</param>
         /// <returns>予測した状態ベクトル</returns>
-        public double[] Update(double[] measurementVec, double[] controlVec = null)
+        public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
-            _kalman.Correct(new Mat(m, 1, type, measurementVec));
+            var correctMat = _kalman.Correct(new Mat(m, 1, type, measurementVec));
             var controlMat = controlVec != null ? new Mat(n, 1, type, controlVec) : null;
-            var resultMat = _kalman.Predict(controlMat);
-            var resultArray = new double[resultMat.Rows];
-            for (int i = 0; i < k; i++) resultArray[i] = resultMat.At<double>(i);
-            return resultArray;
+            var predictMat = _kalman.Predict(controlMat);
+            var correctArray = new double[k];
+            var predictArray = new double[k];
+            for (int i = 0; i < k; i++)
+            {
+                correctArray[i] = correctMat.At<double>(i);
+                predictArray[i] = predictMat.At<double>(i);
+            }
+            return (correctArray, predictArray);
         }
     }
 }

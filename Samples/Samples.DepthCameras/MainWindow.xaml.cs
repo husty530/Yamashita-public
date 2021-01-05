@@ -62,7 +62,7 @@ namespace Samples.DepthCameras
                 StartButtonFace.Value = "▶";
                 ShutterButton.IsEnabled = false;
                 _isConnected = false;
-                _camera.PauseStream();
+                _camera.Disconnect();
             }
         }
 
@@ -72,13 +72,8 @@ namespace Samples.DepthCameras
                     .TakeWhile(imgs =>
                     {
                         if (imgs.ColorMat.Empty()) return true;
-                        using (imgs.ColorMat)
-                        using (imgs.DepthMat)
-                        using (imgs.PointCloudMat)
-                        {
-                            _camera.SaveAsZip(SaveDir.Value, "", imgs.ColorMat, imgs.DepthMat, imgs.PointCloudMat);
-                            return false;
-                        }
+                        _camera.SaveAsZip(SaveDir.Value, "", imgs.ColorMat, imgs.DepthMat, imgs.PointCloudMat);
+                        return false;
                     })
                     .Subscribe();
         }

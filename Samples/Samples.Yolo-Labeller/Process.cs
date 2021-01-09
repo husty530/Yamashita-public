@@ -25,10 +25,7 @@ namespace Yolo_Labeller
             _size = new Size(width, height);
             var imgPaths = new List<string>();
             imgPaths.AddRange(Directory.GetFiles(dir, $"*.png"));
-            imgPaths.AddRange(Directory.GetFiles(dir, $"*.PNG"));
             imgPaths.AddRange(Directory.GetFiles(dir, $"*.jpg"));
-            imgPaths.AddRange(Directory.GetFiles(dir, $"*.jpeg"));
-            imgPaths.AddRange(Directory.GetFiles(dir, $"*.JPG"));
             _imgPaths = imgPaths.ToArray();
             _items = new List<(Rect, int)>[_imgPaths.Length];
             if (_imgPaths.Length == 0) return new Mat(height, width, MatType.CV_8U, 0);

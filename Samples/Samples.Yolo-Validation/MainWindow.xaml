@@ -1,0 +1,80 @@
+﻿<Window x:Class="Samples.Yolo_Validation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Samples.Yolo_Validation"
+        mc:Ignorable="d"
+        Title="Yolo-Validation" Height="450" Width="800" Background="Black">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="5">
+            <Label Content="モデルフォルダ" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="0" Margin="5">
+            <Label Content="画像フォルダ" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="0" Margin="5">
+            <Label Content="ラベルフォルダ" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="3" Grid.Column="0" Margin="5">
+            <Label Content="Bolb Width" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="4" Grid.Column="0" Margin="5">
+            <Label Content="Blob Height" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="5" Grid.Column="0" Margin="5">
+            <Label Content="IoU Threshold" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="6" Grid.Column="0" Margin="5">
+            <Label Content="Class Number" Foreground="White"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="0" Grid.Column="1" Margin="5">
+            <Button x:Name="ModelDirButton" Content="C:\\" Width="220" Click="ModelDirButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="1" Margin="5">
+            <Button x:Name="ImageDirButton" Content="C:\\" Width="220" Click="ImageDirButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="1" Margin="5">
+            <Button x:Name="LabelDirButton" Content="C:\\" Width="220" Click="LabelDirButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="3" Grid.Column="1" Margin="5">
+            <TextBox x:Name="WidthTx" Text="256" Background="Black" Foreground="White" Width="150"/>
+        </Viewbox>
+        <Viewbox Grid.Row="4" Grid.Column="1" Margin="5">
+            <TextBox x:Name="HeightTx" Text="192" Background="Black" Foreground="White" Width="150"/>
+        </Viewbox>
+        <Viewbox Grid.Row="5" Grid.Column="1" Margin="5">
+            <TextBox x:Name="IouTx" Text="0.5" Background="Black" Foreground="White" Width="150"/>
+        </Viewbox>
+        <Viewbox Grid.Row="6" Grid.Column="1" Margin="5">
+            <TextBox x:Name="ClassNumTx" Text="0" Background="Black" Foreground="White" Width="150"/>
+        </Viewbox>
+        <Viewbox Grid.Row="7" Grid.Column="0" Margin="5">
+            <CheckBox x:Name="SaveCheck" Content="Save ?" Foreground="White" Width="70"/>
+        </Viewbox>
+        <Viewbox Grid.Row="7" Grid.Column="1" Margin="5">
+            <Button x:Name="GoButton" Content="GO →" Width="150" Click="GoButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="2" Grid.RowSpan="8" Grid.ColumnSpan="2" Margin="5">
+            <Label x:Name="ResultLabel" Content="Result" Foreground="White" Width="180" Height="200"/>
+        </Viewbox>
+    </Grid>
+</Window>

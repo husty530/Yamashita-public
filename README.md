@@ -18,6 +18,7 @@
 ----- [Socket](/Samples/Samples.Socket) ... 昔作った[SocketSamples](https://github.com/husty530/SocketSamples)で他言語(Node.js, C++, Python)との連携やってます。  
 ----- [Tracking](/Samples/Samples.Tracking)  
 ----- [Yolo-Labeller](/Samples/Samples.Yolo-Labeller) ... Yoloの学習データを作るラベリングツール  
+----- [Yolo-Validation](/Samples/Samples.Yolo-Validation) ... Yoloのモデルを評価するプログラム  
 ----- [Yolo-tiny](/Samples/Samples.Yolo-tiny)  
 ----- [YoloModel-tiny](/Samples/YoloModel-tiny) ... tinyじゃない方のモデル・独自モデルの作り方は[YoloSamples](https://github.com/husty530/YoloSamples)へ。  
 

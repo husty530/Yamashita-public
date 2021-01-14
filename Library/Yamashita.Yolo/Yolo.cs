@@ -117,7 +117,12 @@ namespace Yamashita.Yolo
             var y1 = (center.Y - size.Height / 2) < 0 ? 0 : center.Y - size.Height / 2;
             var x2 = (center.X + size.Width / 2) < 0 ? 0 : center.X + size.Width / 2;
             var y2 = (center.Y + size.Height / 2) < 0 ? 0 : center.Y + size.Height / 2;
-            image.Rectangle(new Point(x1, y1), new Point(x2, y2), new Scalar(0,0,255), 2);
+            Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), Colors[classes], 2);
+            var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
+            Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),
+                new Size(textSize.Width, textSize.Height + baseline)), Colors[classes], Cv2.FILLED);
+            var textColor = Cv2.Mean(Colors[classes]).Val0 < 70 ? Scalar.White : Scalar.Black;
+            Cv2.PutText(image, label, new Point(x1, y1 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
         }
     }
 }

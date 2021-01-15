@@ -88,7 +88,7 @@ namespace Yolo_Labeller
             if (x < _temp.X && y < _temp.Y) rect = new Rect(new Point(x, y), new Size(_temp.X - x, _temp.Y - y));
             var viewImg = _image.Clone();
             DrawAll(ref viewImg);
-            Cv2.Rectangle(viewImg, rect, new Scalar(0, 255, 0));
+            Cv2.Rectangle(viewImg, rect, new Scalar(0, 255, 0), 3);
             return viewImg;
         }
 
@@ -143,7 +143,7 @@ namespace Yolo_Labeller
             Cv2.Resize(img, img, _size);
             foreach (var item in _items[FrameNumber])
             {
-                Cv2.Rectangle(img, item.Rect, _colors[item.LabelIndex], 2);
+                Cv2.Rectangle(img, item.Rect, _colors[item.LabelIndex], 3);
             }
         }
     }

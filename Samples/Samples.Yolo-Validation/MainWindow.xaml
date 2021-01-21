@@ -34,7 +34,7 @@
             <Label Content="ラベルフォルダ" Foreground="White"/>
         </Viewbox>
         <Viewbox Grid.Row="3" Grid.Column="0" Margin="5">
-            <Label Content="Bolb Width" Foreground="White"/>
+            <Label Content="Blob Width" Foreground="White"/>
         </Viewbox>
         <Viewbox Grid.Row="4" Grid.Column="0" Margin="5">
             <Label Content="Blob Height" Foreground="White"/>

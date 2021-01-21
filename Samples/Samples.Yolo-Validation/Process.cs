@@ -154,10 +154,10 @@ namespace Samples.Yolo_Validation
                 for (int i = 0; i < imgPaths.Count; i++)
                 {
                     var img = new Mat(imgPaths[i]);
-                    var name = imgPaths[i].Split(".")[0];
+                    var name = Path.GetFileNameWithoutExtension(imgPaths[i]);
                     foreach (var lp in labPaths)
                     {
-                        if (name == lp.Split(".")[0])
+                        if (name == Path.GetFileNameWithoutExtension(lp))
                         {
                             using (var sw = new StreamReader(lp))
                             {
@@ -172,7 +172,7 @@ namespace Samples.Yolo_Validation
                                     var h = (int)(double.Parse(s[4]) * img.Height);
                                     labList.Add((label, new Point(x, y), new Size(w, h)));
                                 }
-                                _dataSet.Add((name.Split("\\")[6], img, labList));
+                                _dataSet.Add((name, img, labList));
                             }
                             break;
                         }

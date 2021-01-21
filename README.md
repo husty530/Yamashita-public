@@ -22,9 +22,6 @@
 ----- [Yolo-tiny](/Samples/Samples.Yolo-tiny)  
 ----- [YoloModel-tiny](/Samples/YoloModel-tiny) ... tinyじゃない方のモデル・独自モデルの作り方は[YoloSamples](https://github.com/husty530/YoloSamples)へ。  
 
-### その他
-[YAMASHITAの玩具箱](https://qiita.com/husty530/items/3b4e05733e2908b1ad1d) ... 遊び半分のものはこちらに。相互リンクしてます。  
-
 # YOLOの仕様
 <使用例>  
 ```

@@ -9,6 +9,7 @@ using Reactive.Bindings;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
 using Yamashita.DepthCameras;
+using Microsoft.Azure.Kinect.Sensor;
 
 namespace Samples.DepthCameras
 {

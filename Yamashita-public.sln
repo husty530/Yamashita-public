@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.DepthCameras", "L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Yolo-Validation", "Samples\Samples.Yolo-Validation\Samples.Yolo-Validation.csproj", "{9847011D-B0B1-4B43-B601-5AFFB7CA38B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.Fourier", "Library\Yamashita.Fourier\Yamashita.Fourier.csproj", "{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,14 @@ Global
 		{9847011D-B0B1-4B43-B601-5AFFB7CA38B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9847011D-B0B1-4B43-B601-5AFFB7CA38B0}.Release|x64.ActiveCfg = Release|Any CPU
 		{9847011D-B0B1-4B43-B601-5AFFB7CA38B0}.Release|x64.Build.0 = Release|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Debug|x64.Build.0 = Debug|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|x64.ActiveCfg = Release|Any CPU
+		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

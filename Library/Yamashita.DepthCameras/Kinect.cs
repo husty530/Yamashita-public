@@ -30,7 +30,7 @@ namespace Yamashita.DepthCameras
             {
                 ColorFormat = ImageFormat.ColorBGRA32,
                 ColorResolution = ColorResolution.R720p,
-                DepthMode = DepthMode.NFOV_2x2Binned,
+                DepthMode = DepthMode.NFOV_Unbinned,
                 SynchronizedImagesOnly = true,
                 CameraFPS = FPS.FPS15
             })

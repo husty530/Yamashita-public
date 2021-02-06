@@ -93,7 +93,6 @@ namespace Yamashita.Yolo
                     case (DrawingMode.Off):
                         break;
                     case (DrawingMode.Point):
-                        if (classIds[i] == 1) break;
                         DrawPoint(image, classIds[i], centers[i]);
                         break;
                     case (DrawingMode.Rectangle):

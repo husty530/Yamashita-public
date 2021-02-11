@@ -57,7 +57,7 @@ namespace Yamashita.Yolo
         public (string Label, float Confidence, Point Center, Size Size) Current
             => (Labels[position], Confidences[position], Centers[position], Sizes[position]);
         object IEnumerator.Current => Current;
-        public void Dispose() { }
+        public void Dispose() { position = -1; }
         public void Reset() { position = -1; }
 
     }

@@ -1,11 +1,11 @@
 ﻿using OpenCvSharp;
-using Yamashita.Kalman;
+using KalmanFilter = Yamashita.Filter.KalmanFilter;
 
 namespace Yamashita.MultiTracker
 {
     class Individual
     {
-        private readonly Filter _kalman;
+        private readonly KalmanFilter _kalman;
         private readonly double[] transitionMatrix = new double[]
                         {   1, 0, 1, 0, 0, 0,
                             0, 1, 0, 1, 0, 0,
@@ -44,7 +44,7 @@ namespace Yamashita.MultiTracker
             DetectCount = 1;
             Mark = mark;
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
-            _kalman = new Filter(state, transitionMatrix, measurementMatrix, 0.5);
+            _kalman = new KalmanFilter(state, transitionMatrix, measurementMatrix, 0.5);
         }
 
         public void Predict(Point center, Size size)

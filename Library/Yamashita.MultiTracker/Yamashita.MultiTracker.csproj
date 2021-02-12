@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Yamashita.KalmanFilter\Yamashita.KalmanFilter.csproj" />
+    <ProjectReference Include="..\Yamashita.Filter\Yamashita.Filter.csproj" />
   </ItemGroup>
 
 </Project>

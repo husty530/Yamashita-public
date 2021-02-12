@@ -1,6 +1,6 @@
 ﻿using OpenCvSharp;
 
-namespace Yamashita.Kalman
+namespace Yamashita.Filter
 {
     /// <summary>
     /// 
@@ -19,9 +19,9 @@ namespace Yamashita.Kalman
     /// 対角行列ですべて一定値でよい場合のために簡易版のコンストラクタもある
     /// 
     /// </summary>
-    public class Filter
+    public class KalmanFilter
     {
-        private readonly KalmanFilter _kalman;
+        private readonly OpenCvSharp.KalmanFilter _kalman;
         private readonly MatType type = MatType.CV_64F;
         private readonly int k;
         private readonly int m;
@@ -37,12 +37,12 @@ namespace Yamashita.Kalman
         /// <param name="measurementNoise">R : 観測ノイズの共分散行列 (デフォルト値)</param>
         /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
         /// <param name="preError">P : 誤差分散行列の初期値 (デフォルト値)</param>
-        public Filter(double[] initialStateVec, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
 
             k = initialStateVec.Length;
             m = initialStateVec.Length;
-            _kalman = new KalmanFilter(k, m, 0, type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type);
             _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
             _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
             _kalman.TransitionMatrix = Mat.Zeros(new Size(k, k), type);
@@ -72,12 +72,12 @@ namespace Yamashita.Kalman
         /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
         /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
         /// <param name="preError">P : 誤差分散行列の初期値 (デフォルト値)</param>
-        public Filter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
 
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
-            _kalman = new KalmanFilter(k, m, 0, type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type);
             _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
             _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
             _kalman.TransitionMatrix = new Mat(k, k, type, transitionMatrix);
@@ -104,12 +104,12 @@ namespace Yamashita.Kalman
         /// <param name="measurementNoiseMatrix">R : 観測ノイズの共分散行列。観測側の不正確さ (m * m)</param>
         /// <param name="processNoiseMatrix">Q : プロセスノイズの共分散行列。被観測側の不正確さ (k * k)</param>
         /// <param name="preErrorMatrix">P : 誤差分散行列の初期値。誤差が独立なら対角行列になる (k * k)</param>
-        public Filter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double[] preErrorMatrix)
+        public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double[] preErrorMatrix)
         {
 
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
-            _kalman = new KalmanFilter(k, m, 0, type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type);
             _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
             _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
             _kalman.TransitionMatrix = new Mat(k, k, type, transitionMatrix);
@@ -131,13 +131,13 @@ namespace Yamashita.Kalman
         /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
         /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
         /// <param name="preError">P : 誤差分散行列の初期値 (デフォルト値)</param>
-        public Filter(double[] initialStateVec, double[] controlMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
 
             k = initialStateVec.Length;
             m = initialStateVec.Length;
             n = controlMatrix.Length / k;
-            _kalman = new KalmanFilter(k, m, n, type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type);
             _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
             _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
             _kalman.ControlMatrix = new Mat(k, n, type, controlMatrix);
@@ -168,13 +168,13 @@ namespace Yamashita.Kalman
         /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
         /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
         /// <param name="preError">P : 誤差分散行列の初期値 (デフォルト値)</param>
-        public Filter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
 
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
-            _kalman = new KalmanFilter(k, m, n, type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type);
             _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
             _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
             _kalman.ControlMatrix = new Mat(k, n, type, controlMatrix);
@@ -203,13 +203,13 @@ namespace Yamashita.Kalman
         /// <param name="measurementNoiseMatrix">R : 観測ノイズの共分散行列。観測側の不正確さ (m * m)</param>
         /// <param name="processNoiseMatrix">Q : プロセスノイズの共分散行列。被観測側の不正確さ (k * k)</param>
         /// <param name="preErrorMatrix">P : 誤差分散行列の初期値。誤差が独立なら対角行列になる (k * k)</param>
-        public Filter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double[] preErrorMatrix)
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double[] preErrorMatrix)
         {
 
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
-            _kalman = new KalmanFilter(k, m, n, type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type);
             _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
             _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
             _kalman.ControlMatrix = new Mat(k, n, type, controlMatrix);

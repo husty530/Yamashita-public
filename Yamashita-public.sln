@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.KalmanFilter", "Library\Yamashita.KalmanFilter\Yamashita.KalmanFilter.csproj", "{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.TcpSocket", "Library\Yamashita.TcpSocket\Yamashita.TcpSocket.csproj", "{55ECE49A-7BE9-4F4D-AE92-80F48328A053}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Yolo", "Library\Yamashita.Yolo\Yamashita.Yolo.csproj", "{C7796BE3-F3BA-4F71-A383-3DEBA1C18313}"
@@ -27,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.DepthCameras", "L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Yolo-Validation", "Samples\Samples.Yolo-Validation\Samples.Yolo-Validation.csproj", "{9847011D-B0B1-4B43-B601-5AFFB7CA38B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.Fourier", "Library\Yamashita.Fourier\Yamashita.Fourier.csproj", "{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Fourier", "Library\Yamashita.Fourier\Yamashita.Fourier.csproj", "{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Filter", "Library\Yamashita.Filter\Yamashita.Filter.csproj", "{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Debug|x64.Build.0 = Debug|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|x64.ActiveCfg = Release|Any CPU
-		{4C0DCDF4-D496-43A6-8825-A56FB9D84BDF}.Release|x64.Build.0 = Release|Any CPU
 		{55ECE49A-7BE9-4F4D-AE92-80F48328A053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{55ECE49A-7BE9-4F4D-AE92-80F48328A053}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55ECE49A-7BE9-4F4D-AE92-80F48328A053}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -141,6 +133,14 @@ Global
 		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|x64.ActiveCfg = Release|Any CPU
 		{D50A8E49-0E61-4BAF-98F4-3AB12B8B93A8}.Release|x64.Build.0 = Release|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Debug|x64.Build.0 = Debug|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D9160DA-47E4-4B09-B643-5BDB7B74C29E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

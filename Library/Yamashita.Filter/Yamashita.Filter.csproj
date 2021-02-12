@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Yamashita.Filter</AssemblyName>
+    <RootNamespace>Yamashita.Filter</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     <PackageReference Include="OpenCvSharp4" Version="4.5.0.20201013" />
   </ItemGroup>
 

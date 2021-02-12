@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.1.20201226" />
-    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.1.20201226" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.0.20201013" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.0.20201013" />
   </ItemGroup>
 
   <ItemGroup>

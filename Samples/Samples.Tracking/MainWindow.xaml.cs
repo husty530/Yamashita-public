@@ -47,9 +47,12 @@ namespace Samples.Tracking
                     {
                         cap.Read(frame);
                         if (frame.Empty()) break;
+                        Cv2.Resize(frame, frame, new OpenCvSharp.Size(512, 288));
                         detector.Run(ref frame, out var results);
                         tracker.Update(ref frame, results.Select(r => (r.Label, r.Center, r.Size)).ToList(), out var _);
-                        Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
+                        Cv2.ImShow(" ", frame);
+                        Cv2.WaitKey(1);
+                        //Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     }
                 });
             }

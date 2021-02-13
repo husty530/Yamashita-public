@@ -1,5 +1,13 @@
-# YOLOの仕様
-<使用例>  
+# YOLO
+  
+OpenCvSharpによるDarknetフレームワークのモデル読み込みライブラリです。  
+YOLO v3系・v4系(tinyもok)が動作することは確認しています。v2はたぶん無理。v5は不明。  
+  
+YOLOとは？  
+* [【物体検出手法の歴史 : YOLOの紹介】](https://qiita.com/cv_carnavi/items/68dcda71e90321574a2b)  
+* [【論文紹介】YOLOの論文を読んだので要点をまとめてみた](https://dev.classmethod.jp/articles/research_paper_yolo/)  
+  
+### <使用例>  
 ```
 var detector = new Yolo(cfg, names, weights, new Size(640, 480), DrawingMode.Rectangle, 0.5f, 0.3f);  
 detector.Run(ref frame, out var results);  

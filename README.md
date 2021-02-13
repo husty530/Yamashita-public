@@ -7,7 +7,7 @@
 
 ### Library
 ----- [Yamashita.Control](Library/Yamashita.Control) ... カルマンフィルタ & パーティクルフィルタ & マルチトラッカー  
------ [Yamashita.DepthCameras](Liblary/Yamashita.DepthCameras) ... Kinect & Realsense  
+----- [Yamashita.DepthCameras](Library/Yamashita.DepthCameras) ... Kinect & Realsense  
 ----- [Yamashita.Features](Library/Yamashita.Features) ... 1次元および2次元のフーリエ変換 & HOG特徴量  
 ----- [Yamashita.ML](Library/Yamashita.ML) ... サポートベクタマシン & YOLO  
 ----- [Yamashita.TcpSocket](Library/Yamashita.TcpSocket) ... C#のServer & Client  

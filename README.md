@@ -3,7 +3,7 @@
 [![](https://img.youtube.com/vi/Ov_aY8wiDdg/0.jpg)](https://www.youtube.com/watch?v=Ov_aY8wiDdg)
 
 # Contents
-(編集中です。バグなどあれば報告ください。)  
+詳細は各プロジェクトフォルダに記載しました。  
 
 ### Library
 ----- [Yamashita.Control](Library/Yamashita.Control) ... カルマンフィルタ & パーティクルフィルタ & マルチトラッカー  

@@ -19,10 +19,10 @@ namespace Yamashita.Filter
     /// 対角行列ですべて一定値でよい場合のために簡易版のコンストラクタもある
     /// 
     /// </summary>
-    public class KalmanFilter
+    public class KalmanFilter : IFilter
     {
+        private MatType type = MatType.CV_64F;
         private readonly OpenCvSharp.KalmanFilter _kalman;
-        private readonly MatType type = MatType.CV_64F;
         private readonly int k;
         private readonly int m;
         private readonly int n;
@@ -127,7 +127,7 @@ namespace Yamashita.Filter
         /// 与える誤差分散の値はデフォルト引数にしている
         /// </summary>        
         /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="controlMatrix">B : 制御入力の遷移行列 (n * 1)</param>
+        /// <param name="controlMatrix">B : 制御入力の遷移行列 (k * n)</param>
         /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
         /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
         /// <param name="preError">P : 誤差分散行列の初期値 (デフォルト値)</param>
@@ -162,7 +162,7 @@ namespace Yamashita.Filter
         /// 制御入力できる
         /// </summary>
         /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="controlMatrix">B : 制御入力の遷移行列 (n * 1)</param>
+        /// <param name="controlMatrix">B : 制御入力の遷移行列 (k * n)</param>
         /// <param name="transitionMatrix">A : 状態の遷移行列 (k * k)</param>
         /// <param name="measurementMatrix">C : 観測値の遷移行列 (m * k)</param>
         /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
@@ -197,7 +197,7 @@ namespace Yamashita.Filter
         /// 制御入力できる
         /// </summary>
         /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="controlMatrix">B : 制御入力の遷移行列 (n * 1)</param>
+        /// <param name="controlMatrix">B : 制御入力の遷移行列 (k * n)</param>
         /// <param name="transitionMatrix">A : 状態の遷移行列 (k * k)</param>
         /// <param name="measurementMatrix">C : 観測値の遷移行列 (m * k)</param>
         /// <param name="measurementNoiseMatrix">R : 観測ノイズの共分散行列。観測側の不正確さ (m * m)</param>
@@ -222,14 +222,7 @@ namespace Yamashita.Filter
         }
 
 
-        /// <summary>
-        /// フィルタ適用
-        /// ループの中でこれを呼び出すと観測値で更新→次期の予測を行う
-        /// 戻るのは参照で入ってきた観測の補正値
-        /// </summary>
-        /// <param name="measurementVec">観測値のベクトル (m * 1)</param>
-        /// <param name="controlVec">制御入力 (n * 1)</param>
-        /// <returns>予測した状態ベクトル</returns>
+
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
             var correctMat = _kalman.Correct(new Mat(m, 1, type, measurementVec));

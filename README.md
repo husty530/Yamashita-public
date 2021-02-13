@@ -6,13 +6,11 @@
 (編集中です。バグなどあれば報告ください。)  
 
 ### Library
------ [DepthCameras](/Yamashita/DepthCameras) ... Kinect & Realsense  
------ [Fourier](/Yamashita/Fourier) ... 1次元および2次元のフーリエ変換。出力インターフェースはSVMにも対応  
------ [Filter](/Yamashita/Filter) ... カルマンフィルタ & パーティクルフィルタ  
------ [MultiTracker](/Yamashita/MultiTracker) ... 複数オブジェクトのトラッカー  
------ [Svm](/Yamashita/Svm) ... サポートベクタマシン。HOG特徴量の抽出クラスも実装  
------ [TcpSocket](/Yamashita/TcpSocket) ... C#のServer & Client  
------ [Yolo](/Yamashita/Yolo) ... 物体検出アルゴリズムの実装  
+----- [Yamashita.Control](Library/Yamashita.Control) ... カルマンフィルタ & パーティクルフィルタ & マルチトラッカー  
+----- [Yamashita.DepthCameras](Liblary/Yamashita.DepthCameras) ... Kinect & Realsense  
+----- [Yamashita.Features](Library/Yamashita.Features) ... 1次元および2次元のフーリエ変換 & HOG特徴量  
+----- [Yamashita.ML](Library/Yamashita.ML) ... サポートベクタマシン & YOLO  
+----- [Yamashita.TcpSocket](Library/Yamashita.TcpSocket) ... C#のServer & Client  
 
 ### Samples
 ----- [DepthCameras](/Samples/Samples.DepthCameras)  

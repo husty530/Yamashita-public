@@ -2,14 +2,12 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Forms;
 using System.IO;
 using System.Reactive.Linq;
 using Reactive.Bindings;
-using OpenCvSharp;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using OpenCvSharp.WpfExtensions;
 using Yamashita.DepthCameras;
-using Microsoft.Azure.Kinect.Sensor;
 
 namespace Samples.DepthCameras
 {
@@ -36,7 +34,7 @@ namespace Samples.DepthCameras
             StartButtonFace.Value = "▶";
             SaveDir.Value = $"{Directory.GetCurrentDirectory()}";
             ShutterButton.IsEnabled = false;
-            this.Closed += (sender, args) =>
+            Closed += (sender, args) =>
             {
                 GC.Collect();
                 _cameraConnector?.Dispose();
@@ -53,11 +51,13 @@ namespace Samples.DepthCameras
                 if (!_isConnected) new Exception("Device Connection Failed.");
                 ShutterButton.IsEnabled = true;
                 _cameraConnector = _camera.Connect()
-                        .ObserveOnDispatcher()
                         .Subscribe(imgs =>
                         {
-                            ColorFrame.Value = imgs.ColorMat.ToBitmapSource();
-                            DepthFrame.Value = imgs.DepthMat.ToBitmapSource();
+                            Dispatcher.Invoke(() =>
+                            {
+                                ColorFrame.Value = imgs.ColorMat.ToBitmapSource();
+                                DepthFrame.Value = imgs.DepthMat.ToBitmapSource();
+                            });
                         });
             }
             else
@@ -84,11 +84,15 @@ namespace Samples.DepthCameras
 
         private void SelectDirButton_Click(object sender, RoutedEventArgs e)
         {
-            var fbd = new FolderBrowserDialog();
-            fbd.Description = ("保存先フォルダを選択");
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var cofd = new CommonOpenFileDialog()
             {
-                SaveDir.Value = fbd.SelectedPath;
+                Title = "フォルダを選択してください",
+                InitialDirectory = "D:",
+                IsFolderPicker = true,
+            })
+            {
+                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
+                    SaveDir.Value = cofd.FileName;
             }
         }
 

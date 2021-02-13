@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using OpenCvSharp;
-using Yamashita.Yolo;
+using Yamashita.ML;
 
 namespace Samples.Yolo_Validation
 {

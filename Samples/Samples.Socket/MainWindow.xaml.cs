@@ -12,7 +12,7 @@ namespace Samples.Socket
     public partial class MainWindow : System.Windows.Window
     {
 
-        private ISocket _server;
+        private ITcpSocket _server;
 
         public MainWindow()
         {

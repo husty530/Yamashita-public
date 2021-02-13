@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Yamashita.TcpSocket
 {
-    public class Server : Socket
+    public class Server : TcpSocket
     {
         /// <summary>
         /// TCPサーバーの待機から接続まで

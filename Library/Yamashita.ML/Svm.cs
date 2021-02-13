@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using OpenCvSharp;
 using OpenCvSharp.ML;
 
-namespace Yamashita.Svm
+namespace Yamashita.ML
 {
     public class Svm : ISvm
     {
@@ -27,7 +27,7 @@ namespace Yamashita.Svm
             _mode = mode;
             _modelPath = modelPath;
             _dataPath = dataPath;
-            if(_mode == Mode.Train)
+            if (_mode == Mode.Train)
             {
                 _features = new List<float[]>();
                 _labels = new List<int>();
@@ -43,7 +43,7 @@ namespace Yamashita.Svm
         {
             if (File.Exists(_dataPath))
             {
-                using(var sr = new StreamReader(_dataPath))
+                using (var sr = new StreamReader(_dataPath))
                 {
                     var strs = sr.ReadLine().Split(",");
                     var feature = new List<float>();
@@ -68,7 +68,7 @@ namespace Yamashita.Svm
         public void RemoveLastData()
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
-            if(_features.Count != 0)
+            if (_features.Count != 0)
             {
                 _features.RemoveAt(_features.Count - 1);
                 _labels.RemoveAt(_labels.Count - 1);

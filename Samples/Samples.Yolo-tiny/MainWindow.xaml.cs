@@ -5,7 +5,7 @@ using System.IO;
 using Microsoft.Win32;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using Yamashita.Yolo;
+using Yamashita.ML;
 
 namespace Samples.Yolo_tiny
 {

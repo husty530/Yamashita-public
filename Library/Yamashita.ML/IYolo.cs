@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using OpenCvSharp;
 
-namespace Yamashita.Yolo
+namespace Yamashita.ML
 {
-
     public enum DrawingMode { Off, Rectangle, Point }
 
     public interface IYolo

@@ -1,4 +1,4 @@
-﻿namespace Yamashita.Filter
+﻿namespace Yamashita.Control
 {
     public interface IFilter
     {

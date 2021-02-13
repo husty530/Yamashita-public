@@ -1,9 +1,9 @@
 ﻿using System;
 using OpenCvSharp;
 
-namespace Yamashita.Svm
+namespace Yamashita.Features
 {
-    public class SimpleHog
+    public class Hog
     {
 
         private readonly HOGDescriptor _hog;
@@ -16,7 +16,7 @@ namespace Yamashita.Svm
         /// <param name="blockSize">正規化する単位ブロックのサイズ</param>
         /// <param name="blockStride">ブロックのスライド幅</param>
         /// <param name="cellSize">HOGを計算する1単位のサイズ</param>
-        public SimpleHog(Size? imageSize = null, Size? blockSize = null, Size? blockStride = null, Size? cellSize = null)
+        public Hog(Size? imageSize = null, Size? blockSize = null, Size? blockStride = null, Size? cellSize = null)
         {
             var s1 = (imageSize == null) ? new Size(64, 64) : imageSize;
             var s2 = (blockSize == null) ? new Size(16, 16) : blockSize;

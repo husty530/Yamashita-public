@@ -5,7 +5,7 @@ using MathNet.Numerics.Distributions;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace Yamashita.Filter
+namespace Yamashita.Control
 {
     public class ParticleFilter : IFilter
     {

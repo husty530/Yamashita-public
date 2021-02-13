@@ -7,7 +7,7 @@ using OpenCvSharp;
 
 namespace Yamashita.TcpSocket
 {
-    public abstract class Socket : ISocket
+    public abstract class TcpSocket : ITcpSocket
     {
 
         protected TcpListener _listener;

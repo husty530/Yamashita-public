@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using OpenCvSharp;
 
-namespace Yamashita.MultiTracker
+namespace Yamashita.Control
 {
     public class MultiTracker : IMultiTracker
     {
@@ -119,7 +119,6 @@ namespace Yamashita.MultiTracker
             var x2 = (center.X + size.Width / 2) > image.Width ? image.Width : center.X + size.Width / 2;
             var y2 = (center.Y + size.Height / 2) > image.Height ? image.Height : center.Y + size.Height / 2;
             var label = $"{labelName}{iou * 100: 0}%";
-            Console.WriteLine($"Iou {iou * 100: 0}% , {label}");
             Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), Colors[id % 80], 2);
             var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
             Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),

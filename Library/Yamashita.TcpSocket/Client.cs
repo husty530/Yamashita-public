@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace Yamashita.TcpSocket
 {
-    public class Client : Socket
+    public class Client : TcpSocket
     {
         /// <summary>
         /// TCPクライアントの接続開始

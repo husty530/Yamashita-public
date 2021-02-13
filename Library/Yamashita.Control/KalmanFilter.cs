@@ -1,6 +1,6 @@
 ﻿using OpenCvSharp;
 
-namespace Yamashita.Filter
+namespace Yamashita.Control
 {
     /// <summary>
     /// 

@@ -2,7 +2,7 @@
 
 namespace Yamashita.TcpSocket
 {
-    public interface ISocket
+    public interface ITcpSocket
     {
         public abstract void Close();
 

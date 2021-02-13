@@ -1,9 +1,9 @@
 ﻿using System;
 using OpenCvSharp;
 
-namespace Yamashita.Fourier
+namespace Yamashita.Features
 {
-    public class Fourier2D : IFourier
+    public class Fourier2D
     {
 
         private readonly Mat _complex;

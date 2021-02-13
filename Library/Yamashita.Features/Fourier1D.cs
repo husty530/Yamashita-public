@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using OpenCvSharp;
 
-namespace Yamashita.Fourier
+namespace Yamashita.Features
 {
-    public class Fourier1D : IFourier
+    public class Fourier1D
     {
         private readonly double _samplingRate;
         private readonly int _sampleCount;

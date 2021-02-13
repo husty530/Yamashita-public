@@ -1,15 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using OpenCvSharp;
 using OpenCvSharp.Dnn;
 
-namespace Yamashita.Yolo
+namespace Yamashita.ML
 {
     public class Yolo : IYolo
     {
-        
+
         private readonly DrawingMode _draw;
         private readonly Net _net;
         private readonly float _threshold;
@@ -109,7 +108,6 @@ namespace Yamashita.Yolo
         private void DrawRect(Mat image, int classes, float confidence, Point center, Size size)
         {
             var label = $"{_labels[classes]}{confidence * 100:0}%";
-            Console.WriteLine($"confidence {confidence * 100:0}% , {label}");
             var x1 = (center.X - size.Width / 2) < 0 ? 0 : center.X - size.Width / 2;
             var y1 = (center.Y - size.Height / 2) < 0 ? 0 : center.Y - size.Height / 2;
             var x2 = (center.X + size.Width / 2) < 0 ? 0 : center.X + size.Width / 2;

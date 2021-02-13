@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Yamashita\Yamashita.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.Control\Yamashita.Control.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.Features\Yamashita.Features.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.ML\Yamashita.ML.csproj" />
   </ItemGroup>
 
 </Project>

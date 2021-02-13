@@ -1,6 +1,5 @@
-﻿namespace Yamashita.Svm
+﻿namespace Yamashita.ML
 {
-
     public enum Mode { Train, Inference }
 
     public interface ISvm

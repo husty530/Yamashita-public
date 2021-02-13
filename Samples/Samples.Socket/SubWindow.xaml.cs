@@ -10,7 +10,7 @@ namespace Samples.Socket
     public partial class SubWindow : Window
     {
 
-        private ISocket _client;
+        private ITcpSocket _client;
 
         public SubWindow()
         {

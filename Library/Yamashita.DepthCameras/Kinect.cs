@@ -5,6 +5,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using OpenCvSharp;
 using Microsoft.Azure.Kinect.Sensor;
+using Image = Microsoft.Azure.Kinect.Sensor.Image;
 
 namespace Yamashita.DepthCameras
 {
@@ -19,7 +20,7 @@ namespace Yamashita.DepthCameras
             _device = Device.Open();
             _device.StartCameras(config);
             _transformation = _device.GetCalibration().CreateTransformation();
-            CameraCalibration c = _device.GetCalibration().DepthCameraCalibration;
+            var c = _device.GetCalibration().DepthCameraCalibration;
             FrameSize = new Size(c.ResolutionWidth, c.ResolutionHeight);
             Config = config;
             _converter = new KinectConverter(FrameSize);
@@ -67,7 +68,7 @@ namespace Yamashita.DepthCameras
         {
             var zipFileNumber = 0;
             while (File.Exists($"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip")) zipFileNumber++;
-            string filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
+            var filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
             Cv2.ImWrite($"{filePath}_C.png", colorMat);
             Cv2.ImWrite($"{filePath}_D.png", depthMat);
             Cv2.ImWrite($"{filePath}_P.png", pointCloudMat);
@@ -80,6 +81,74 @@ namespace Yamashita.DepthCameras
             File.Delete($"{filePath}_C.png");
             File.Delete($"{filePath}_D.png");
             File.Delete($"{filePath}_P.png");
+        }
+    }
+
+    class KinectConverter
+    {
+        private readonly int _width;
+        private readonly int _height;
+        private readonly double pitch;
+        private readonly double yaw;
+        private readonly double cx;
+        private readonly double cy;
+        private readonly double fx;
+        private readonly double fy;
+        private double centerX => _width / 2;
+        private double centerY => _height / 2;
+
+        public KinectConverter(Size size, double pitchDeg = 5.8, double yawDeg = 1.3, double cx = 154.418, double cy = 169.663, double fx = 251.977, double fy = 252.004)
+        {
+            _width = size.Width;
+            _height = size.Height;
+            pitch = pitchDeg * Math.PI / 180;
+            yaw = yawDeg * Math.PI / 180;
+            this.cx = cx;
+            this.cy = cy;
+            this.fx = fx;
+            this.fy = fy;
+        }
+
+        public void ToColorMat(Image colorImg, ref Mat colorMat)
+        {
+            if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(_height, _width, MatType.CV_8UC3);
+            var colorArray = colorImg.GetPixels<BGRA>().ToArray();
+            unsafe
+            {
+                var pixels = colorMat.DataPointer;
+                int index = 0;
+                for (int i = 0; i < colorArray.Length; i++)
+                {
+                    pixels[index++] = colorArray[i].B;
+                    pixels[index++] = colorArray[i].G;
+                    pixels[index++] = colorArray[i].R;
+                }
+            }
+        }
+
+        public void ToPointCloudMat(Image pointCloudImg, ref Mat pointCloudMat)
+        {
+            if (pointCloudMat.Type() != MatType.CV_16SC3) pointCloudMat = new Mat(_height, _width, MatType.CV_16UC3);
+            var pointCloudArray = pointCloudImg.GetPixels<Short3>().ToArray();
+            unsafe
+            {
+                var pixels = (ushort*)pointCloudMat.Data;
+                int index = 0;
+                for (int i = 0; i < pointCloudArray.Length; i++)
+                {
+                    var px = i % _width;
+                    var py = i / _width;
+                    var prex = (px - cx) * (ushort)pointCloudArray[i].Z / fx;
+                    var prey = (py - cy) * (ushort)pointCloudArray[i].Z / fy;
+                    var prez = (short)((ushort)pointCloudArray[i].Z * Math.Cos(pitch) - prey * Math.Sin(pitch));
+                    var z3d = (short)(prez * Math.Cos(yaw) + prex * Math.Sin(yaw));
+                    var x3d = (px - centerX) * z3d / fx;
+                    var y3d = (py - centerY) * z3d / fy;
+                    pixels[index++] = (ushort)x3d;
+                    pixels[index++] = (ushort)y3d;
+                    pixels[index++] = (ushort)z3d;
+                }
+            }
         }
     }
 }

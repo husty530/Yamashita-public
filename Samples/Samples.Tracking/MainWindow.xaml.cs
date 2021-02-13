@@ -7,8 +7,8 @@ using System.Reactive.Linq;
 using Microsoft.Win32;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
-using Yamashita.Yolo;
-using Yamashita.MultiTracker;
+using Yamashita.ML;
+using Yamashita.Control;
 
 namespace Samples.Tracking
 {
@@ -41,17 +41,12 @@ namespace Samples.Tracking
             {
                 var tracker = new MultiTracker(0.2f, 7, 3);
                 _connector = PlayVideo(op.FileName)
-                    .Select(frame =>
+                    .Subscribe(frame =>
                     {
                         Cv2.Resize(frame, frame, new OpenCvSharp.Size(512, 288));
                         detector.Run(ref frame, out var results);
                         tracker.Update(ref frame, results.Select(r => (r.Label, r.Center, r.Size)).ToList(), out var _);
-                        return frame;
-                    })
-                    .ObserveOnDispatcher()
-                    .Subscribe(frame =>
-                    {
-                        Image.Source = frame.ToBitmapSource();
+                        Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     });
             }
         }
@@ -61,17 +56,12 @@ namespace Samples.Tracking
             _connector?.Dispose();
             var tracker = new MultiTracker(0.2f, 7, 3);
             _connector = ConnectCamera(0)
-                    .Select(frame =>
+                    .Subscribe(frame =>
                     {
                         Cv2.Resize(frame, frame, new OpenCvSharp.Size(512, 288));
                         detector.Run(ref frame, out var results);
                         tracker.Update(ref frame, results.Select(r => (r.Label, r.Center, r.Size)).ToList(), out var _);
-                        return frame;
-                    })
-                    .ObserveOnDispatcher()
-                    .Subscribe(frame =>
-                    {
-                        Image.Source = frame.ToBitmapSource();
+                        Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                     });
         }
 
@@ -95,7 +85,7 @@ namespace Samples.Tracking
         {
             var frame = new Mat();
             var cap = new VideoCapture(index);
-            var observable = Observable.Range(0, cap.FrameCount, ThreadPoolScheduler.Instance)
+            var observable = Observable.Range(0, int.MaxValue, ThreadPoolScheduler.Instance)
                 .Select(i =>
                 {
                     cap.Read(frame);

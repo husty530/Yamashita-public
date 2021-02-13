@@ -1,3 +1,7 @@
+# Yamashita.ML
+Machine Learning (機械学習)の略です。  
+物体検出用のYOLOと汎用分類器のSVMを実装しています。  
+
 # YOLO
   
 OpenCvSharpによるDarknetフレームワークのモデル読み込みライブラリです。  

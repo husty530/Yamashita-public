@@ -2,9 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>yamashita</Authors>
+    <Company>office</Company>
+    <Product>product</Product>
+    <Description>HOG, Fourier1D, Fourier2D</Description>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Features</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 

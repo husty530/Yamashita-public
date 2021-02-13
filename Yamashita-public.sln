@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Yolo-Validation", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.DepthCameras", "Library\Yamashita.DepthCameras\Yamashita.DepthCameras.csproj", "{1D17EE23-4E86-431C-897D-8E38310B3FFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.ML", "Library\Yamashita.ML\Yamashita.ML.csproj", "{511CC18F-A1B1-4CE1-B34C-A7E627FFF57D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.ML", "Library\Yamashita.ML\Yamashita.ML.csproj", "{511CC18F-A1B1-4CE1-B34C-A7E627FFF57D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.Features", "Library\Yamashita.Features\Yamashita.Features.csproj", "{A35C0966-FA0E-4608-9640-051C8668D36E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Features", "Library\Yamashita.Features\Yamashita.Features.csproj", "{A35C0966-FA0E-4608-9640-051C8668D36E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.TcpSocket", "Library\Yamashita.TcpSocket\Yamashita.TcpSocket.csproj", "{A4DE59AF-A573-41FF-AE9D-5705A4B44053}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.TcpSocket", "Library\Yamashita.TcpSocket\Yamashita.TcpSocket.csproj", "{A4DE59AF-A573-41FF-AE9D-5705A4B44053}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yamashita.Control", "Library\Yamashita.Control\Yamashita.Control.csproj", "{3AB340B4-5673-4077-A106-B40F7226ACC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yamashita.Control", "Library\Yamashita.Control\Yamashita.Control.csproj", "{3AB340B4-5673-4077-A106-B40F7226ACC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,8 +85,8 @@ Global
 		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Debug|Any CPU.Build.0 = Debug|x64
 		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Debug|x64.Build.0 = Debug|Any CPU
-		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Release|Any CPU.ActiveCfg = Release|x64
+		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Release|Any CPU.Build.0 = Release|x64
 		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Release|x64.ActiveCfg = Release|Any CPU
 		{1D17EE23-4E86-431C-897D-8E38310B3FFB}.Release|x64.Build.0 = Release|Any CPU
 		{511CC18F-A1B1-4CE1-B34C-A7E627FFF57D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

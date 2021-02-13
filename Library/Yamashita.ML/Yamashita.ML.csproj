@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>yamashita</Authors>
+    <Company>office</Company>
+    <Product>product</Product>
+    <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.ML</PackageProjectUrl>
+    <Description>YOLO, Support Vector Machine</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -6,12 +6,12 @@
 (編集中です。バグなどあれば報告ください。)  
 
 ### Library
------ [DepthCameras](/Library/Yamashita.DepthCameras) ... KinectとRealsense  
+----- [DepthCameras](/Library/Yamashita.DepthCameras) ... Kinect & Realsense  
 ----- [Fourier](/Library/Yamashita.Fourier) ... 1次元および2次元のフーリエ変換。出力インターフェースはSVMにも対応  
------ [Filter](/Library/Yamashita.Filter) ... カルマンフィルタ&パーティクルフィルタ  
+----- [Filter](/Library/Yamashita.Filter) ... カルマンフィルタ & パーティクルフィルタ  
 ----- [MultiTracker](/Library/Yamashita.MultiTracker) ... 複数オブジェクトのトラッカー  
 ----- [Svm](/Library/Yamashita.Svm) ... HOG特徴量を利用したサポートベクタマシン  
------ [TcpSocket](/Library/Yamashita.TcpSocket) ... C#のServer&Client  
+----- [TcpSocket](/Library/Yamashita.TcpSocket) ... C#のServer & Client  
 ----- [Yolo](/Library/Yamashita.Yolo) ... 物体検出アルゴリズムの実装  
 
 ### Samples

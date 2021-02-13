@@ -37,8 +37,6 @@ namespace Yamashita.Yolo
             _nmsThreshold = nmsThresh;
             _labels = File.ReadAllLines(names).ToArray();
             _net = CvDnn.ReadNetFromDarknet(cfg, weights);
-            _net.SetPreferableBackend(Net.Backend.OPENCV);
-            _net.SetPreferableTarget(Net.Target.CPU);
         }
 
         public void Run(ref Mat frame, out YoloResults results)

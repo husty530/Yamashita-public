@@ -9,14 +9,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Kinect.Sensor" Version="1.4.1" />
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.0.20201013" />
-    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.0.20201013" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.1.20210210" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.1.20210210" />
     <PackageReference Include="ReactiveProperty" Version="7.5.1" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Yamashita.DepthCameras\Yamashita.DepthCameras.csproj" />
+    <ProjectReference Include="..\..\Yamashita\Yamashita.csproj" />
   </ItemGroup>
 
 </Project>

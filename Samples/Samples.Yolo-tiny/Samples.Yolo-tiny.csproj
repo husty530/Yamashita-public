@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.0.20201013" />
-    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.0.20201013" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.1.20210210" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.5.1.20210210" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Yamashita.Yolo\Yamashita.Yolo.csproj" />
+    <ProjectReference Include="..\..\Yamashita\Yamashita.csproj" />
   </ItemGroup>
 
 </Project>

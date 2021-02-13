@@ -3,9 +3,19 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <Authors>husty530</Authors>
+    <Product>product</Product>
+    <Company>office</Company>
+    <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/Yamashita</PackageProjectUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 

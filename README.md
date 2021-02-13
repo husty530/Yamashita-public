@@ -10,7 +10,7 @@
 ----- [Fourier](/Library/Yamashita.Fourier) ... 1次元および2次元のフーリエ変換。出力インターフェースはSVMにも対応  
 ----- [Filter](/Library/Yamashita.Filter) ... カルマンフィルタ & パーティクルフィルタ  
 ----- [MultiTracker](/Library/Yamashita.MultiTracker) ... 複数オブジェクトのトラッカー  
------ [Svm](/Library/Yamashita.Svm) ... HOG特徴量を利用したサポートベクタマシン  
+----- [Svm](/Library/Yamashita.Svm) ... サポートベクタマシン。HOG特徴量の抽出クラスも実装  
 ----- [TcpSocket](/Library/Yamashita.TcpSocket) ... C#のServer & Client  
 ----- [Yolo](/Library/Yamashita.Yolo) ... 物体検出アルゴリズムの実装  
 

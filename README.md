@@ -7,7 +7,7 @@
 
 ### Library
 ----- [DepthCameras](/Library/Yamashita.DepthCameras) ... KinectとRealsense  
------ [Fourier](/Library/Yamashita.Fourier) ... 1次元および2次元のフーリエ変換。出力インターフェースはSVMにも対応
+----- [Fourier](/Library/Yamashita.Fourier) ... 1次元および2次元のフーリエ変換。出力インターフェースはSVMにも対応  
 ----- [Filter](/Library/Yamashita.Filter) ... カルマンフィルタ&パーティクルフィルタ  
 ----- [MultiTracker](/Library/Yamashita.MultiTracker) ... 複数オブジェクトのトラッカー  
 ----- [Svm](/Library/Yamashita.Svm) ... HOG特徴量を利用したサポートベクタマシン  

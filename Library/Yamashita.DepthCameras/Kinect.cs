@@ -61,10 +61,7 @@ namespace Yamashita.DepthCameras
             return observable;
         }
 
-        public void Disconnect()
-        {
-            _device?.Dispose();
-        }
+        public void Disconnect() => _device?.Dispose();
 
         public void SaveAsZip(string saveDirectory, string baseName, Mat colorMat, Mat depthMat, Mat pointCloudMat)
         {

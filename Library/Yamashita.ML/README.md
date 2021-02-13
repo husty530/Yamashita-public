@@ -3,7 +3,7 @@
 OpenCvSharpによるDarknetフレームワークのモデル読み込みライブラリです。  
 YOLO v3系・v4系(tinyもok)が動作することは確認しています。v2はたぶん無理。v5は不明。  
   
-YOLOとは？  
+YOLOとは？という方はコチラ↓↓  
 * [【物体検出手法の歴史 : YOLOの紹介】](https://qiita.com/cv_carnavi/items/68dcda71e90321574a2b)  
 * [【論文紹介】YOLOの論文を読んだので要点をまとめてみた](https://dev.classmethod.jp/articles/research_paper_yolo/)  
   
@@ -62,3 +62,7 @@ var list = results
 SomeFunction(list);  
 ```  
 ↑↑↑　条件検索をかけることが可能になります。  
+
+# SVM (Support Vector Machine)
+気が向いたらちゃんと説明書きます。とりあえずこれでも見といてください。↓↓  
+[SVM(サポートベクターマシーン)についてまとめてみた](https://qiita.com/arata-honda/items/bc24cbd953bd9d2c743c)

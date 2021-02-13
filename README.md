@@ -6,13 +6,13 @@
 (編集中です。バグなどあれば報告ください。)  
 
 ### Library
------ [DepthCameras](/Library/Yamashita.DepthCameras)  
------ [Fourier](/Library/Yamashita.Fourier)  
------ [Filter](/Library/Yamashita.Filter)  
------ [MultiTracker](/Library/Yamashita.MultiTracker)  
------ [Svm](/Library/Yamashita.Svm)  
------ [TcpSocket](/Library/Yamashita.TcpSocket)  
------ [Yolo](/Library/Yamashita.Yolo)  
+----- [DepthCameras](/Library/Yamashita.DepthCameras) ... KinectとRealsense  
+----- [Fourier](/Library/Yamashita.Fourier) ... 1次元および2次元のフーリエ変換。出力インターフェースはSVMにも対応
+----- [Filter](/Library/Yamashita.Filter) ... カルマンフィルタ&パーティクルフィルタ  
+----- [MultiTracker](/Library/Yamashita.MultiTracker) ... 複数オブジェクトのトラッカー  
+----- [Svm](/Library/Yamashita.Svm) ... HOG特徴量を利用したサポートベクタマシン  
+----- [TcpSocket](/Library/Yamashita.TcpSocket) ... C#のServer&Client  
+----- [Yolo](/Library/Yamashita.Yolo) ... 物体検出アルゴリズムの実装  
 
 ### Samples
 ----- [DepthCameras](/Samples/Samples.DepthCameras)  
@@ -21,7 +21,7 @@
 ----- [Yolo-Labeller](/Samples/Samples.Yolo-Labeller) ... Yoloの学習データを作るラベリングツール  
 ----- [Yolo-Validation](/Samples/Samples.Yolo-Validation) ... Yoloのモデルを評価するプログラム  
 ----- [Yolo-tiny](/Samples/Samples.Yolo-tiny)  
------ [YoloModel-tiny](/Samples/YoloModel-tiny) ... tinyじゃない方のモデル・独自モデルの作り方は[YoloSamples](https://github.com/husty530/YoloSamples)へ。  
+----- [YoloModel-tiny](/Samples/YoloModel-tiny) ... モデルのサンプル。tinyじゃない方&独自モデルの作り方は[YoloSamples](https://github.com/husty530/YoloSamples)へ。  
 
 # YOLOの仕様
 <使用例>  

@@ -6,8 +6,9 @@
     <Company>office</Company>
     <Product>product</Product>
     <Description>HOG, Fourier1D and Fourier2D which are expected to be used in Yamashita.ML.Svm.</Description>
-    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Features</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Feature</PackageProjectUrl>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

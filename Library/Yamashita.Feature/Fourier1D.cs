@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenCvSharp;
 
-namespace Yamashita.Features
+namespace Yamashita.Feature
 {
     public class Fourier1D
     {

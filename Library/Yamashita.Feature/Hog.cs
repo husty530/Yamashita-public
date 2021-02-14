@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenCvSharp;
 
-namespace Yamashita.Features
+namespace Yamashita.Feature
 {
     public class Hog
     {

@@ -7,7 +7,7 @@ using OpenCvSharp;
 using Microsoft.Azure.Kinect.Sensor;
 using Image = Microsoft.Azure.Kinect.Sensor.Image;
 
-namespace Yamashita.DepthCameras
+namespace Yamashita.DepthCamera
 {
     public class Kinect : IDepthCamera
     {

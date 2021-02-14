@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Description>KalmanFilter, ParticleFilter, MultiTracker</Description>
+    <Description>KalmanFilter and ParticleFilter serve to do filter and control. Filtering feature contribute to MultiTracker's function.</Description>
     <PackageLicenseExpression></PackageLicenseExpression>
     <Company>office</Company>
     <Product>product</Product>
     <Authors>yamashita</Authors>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
     <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Control</PackageProjectUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using OpenCvSharp;
-using KalmanFilter = Yamashita.Control.KalmanFilter;
 
 namespace Yamashita.Control
 {

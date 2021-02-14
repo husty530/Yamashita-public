@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Yamashita.DepthCameras\Yamashita.DepthCameras.csproj" />
+    <ProjectReference Include="..\..\Library\Yamashita.DepthCamera\Yamashita.DepthCamera.csproj" />
   </ItemGroup>
 
 </Project>

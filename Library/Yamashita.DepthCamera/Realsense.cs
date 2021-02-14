@@ -6,7 +6,7 @@ using System.Reactive.Concurrency;
 using OpenCvSharp;
 using Intel.RealSense;
 
-namespace Yamashita.DepthCameras
+namespace Yamashita.DepthCamera
 {
     public class Realsense : IDepthCamera
     {

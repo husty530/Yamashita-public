@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenCvSharp;
 
-namespace Yamashita.DepthCameras
+namespace Yamashita.DepthCamera
 {
     public interface IDepthCamera
     {

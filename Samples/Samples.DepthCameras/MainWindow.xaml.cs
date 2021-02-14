@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 using Reactive.Bindings;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using OpenCvSharp.WpfExtensions;
-using Yamashita.DepthCameras;
+using Yamashita.DepthCamera;
 
 namespace Samples.DepthCameras
 {

@@ -3,6 +3,9 @@ using OpenCvSharp;
 
 namespace Yamashita.Control
 {
+
+    public enum OutputType { Correct, Predict }
+
     public interface IMultiTracker
     {
         /// <summary>

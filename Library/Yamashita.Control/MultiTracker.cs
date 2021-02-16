@@ -8,6 +8,7 @@ namespace Yamashita.Control
     public class MultiTracker : IMultiTracker
     {
         private int _id;
+        private readonly OutputType _type;
         private readonly float _iouThresh;
         private readonly int _minDetectCount;
         private readonly int _maxMissCount;
@@ -20,9 +21,10 @@ namespace Yamashita.Control
         /// <param name="iouThresh">同一物体とみなす重なり度合いの閾値</param>
         /// <param name="maxMissCount">消えたとみなす連続見落とし数</param>
         /// <param name="minDetectCount">発見とみなす最小検出数</param>
-        public MultiTracker(float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1)
+        public MultiTracker(OutputType type, float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1)
         {
             if (iouThresh < 0 || iouThresh > 1 || maxMissCount < 1 || minDetectCount < 1) throw new Exception("");
+            _type = type;
             _iouThresh = iouThresh;
             _minDetectCount = minDetectCount;
             _maxMissCount = maxMissCount;
@@ -81,8 +83,16 @@ namespace Yamashita.Control
                 tracker.Predict(tracker.Center, tracker.Size);
                 if (tracker.DetectCount > _minDetectCount - 1)
                 {
-                    DrawRect(frame, tracker.Label, tracker.Id, tracker.Iou, tracker.Center, tracker.Size);
-                    yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.Center, tracker.Size);
+                    if(_type == OutputType.Correct)
+                    {
+                        DrawRect(frame, tracker.Label, tracker.Id, tracker.Iou, tracker.Center, tracker.Size);
+                        yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.Center, tracker.Size);
+                    }
+                    else
+                    {
+                        DrawRect(frame, tracker.Label, tracker.Id, tracker.Iou, tracker.NextCenter, tracker.NextSize);
+                        yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.NextCenter, tracker.NextSize);
+                    }
                 }
                 tracker.Iou = _iouThresh;
             }

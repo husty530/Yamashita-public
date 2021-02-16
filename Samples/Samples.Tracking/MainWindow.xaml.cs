@@ -39,7 +39,7 @@ namespace Samples.Tracking
             op.Filter = "Video(*.mp4, *.avi)|*.mp4;*.avi";
             if (op.ShowDialog() == true)
             {
-                var tracker = new MultiTracker(0.2f, 7, 3);
+                var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3);
                 _connector = PlayVideo(op.FileName)
                     .Subscribe(frame =>
                     {
@@ -54,7 +54,7 @@ namespace Samples.Tracking
         private void CameraButton_Click(object sender, RoutedEventArgs e)
         {
             _connector?.Dispose();
-            var tracker = new MultiTracker(0.2f, 7, 3);
+            var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3);
             _connector = ConnectCamera(0)
                     .Subscribe(frame =>
                     {

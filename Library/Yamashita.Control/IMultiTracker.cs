@@ -8,6 +8,7 @@ namespace Yamashita.Control
 
     public interface IMultiTracker
     {
+
         /// <summary>
         /// 観測を使って追跡状態を更新する
         /// </summary>
@@ -19,6 +20,13 @@ namespace Yamashita.Control
             List<(string Label, Point Center, Size Size)> detections,
             out List<(int Id, string Label, float Iou, Point Center, Size Size)> results
             );
+
+        /// <summary>
+        /// 指定したIDの物体を削除する
+        /// </summary>
+        /// <param name="id">削除対象のID</param>
+        public void Remove(int id);
+
     }
 
     class Individual

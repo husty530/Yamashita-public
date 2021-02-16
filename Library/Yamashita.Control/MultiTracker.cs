@@ -18,6 +18,7 @@ namespace Yamashita.Control
         /// <summary>
         /// トラッカーを生成
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="iouThresh">同一物体とみなす重なり度合いの閾値</param>
         /// <param name="maxMissCount">消えたとみなす連続見落とし数</param>
         /// <param name="minDetectCount">発見とみなす最小検出数</param>
@@ -35,6 +36,12 @@ namespace Yamashita.Control
         {
             Assign(detections);
             results = UpdateMemory(frame).ToList();
+        }
+
+        public void Remove(int id)
+        {
+            var target = _trackers.Where(t => t.Id == id).FirstOrDefault();
+            _trackers.Remove(target);
         }
 
         private void Assign(List<(string Label, Point Center, Size Size)> detections)

@@ -32,19 +32,6 @@ namespace Yamashita.Control
     class Individual
     {
         private readonly IFilter _filter;
-        private double[] transitionMatrix = new double[]
-                        {   1, 0, 0.1, 0, 0, 0,
-                            0, 1, 0, 0.1, 0, 0,
-                            0, 0, 1, 0, 0, 0,
-                            0, 0, 0, 1, 0, 0,
-                            0, 0, 0, 0, 1, 0,
-                            0, 0, 0, 0, 0, 1  };
-        private double[] measurementMatrix = new double[]
-                        {   1, 0, 0, 0, 0, 0,
-                            0, 1, 0, 0, 0, 0,
-                            0, 0, 0, 0, 1, 0,
-                            0, 0, 0, 0, 0, 1  };
-
 
         public string Label { set; get; }
         public float Iou { set; get; }
@@ -69,6 +56,18 @@ namespace Yamashita.Control
             Iou = 1f;
             DetectCount = 1;
             Mark = mark;
+            var transitionMatrix = new double[]
+                        {   1, 0, 0.1, 0, 0, 0,
+                            0, 1, 0, 0.1, 0, 0,
+                            0, 0, 1, 0, 0, 0,
+                            0, 0, 0, 1, 0, 0,
+                            0, 0, 0, 0, 1, 0,
+                            0, 0, 0, 0, 0, 1  };
+            var measurementMatrix = new double[]
+                        {   1, 0, 0, 0, 0, 0,
+                            0, 1, 0, 0, 0, 0,
+                            0, 0, 0, 0, 1, 0,
+                            0, 0, 0, 0, 0, 1  };
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
             _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, 0.5);
             //_filter = new ParticleFilter(state, transitionMatrix, measurementMatrix);

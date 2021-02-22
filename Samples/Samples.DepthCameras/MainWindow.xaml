@@ -21,7 +21,7 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Viewbox Grid.Row="0" Grid.Column="0" Margin="5">
-            <Button x:Name="StartPauseButton" Content="{Binding StartButtonFace.Value}" Foreground="Green" Width="50" Click="StartPauseButton_Click"/>
+            <Button x:Name="StartPauseButton" Content="{Binding StartButtonFace.Value}" Width="50" Click="StartPauseButton_Click"/>
         </Viewbox>
         <Viewbox Grid.Row="0" Grid.Column="1" Margin="5">
             <Button x:Name="ShutterButton" Content="Shutter" Width="50" Click="ShutterButton_Click"/>
@@ -43,6 +43,12 @@
         </Viewbox>
         <Viewbox Grid.Row="2" Grid.Column="0" Margin="5">
             <Button x:Name="PlayButton" Content="Play" Width="50" Click="PlayButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="1" Margin="5">
+            <Button x:Name="PlayPauseButton" Content="▶" Foreground="Green" Width="50" Click="PlayPauseButton_Click" IsEnabled="False" Visibility="Hidden"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" Margin="5">
+            <Slider x:Name="PlaySlider" Width="250" IsEnabled="False" Visibility="Hidden" PreviewMouseLeftButtonUp="PlaySlider_PreviewMouseLeftButtonUp"/>
         </Viewbox>
     </Grid>
 </Window>

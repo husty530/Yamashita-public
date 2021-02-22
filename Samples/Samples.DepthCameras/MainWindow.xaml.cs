@@ -21,6 +21,7 @@ namespace Samples.DepthCameras
         private IDisposable _cameraConnector;
         private IDisposable _videoConnector;
         private bool _isConnected;
+        private Playback _player;
 
         public ReactiveProperty<string> StartButtonFace { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> RecButtonFace { private set; get; } = new ReactiveProperty<string>();
@@ -52,6 +53,8 @@ namespace Samples.DepthCameras
                 StartButtonFace.Value = "Close";
                 RecButton.IsEnabled = false;
                 PlayButton.IsEnabled = false;
+                PlayPauseButton.IsEnabled = false;
+                PlaySlider.IsEnabled = false;
                 _isConnected = AttemptConnection();
                 if (!_isConnected) new Exception("Device Connection Failed.");
                 ShutterButton.IsEnabled = true;
@@ -80,13 +83,13 @@ namespace Samples.DepthCameras
         private void ShutterButton_Click(object sender, RoutedEventArgs e)
         {
             _camera.Connect()
-                    .TakeWhile(imgs =>
-                    {
-                        if (imgs.ColorMat.Empty()) return true;
-                        ImageIO.SaveAsZip(SaveDir.Value, "", imgs.ColorMat, imgs.DepthMat, imgs.PointCloudMat);
-                        return false;
-                    })
-                    .Subscribe();
+                .TakeWhile(imgs =>
+                {
+                    if (imgs.ColorMat.Empty()) return true;
+                    ImageIO.SaveAsZip(SaveDir.Value, "", imgs.ColorMat, imgs.DepthMat, imgs.PointCloudMat);
+                    return false;
+                })
+                .Subscribe();
         }
 
         private void RecButton_Click(object sender, RoutedEventArgs e)
@@ -96,6 +99,8 @@ namespace Samples.DepthCameras
                 RecButtonFace.Value = "Stop";
                 StartPauseButton.IsEnabled = false;
                 PlayButton.IsEnabled = false;
+                PlayPauseButton.IsEnabled = false;
+                PlaySlider.IsEnabled = false;
                 _isConnected = AttemptConnection();
                 if (!_isConnected) new Exception("Device Connection Failed.");
                 var fileNumber = 0;
@@ -153,9 +158,14 @@ namespace Samples.DepthCameras
             {
                 if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    var player = new Playback(cofd.FileName);
-                    _videoConnector = player.Connect(0)
-                        .Finally(() => player.Disconnect())
+                    PlayPauseButton.IsEnabled = true;
+                    _player = new Playback(cofd.FileName);
+                    _videoConnector = _player.Connect(0)
+                        .Finally(() =>
+                        {
+                            _player.Disconnect();
+                            _isConnected = false;
+                        })
                         .Subscribe(www =>
                         {
                             Dispatcher.Invoke(() =>
@@ -166,6 +176,41 @@ namespace Samples.DepthCameras
                         });
                 }
             }
+        }
+
+        private void PlayPauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isConnected)
+            {
+                _videoConnector.Dispose();
+                PlaySlider.IsEnabled = true;
+            }
+            else
+            {
+
+                PlaySlider.IsEnabled = false;
+                _videoConnector = _player.Connect((int)PlaySlider.Value)
+                        .Finally(() =>
+                        {
+                            _player.Disconnect();
+                            _isConnected = false;
+                        })
+                        .Subscribe(www =>
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                ColorFrame.Value = www.Color.ToBitmapSource();
+                                DepthFrame.Value = www.Depth8.ToBitmapSource();
+                            });
+                        });
+            }
+        }
+
+        private void PlaySlider_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var (color, depth, _, _) = _player.GetOneFrameSet((int)PlaySlider.Value);
+            ColorFrame.Value = color.ToBitmapSource();
+            DepthFrame.Value = depth.ToBitmapSource();
         }
 
         private bool AttemptConnection()
@@ -187,5 +232,6 @@ namespace Samples.DepthCameras
             }
             return true;
         }
+
     }
 }

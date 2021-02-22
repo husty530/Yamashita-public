@@ -11,19 +11,17 @@ namespace Yamashita.DepthCamera
 
         private readonly BinaryReader _binReader;
         private readonly long[] _indexes;
-        private byte[] _imageBytes = new byte[0];
 
         public int PositionIndex { private set; get; }
         public int FrameCount => _indexes.Length;
         public bool AtEndOfStream => (PositionIndex >= FrameCount);
-
 
         public ImageStreamReader(string filePath)
         {
             _binReader = new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             var fileFormatCode = Encoding.ASCII.GetString(_binReader.ReadBytes(8));
             if (fileFormatCode != "HQIMST00" && fileFormatCode != "HUSTY000") throw new Exception();
-            _binReader.ReadBytes(8);
+            _binReader.BaseStream.Seek(8, SeekOrigin.Current);
             var indexesPos = _binReader.ReadInt64();
             if (indexesPos <= 0) throw new Exception();
 
@@ -40,16 +38,12 @@ namespace Yamashita.DepthCamera
 
         public (Mat Frame, long Time, byte[]? NULL) ReadFrame()
         {
-            var pos = _indexes[PositionIndex];
+            var pos = _indexes[PositionIndex++];
             _binReader.BaseStream.Seek(pos, SeekOrigin.Begin);
             var time = _binReader.ReadInt64();
-            _binReader.ReadUInt16();
+            _binReader.BaseStream.Seek(2, SeekOrigin.Current);
             var imageDataSize = _binReader.ReadInt32();
-
-            if (imageDataSize > _imageBytes.Length) _imageBytes = new byte[imageDataSize * 2];
-            _binReader.Read(_imageBytes, 0, imageDataSize);
-            var image = Cv2.ImDecode(_imageBytes, ImreadModes.Unchanged);
-            PositionIndex++;
+            var image = Cv2.ImDecode(_binReader.ReadBytes(imageDataSize), ImreadModes.Unchanged);
             return (image, time, null);
         }
 

@@ -13,6 +13,7 @@ namespace Yamashita.DepthCamera
         private readonly ImageStreamReader? _reader;
         private readonly int _minDistance;
         private readonly int _maxDistance;
+        private long _pretime;
 
         public int PositionMax => _reader.FrameCount / 3;
 
@@ -21,12 +22,12 @@ namespace Yamashita.DepthCamera
             _reader = new ImageStreamReader(fileName);
             _minDistance = minDistance;
             _maxDistance = maxDistance;
+            _pretime = 0;
         }
 
         unsafe public IObservable<(Mat Color, Mat Depth8, Mat Depth16, Mat PointCloud, int Position)> Connect(int position)
         {
             if (_reader == null) throw new Exception("!!!");
-            long pretime = 0;
             _reader.Seek(position * 3);
             var observable = Observable.Range(0, _reader.FrameCount / 3 - position, ThreadPoolScheduler.Instance)
                 .Select(i =>
@@ -44,9 +45,9 @@ namespace Yamashita.DepthCamera
                         else d8[j] = 255;
                     }
                     time /= 10000;
-                    var dt = (int)(time - pretime - 15);
+                    var dt = time - _pretime > 15 ? (int)(time - _pretime - 15) : 0;
                     Thread.Sleep(dt);
-                    pretime = time;
+                    _pretime = time;
                     return (color, depth8, depth16, pointCloud, position++);
                 })
                 .Publish()

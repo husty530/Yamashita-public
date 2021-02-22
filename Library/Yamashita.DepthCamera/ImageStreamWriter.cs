@@ -26,7 +26,6 @@ namespace Yamashita.DepthCamera
             _firstTime = time;
         }
 
-
         public void WriteFrame(Mat frame)
         {
             _indexes.Add(_binWriter.BaseStream.Position);
@@ -47,5 +46,6 @@ namespace Yamashita.DepthCamera
             _binWriter.Close();
             _binWriter.Dispose();
         }
+
     }
 }

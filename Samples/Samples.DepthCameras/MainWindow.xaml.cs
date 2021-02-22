@@ -55,18 +55,20 @@ namespace Samples.DepthCameras
                 PlayButton.IsEnabled = false;
                 PlayPauseButton.IsEnabled = false;
                 PlaySlider.IsEnabled = false;
+                PlayPauseButton.Visibility = Visibility.Hidden;
+                PlaySlider.Visibility = Visibility.Hidden;
                 _isConnected = AttemptConnection();
                 if (!_isConnected) new Exception("Device Connection Failed.");
                 ShutterButton.IsEnabled = true;
                 _cameraConnector = _camera.Connect()
-                        .Subscribe(imgs =>
+                    .Subscribe(imgs =>
+                    {
+                        Dispatcher.Invoke(() =>
                         {
-                            Dispatcher.Invoke(() =>
-                            {
-                                ColorFrame.Value = imgs.ColorMat.ToBitmapSource();
-                                DepthFrame.Value = imgs.DepthMat.ToBitmapSource();
-                            });
+                            ColorFrame.Value = imgs.ColorMat.ToBitmapSource();
+                            DepthFrame.Value = imgs.DepthMat.ToBitmapSource();
                         });
+                    });
             }
             else
             {
@@ -101,6 +103,8 @@ namespace Samples.DepthCameras
                 PlayButton.IsEnabled = false;
                 PlayPauseButton.IsEnabled = false;
                 PlaySlider.IsEnabled = false;
+                PlayPauseButton.Visibility = Visibility.Hidden;
+                PlaySlider.Visibility = Visibility.Hidden;
                 _isConnected = AttemptConnection();
                 if (!_isConnected) new Exception("Device Connection Failed.");
                 var fileNumber = 0;
@@ -158,20 +162,22 @@ namespace Samples.DepthCameras
             {
                 if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
                 {
+                    _isConnected = true;
+                    PlayPauseButton.Content = "| |";
                     PlayPauseButton.IsEnabled = true;
+                    PlayPauseButton.Visibility = Visibility.Visible;
+                    PlaySlider.Visibility = Visibility.Visible;
                     _player = new Playback(cofd.FileName);
+                    PlaySlider.Maximum = _player.PositionMax;
                     _videoConnector = _player.Connect(0)
-                        .Finally(() =>
-                        {
-                            _player.Disconnect();
-                            _isConnected = false;
-                        })
+                        .Finally(() => _isConnected = false)
                         .Subscribe(www =>
                         {
                             Dispatcher.Invoke(() =>
                             {
                                 ColorFrame.Value = www.Color.ToBitmapSource();
                                 DepthFrame.Value = www.Depth8.ToBitmapSource();
+                                PlaySlider.Value = www.Position;
                             });
                         });
                 }
@@ -183,26 +189,26 @@ namespace Samples.DepthCameras
             if (_isConnected)
             {
                 _videoConnector.Dispose();
+                _isConnected = false;
+                PlayPauseButton.Content = "▶";
                 PlaySlider.IsEnabled = true;
             }
             else
             {
-
+                _isConnected = true;
                 PlaySlider.IsEnabled = false;
+                PlayPauseButton.Content = "| |";
                 _videoConnector = _player.Connect((int)PlaySlider.Value)
-                        .Finally(() =>
+                    .Finally(() =>_isConnected = false)
+                    .Subscribe(www =>
+                    {
+                        Dispatcher.Invoke(() =>
                         {
-                            _player.Disconnect();
-                            _isConnected = false;
-                        })
-                        .Subscribe(www =>
-                        {
-                            Dispatcher.Invoke(() =>
-                            {
-                                ColorFrame.Value = www.Color.ToBitmapSource();
-                                DepthFrame.Value = www.Depth8.ToBitmapSource();
-                            });
+                            ColorFrame.Value = www.Color.ToBitmapSource();
+                            DepthFrame.Value = www.Depth8.ToBitmapSource();
+                            PlaySlider.Value = www.Position;
                         });
+                    });
             }
         }
 

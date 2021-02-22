@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.IO.Compression;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using OpenCvSharp;
@@ -73,71 +71,6 @@ namespace Yamashita.DepthCamera
 
         public void Disconnect() => _pipeline?.Dispose();
 
-        public void SaveAsZip(string saveDirectory, string baseName, Mat colorMat, Mat depthMat, Mat pointCloudMat)
-        {
-            var zipFileNumber = 0;
-            while (File.Exists($"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip")) zipFileNumber++;
-            string filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
-            Cv2.ImWrite($"{filePath}_C.png", colorMat);
-            Cv2.ImWrite($"{filePath}_D.png", depthMat);
-            Cv2.ImWrite($"{filePath}_P.png", pointCloudMat);
-            using (var z = ZipFile.Open($"{filePath}", ZipArchiveMode.Update))
-            {
-                z.CreateEntryFromFile($"{filePath}_C.png", $"C.png", CompressionLevel.Optimal);
-                z.CreateEntryFromFile($"{filePath}_D.png", $"D.png", CompressionLevel.Optimal);
-                z.CreateEntryFromFile($"{filePath}_P.png", $"P.png", CompressionLevel.Optimal);
-            }
-            File.Delete($"{filePath}_C.png");
-            File.Delete($"{filePath}_D.png");
-            File.Delete($"{filePath}_P.png");
-        }
-    }
-
-    class RealsenseConverter
-    {
-
-        private readonly int _width;
-        private readonly int _height;
-
-        public RealsenseConverter(int width, int height)
-        {
-            _width = width;
-            _height = height;
-        }
-
-        public void ToColorMat(VideoFrame frame, ref Mat colorMat)
-        {
-            colorMat = new Mat(_height, _width, MatType.CV_8UC3);
-            unsafe
-            {
-                var rgbData = (byte*)frame.Data;
-                var pixels = colorMat.DataPointer;
-                for (int i = 0; i < colorMat.Width * colorMat.Height; i++)
-                {
-                    pixels[i * 3 + 0] = rgbData[i * 3 + 2];
-                    pixels[i * 3 + 1] = rgbData[i * 3 + 1];
-                    pixels[i * 3 + 2] = rgbData[i * 3 + 0];
-                }
-            }
-            Cv2.Resize(colorMat, colorMat, new Size(_width / 2, _height / 2));
-        }
-
-        public void ToPointCloudMat(DepthFrame frame, ref Mat pointCloudMat)
-        {
-            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(_height / 2, _width / 2, MatType.CV_16UC3);
-            unsafe
-            {
-                var pData = (float*)(new PointCloud().Process(frame).Data);
-                var pixels = (ushort*)pointCloudMat.Data;
-                int index = 0;
-                for (int i = 0; i < pointCloudMat.Width * pointCloudMat.Height; i++)
-                {
-                    pixels[index] = (ushort)(pData[index++] * 1000);
-                    pixels[index] = (ushort)(pData[index++] * 1000);
-                    pixels[index] = (ushort)(pData[index++] * 1000);
-                }
-            }
-        }
     }
 
 }

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.IO.Compression;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using OpenCvSharp;
 using Microsoft.Azure.Kinect.Sensor;
-using Image = Microsoft.Azure.Kinect.Sensor.Image;
 
 namespace Yamashita.DepthCamera
 {
@@ -63,92 +60,6 @@ namespace Yamashita.DepthCamera
         }
 
         public void Disconnect() => _device?.Dispose();
-
-        public void SaveAsZip(string saveDirectory, string baseName, Mat colorMat, Mat depthMat, Mat pointCloudMat)
-        {
-            var zipFileNumber = 0;
-            while (File.Exists($"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip")) zipFileNumber++;
-            var filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
-            Cv2.ImWrite($"{filePath}_C.png", colorMat);
-            Cv2.ImWrite($"{filePath}_D.png", depthMat);
-            Cv2.ImWrite($"{filePath}_P.png", pointCloudMat);
-            using (var z = ZipFile.Open($"{filePath}", ZipArchiveMode.Update))
-            {
-                z.CreateEntryFromFile($"{filePath}_C.png", $"C.png", CompressionLevel.Optimal);
-                z.CreateEntryFromFile($"{filePath}_D.png", $"D.png", CompressionLevel.Optimal);
-                z.CreateEntryFromFile($"{filePath}_P.png", $"P.png", CompressionLevel.Optimal);
-            }
-            File.Delete($"{filePath}_C.png");
-            File.Delete($"{filePath}_D.png");
-            File.Delete($"{filePath}_P.png");
-        }
     }
 
-    class KinectConverter
-    {
-        private readonly int _width;
-        private readonly int _height;
-        private readonly double pitch;
-        private readonly double yaw;
-        private readonly double cx;
-        private readonly double cy;
-        private readonly double fx;
-        private readonly double fy;
-        private double centerX => _width / 2;
-        private double centerY => _height / 2;
-
-        public KinectConverter(Size size, double pitchDeg = 5.8, double yawDeg = 1.3, double cx = 154.418, double cy = 169.663, double fx = 251.977, double fy = 252.004)
-        {
-            _width = size.Width;
-            _height = size.Height;
-            pitch = pitchDeg * Math.PI / 180;
-            yaw = yawDeg * Math.PI / 180;
-            this.cx = cx;
-            this.cy = cy;
-            this.fx = fx;
-            this.fy = fy;
-        }
-
-        public void ToColorMat(Image colorImg, ref Mat colorMat)
-        {
-            if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(_height, _width, MatType.CV_8UC3);
-            var colorArray = colorImg.GetPixels<BGRA>().ToArray();
-            unsafe
-            {
-                var pixels = colorMat.DataPointer;
-                int index = 0;
-                for (int i = 0; i < colorArray.Length; i++)
-                {
-                    pixels[index++] = colorArray[i].B;
-                    pixels[index++] = colorArray[i].G;
-                    pixels[index++] = colorArray[i].R;
-                }
-            }
-        }
-
-        public void ToPointCloudMat(Image pointCloudImg, ref Mat pointCloudMat)
-        {
-            if (pointCloudMat.Type() != MatType.CV_16SC3) pointCloudMat = new Mat(_height, _width, MatType.CV_16UC3);
-            var pointCloudArray = pointCloudImg.GetPixels<Short3>().ToArray();
-            unsafe
-            {
-                var pixels = (ushort*)pointCloudMat.Data;
-                int index = 0;
-                for (int i = 0; i < pointCloudArray.Length; i++)
-                {
-                    var px = i % _width;
-                    var py = i / _width;
-                    var prex = (px - cx) * (ushort)pointCloudArray[i].Z / fx;
-                    var prey = (py - cy) * (ushort)pointCloudArray[i].Z / fy;
-                    var prez = (short)((ushort)pointCloudArray[i].Z * Math.Cos(pitch) - prey * Math.Sin(pitch));
-                    var z3d = (short)(prez * Math.Cos(yaw) + prex * Math.Sin(yaw));
-                    var x3d = (px - centerX) * z3d / fx;
-                    var y3d = (py - centerY) * z3d / fy;
-                    pixels[index++] = (ushort)x3d;
-                    pixels[index++] = (ushort)y3d;
-                    pixels[index++] = (ushort)z3d;
-                }
-            }
-        }
-    }
 }

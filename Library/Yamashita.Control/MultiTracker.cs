@@ -8,6 +8,7 @@ namespace Yamashita.Control
     public class MultiTracker : IMultiTracker
     {
         private int _id;
+        private readonly double _dt;
         private readonly OutputType _type;
         private readonly float _iouThresh;
         private readonly int _minDetectCount;
@@ -22,9 +23,10 @@ namespace Yamashita.Control
         /// <param name="iouThresh">同一物体とみなす重なり度合いの閾値</param>
         /// <param name="maxMissCount">消えたとみなす連続見落とし数</param>
         /// <param name="minDetectCount">発見とみなす最小検出数</param>
-        public MultiTracker(OutputType type, float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1)
+        public MultiTracker(OutputType type, float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1, double dt = 0.1)
         {
             if (iouThresh < 0 || iouThresh > 1 || maxMissCount < 1 || minDetectCount < 1) throw new Exception("");
+            _dt = dt;
             _type = type;
             _iouThresh = iouThresh;
             _minDetectCount = minDetectCount;
@@ -64,7 +66,7 @@ namespace Yamashita.Control
                 }
                 if (first)
                 {
-                    _trackers.Add(new Individual(detection.Center, detection.Size, _id++, detection.Label));
+                    _trackers.Add(new Individual(detection.Center, detection.Size, _id++, _dt, detection.Label));
                 }
             }
         }

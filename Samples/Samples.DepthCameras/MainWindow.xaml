@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -26,9 +27,12 @@
             <Button x:Name="ShutterButton" Content="Shutter" Width="50" Click="ShutterButton_Click"/>
         </Viewbox>
         <Viewbox Grid.Row="0" Grid.Column="2" Margin="5">
+            <Button x:Name="RecButton" Content="Rec" Width="50" Click="RecButton_Click"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="3" Margin="5">
             <Button x:Name="SelectDirButton" Content="SaveDir" Width="50" Click="SelectDirButton_Click"/>
         </Viewbox>
-        <Viewbox Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="3" Margin="5">
+        <Viewbox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Margin="5">
             <Label Content="{Binding SaveDir.Value}" Foreground="White"/>
         </Viewbox>
         <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10">
@@ -36,6 +40,9 @@
         </Viewbox>
         <Viewbox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Margin="10">
             <Image Source="{Binding DepthFrame.Value}"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="0" Margin="5">
+            <Button x:Name="PlayButton" Content="Play" Width="50" Click="PlayButton_Click"/>
         </Viewbox>
     </Grid>
 </Window>

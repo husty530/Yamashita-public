@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>Samples.Yolo_Labeller</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>

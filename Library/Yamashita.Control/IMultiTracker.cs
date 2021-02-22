@@ -45,7 +45,7 @@ namespace Yamashita.Control
         public string Mark { private set; get; }
 
 
-        public Individual(Point center, Size size, int id = 0, string label = "", string mark = "")
+        public Individual(Point center, Size size, int id, double dt, string label = "", string mark = "")
         {
             Id = id;
             Label = label;
@@ -57,8 +57,8 @@ namespace Yamashita.Control
             DetectCount = 1;
             Mark = mark;
             var transitionMatrix = new double[]
-                        {   1, 0, 0.1, 0, 0, 0,
-                            0, 1, 0, 0.1, 0, 0,
+                        {   1, 0, dt, 0, 0, 0,
+                            0, 1, 0, dt, 0, 0,
                             0, 0, 1, 0, 0, 0,
                             0, 0, 0, 1, 0, 0,
                             0, 0, 0, 0, 1, 0,

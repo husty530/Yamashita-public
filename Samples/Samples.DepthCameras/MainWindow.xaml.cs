@@ -21,7 +21,7 @@ namespace Samples.DepthCameras
         private IDisposable _cameraConnector;
         private IDisposable _videoConnector;
         private bool _isConnected;
-        private Playback _player;
+        private VideoPlayer _player;
 
         public ReactiveProperty<string> StartButtonFace { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> RecButtonFace { private set; get; } = new ReactiveProperty<string>();
@@ -110,14 +110,12 @@ namespace Samples.DepthCameras
                 var fileNumber = 0;
                 while (File.Exists($"{SaveDir.Value}\\Movie_{fileNumber:D4}.yms")) fileNumber++;
                 var filePath = $"{SaveDir.Value}\\Movie_{fileNumber:D4}.yms";
-                var writer = new ImageStreamWriter(filePath);
+                var writer = new VideoRecorder(filePath);
                 _cameraConnector = _camera.Connect()
                     .Finally(() => writer.Close())
                     .Subscribe(www =>
                     {
-                        writer.WriteFrame(www.ColorMat);
-                        writer.WriteFrame(www.DepthMat);
-                        writer.WriteFrame(www.PointCloudMat);
+                        writer.WriteFrame(www.ColorMat, www.DepthMat, www.PointCloudMat);
                         Dispatcher.Invoke(() =>
                         {
                             ColorFrame.Value = www.ColorMat.ToBitmapSource();
@@ -167,9 +165,9 @@ namespace Samples.DepthCameras
                     PlayPauseButton.IsEnabled = true;
                     PlayPauseButton.Visibility = Visibility.Visible;
                     PlaySlider.Visibility = Visibility.Visible;
-                    _player = new Playback(cofd.FileName);
+                    _player = new VideoPlayer(cofd.FileName);
                     PlaySlider.Maximum = _player.PositionMax;
-                    _videoConnector = _player.Connect(0)
+                    _videoConnector = _player.Start(0)
                         .Finally(() => _isConnected = false)
                         .Subscribe(www =>
                         {
@@ -198,7 +196,7 @@ namespace Samples.DepthCameras
                 _isConnected = true;
                 PlaySlider.IsEnabled = false;
                 PlayPauseButton.Content = "| |";
-                _videoConnector = _player.Connect((int)PlaySlider.Value)
+                _videoConnector = _player.Start((int)PlaySlider.Value)
                     .Finally(() =>_isConnected = false)
                     .Subscribe(www =>
                     {

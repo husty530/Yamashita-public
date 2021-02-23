@@ -18,7 +18,8 @@ namespace Yamashita.DepthCamera
         private readonly int _minDistance;
         private readonly int _maxDistance;
         private long _pretime;
-        public int _positionIndex;
+        private int _positionIndex;
+
         public int FrameCount => _indexes.Length;
         public int PositionMax => FrameCount / 3;
 

@@ -20,18 +20,6 @@ namespace Yamashita.TcpSocket
         public T Receive<T>();
 
         /// <summary>
-        /// ストリームを送る
-        /// </summary>
-        /// <param name="stream"></param>
-        public void SendStream(MemoryStream stream);
-
-        /// <summary>
-        /// ストリームを受け取る
-        /// </summary>
-        /// <returns></returns>
-        public MemoryStream ReceiveStream();
-
-        /// <summary>
         /// 配列を送る
         /// </summary>
         /// <typeparam name="T"></typeparam>

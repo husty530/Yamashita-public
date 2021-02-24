@@ -24,9 +24,9 @@ namespace Yamashita.TcpSocket
 
         public T Receive<T>()
         {
-            var ms = new MemoryStream();
-            byte[] resBytes = new byte[256];
-            int resSize = 0;
+            using var ms = new MemoryStream();
+            var resBytes = new byte[1024];
+            var resSize = 0;
             do
             {
                 resSize = _stream.Read(resBytes, 0, resBytes.Length);
@@ -34,9 +34,28 @@ namespace Yamashita.TcpSocket
                 ms.Write(resBytes, 0, resSize);
             } while (_stream.DataAvailable || resBytes[resSize - 1] != '\n');
             var receivedMsg = Encoding.UTF8.GetString(ms.ToArray());
-            ms.Close();
             receivedMsg = receivedMsg.TrimEnd('\n');
             return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(receivedMsg);
+        }
+
+        public void SendStream(MemoryStream stream)
+        {
+            var sendBytes = stream.ToArray();
+            _stream.Write(sendBytes, 0, sendBytes.Length);
+        }
+
+        public MemoryStream ReceiveStream()
+        {
+            using var ms = new MemoryStream();
+            var resBytes = new byte[1024];
+            var resSize = 0;
+            do
+            {
+                resSize = _stream.Read(resBytes, 0, resBytes.Length);
+                if (resSize == 0) break;
+                ms.Write(resBytes, 0, resSize);
+            } while (_stream.DataAvailable || resBytes[resSize - 1] != '\n');
+            return ms;
         }
 
         public void SendArray<T>(T[] array)

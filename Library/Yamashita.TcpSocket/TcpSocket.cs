@@ -45,17 +45,17 @@ namespace Yamashita.TcpSocket
             for (int i = 0; i < array.Length - 1; i++)
             {
                 sb.Append(array[i]);
-                sb.Append(",");
+                sb.Append(',');
             }
             sb.Append(array[array.Length - 1]);
-            sb.Append("\n");
+            sb.Append('\n');
             var sendBytes = Encoding.UTF8.GetBytes(sb.ToString());
             _stream.Write(sendBytes, 0, sendBytes.Length);
         }
 
         public T[] ReceiveArray<T>()
         {
-            var stringArray = Receive<string>().Split(",");
+            var stringArray = Receive<string>().Split(',');
             var tArray = new T[stringArray.Length];
             for (int i = 0; i < stringArray.Length; i++)
             {
@@ -75,7 +75,7 @@ namespace Yamashita.TcpSocket
         public Mat ReceiveImage()
         {
             var res = Receive<string>();
-            var data = res.Split(",")[1];
+            var data = res.Split(',')[1];
             var bytes = Convert.FromBase64String(data);
             return Cv2.ImDecode(bytes, ImreadModes.Color);
         }

@@ -20,6 +20,18 @@ namespace Yamashita.TcpSocket
         public T Receive<T>();
 
         /// <summary>
+        /// byte配列を送る
+        /// </summary>
+        /// <param name="sendBytes"></param>
+        public void SendBytes(byte[] sendBytes);
+
+        /// <summary>
+        /// byte配列を受け取る
+        /// </summary>
+        /// <returns></returns>
+        public byte[] ReceiveBytes();
+
+        /// <summary>
         /// 配列を送る
         /// </summary>
         /// <typeparam name="T"></typeparam>

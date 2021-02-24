@@ -38,6 +38,25 @@ namespace Yamashita.TcpSocket
             return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(receivedMsg);
         }
 
+        public void SendBytes(byte[] sendBytes)
+        {
+            _stream.Write(sendBytes, 0, sendBytes.Length);
+        }
+
+        public byte[] ReceiveBytes()
+        {
+            using var ms = new MemoryStream();
+            var resBytes = new byte[1024];
+            var resSize = 0;
+            do
+            {
+                resSize = _stream.Read(resBytes, 0, resBytes.Length);
+                if (resSize == 0) break;
+                ms.Write(resBytes, 0, resSize);
+            } while (_stream.DataAvailable || resBytes[resSize - 1] != '\n');
+            return ms.ToArray();
+        }
+
         public void SendArray<T>(T[] array)
         {
             var sb = new StringBuilder();

@@ -12,7 +12,6 @@ namespace Yamashita.DepthCamera
         private readonly BinaryWriter _binWriter;
         private readonly List<long> _indexes = new List<long>();
         private readonly DateTimeOffset _firstTime;
-        private byte[] _buffer;
 
         /// <summary>
         /// DepthCamera用のレコーダ
@@ -42,7 +41,7 @@ namespace Yamashita.DepthCamera
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
             _binWriter.Write((ushort)0);
-            _buffer = color.ImEncode();
+            var _buffer = color.ImEncode();
             _binWriter.Write(_buffer.Length);
             _binWriter.Write(_buffer);
             _indexes.Add(_binWriter.BaseStream.Position);

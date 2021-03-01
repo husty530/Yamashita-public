@@ -14,7 +14,7 @@ namespace Yamashita.Control
         private readonly int _minDetectCount;
         private readonly int _maxMissCount;
         private readonly List<Individual> _trackers;
-        private readonly Scalar[] Colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
+        private readonly Scalar[] _colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
 
         /// <summary>
         /// トラッカーを生成
@@ -128,7 +128,7 @@ namespace Yamashita.Control
 
         private void DrawPoint(Mat image, int id, Point center)
         {
-            image.Circle(center.X, center.Y, 3, Colors[id], 5);
+            image.Circle(center.X, center.Y, 3, _colors[id], 5);
         }
 
         private void DrawRect(Mat image, string labelName, int id, float iou, Point center, Size size)
@@ -138,11 +138,11 @@ namespace Yamashita.Control
             var x2 = (center.X + size.Width / 2) > image.Width ? image.Width : center.X + size.Width / 2;
             var y2 = (center.Y + size.Height / 2) > image.Height ? image.Height : center.Y + size.Height / 2;
             var label = $"{labelName}{iou * 100: 0}%";
-            Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), Colors[id % 80], 2);
+            Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), _colors[id % 80], 2);
             var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
             Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),
-                new Size(textSize.Width, textSize.Height + baseline)), Colors[id % 80], Cv2.FILLED);
-            var textColor = Cv2.Mean(Colors[id % 80]).Val0 < 70 ? Scalar.White : Scalar.Black;
+                new Size(textSize.Width, textSize.Height + baseline)), _colors[id % 80], Cv2.FILLED);
+            var textColor = Cv2.Mean(_colors[id % 80]).Val0 < 70 ? Scalar.White : Scalar.Black;
             Cv2.PutText(image, label, new Point(x1, y1 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
         }
     }

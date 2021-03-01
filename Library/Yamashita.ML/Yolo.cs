@@ -14,9 +14,8 @@ namespace Yamashita.ML
         private readonly float _threshold;
         private readonly float _nmsThreshold;
         private readonly string[] _labels;
-
-        private readonly Scalar[] Colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
-        private Size BlobSize { set; get; }
+        private readonly Size _blobSize;
+        private readonly Scalar[] _colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
 
         /// <summary>
         /// 検出器の初期化
@@ -30,7 +29,7 @@ namespace Yamashita.ML
         /// <param name="nmsThresh">重なりの閾値</param>
         public Yolo(string cfg, string names, string weights, Size blobSize, DrawingMode draw = DrawingMode.Rectangle, float confThresh = 0.5f, float nmsThresh = 0.3f)
         {
-            BlobSize = blobSize;
+            _blobSize = blobSize;
             _draw = draw;
             _threshold = confThresh;
             _nmsThreshold = nmsThresh;
@@ -40,7 +39,7 @@ namespace Yamashita.ML
 
         public void Run(ref Mat frame, out YoloResults results)
         {
-            var blob = CvDnn.BlobFromImage(frame, 1.0 / 255, BlobSize, new Scalar(), true, false);
+            var blob = CvDnn.BlobFromImage(frame, 1.0 / 255, _blobSize, new Scalar(), true, false);
             _net.SetInput(blob);
             var outNames = _net.GetUnconnectedOutLayersNames();
             var outs = outNames.Select(_ => new Mat()).ToArray();
@@ -102,7 +101,7 @@ namespace Yamashita.ML
 
         private void DrawPoint(Mat image, int classes, Point center)
         {
-            image.Circle(center.X, center.Y, 3, Colors[classes], 5);
+            image.Circle(center.X, center.Y, 3, _colors[classes], 5);
         }
 
         private void DrawRect(Mat image, int classes, float confidence, Point center, Size size)
@@ -112,11 +111,11 @@ namespace Yamashita.ML
             var y1 = (center.Y - size.Height / 2) < 0 ? 0 : center.Y - size.Height / 2;
             var x2 = (center.X + size.Width / 2) < 0 ? 0 : center.X + size.Width / 2;
             var y2 = (center.Y + size.Height / 2) < 0 ? 0 : center.Y + size.Height / 2;
-            Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), Colors[classes], 2);
+            Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), _colors[classes], 2);
             var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
             Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),
-                new Size(textSize.Width, textSize.Height + baseline)), Colors[classes], Cv2.FILLED);
-            var textColor = Cv2.Mean(Colors[classes]).Val0 < 70 ? Scalar.White : Scalar.Black;
+                new Size(textSize.Width, textSize.Height + baseline)), _colors[classes], Cv2.FILLED);
+            var textColor = Cv2.Mean(_colors[classes]).Val0 < 70 ? Scalar.White : Scalar.Black;
             Cv2.PutText(image, label, new Point(x1, y1 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
         }
     }

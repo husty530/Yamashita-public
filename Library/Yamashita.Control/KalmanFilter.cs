@@ -21,7 +21,7 @@ namespace Yamashita.Control
     /// </summary>
     public class KalmanFilter : IFilter
     {
-        private MatType type = MatType.CV_64F;
+        private readonly MatType type = MatType.CV_64F;
         private readonly OpenCvSharp.KalmanFilter _kalman;
         private readonly int k;
         private readonly int m;

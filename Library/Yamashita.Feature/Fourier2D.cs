@@ -7,15 +7,7 @@ namespace Yamashita.Feature
     {
 
         private readonly Mat _complex;
-        private Mat _viewImg;
-        private int cx;
-        private int cy;
-        private Rect tl;
-        private Rect tr;
-        private Rect bl;
-        private Rect br;
-
-        public Mat ViewImage => _viewImg;
+        public Mat ViewImage { private set; get; }
 
         /// <summary>
         /// 画像データに対する2次元フーリエ変換
@@ -30,7 +22,7 @@ namespace Yamashita.Feature
             Cv2.CopyMakeBorder(image, padded, 0, r - image.Rows, 0, c - image.Cols, BorderTypes.Constant, new Scalar(0));
             padded.ConvertTo(padded, MatType.CV_32F);
             var planes = new Mat[] { padded, new Mat(padded.Rows, padded.Cols, MatType.CV_32F, new Scalar(0)) };
-            _viewImg = new Mat(padded.Rows, padded.Cols, MatType.CV_8U, new Scalar(0));
+            ViewImage = new Mat(padded.Rows, padded.Cols, MatType.CV_8U, new Scalar(0));
             _complex = new Mat();
             Cv2.Merge(planes, _complex);
         }
@@ -53,21 +45,21 @@ namespace Yamashita.Feature
             Cv2.Log(tmp, tmp);
             Cv2.Normalize(tmp, tmp, 255, 0, NormTypes.MinMax);
             tmp.ConvertTo(tmp, MatType.CV_8U);
-            cx = tmp.Width / 2;
-            cy = tmp.Height / 2;
-            tl = new Rect(0, 0, cx, cy);
-            tr = new Rect(cx, 0, cx, cy);
-            bl = new Rect(0, cy, cx, cy);
-            br = new Rect(cx, cy, cx, cy);
+            var cx = tmp.Width / 2;
+            var cy = tmp.Height / 2;
+            var tl = new Rect(0, 0, cx, cy);
+            var tr = new Rect(cx, 0, cx, cy);
+            var bl = new Rect(0, cy, cx, cy);
+            var br = new Rect(cx, cy, cx, cy);
             var tl1 = tmp[tl];
             var tr1 = tmp[tr];
             var bl1 = tmp[bl];
             var br1 = tmp[br];
-            _viewImg = new Mat(tmp.Rows, tmp.Cols, MatType.CV_8U);
-            tl1.CopyTo(_viewImg[br]);
-            tr1.CopyTo(_viewImg[bl]);
-            bl1.CopyTo(_viewImg[tr]);
-            br1.CopyTo(_viewImg[tl]);
+            ViewImage = new Mat(tmp.Rows, tmp.Cols, MatType.CV_8U);
+            tl1.CopyTo(ViewImage[br]);
+            tr1.CopyTo(ViewImage[bl]);
+            bl1.CopyTo(ViewImage[tr]);
+            br1.CopyTo(ViewImage[tl]);
         }
 
         /// <summary>
@@ -84,7 +76,7 @@ namespace Yamashita.Feature
             for (int i = 0; i < feature.Length; i++)
                 feature[i] = data[i];
             Cv2.Normalize(tmp, tmp, 255, 0, NormTypes.MinMax);
-            tmp.ConvertTo(_viewImg, MatType.CV_8U);
+            tmp.ConvertTo(ViewImage, MatType.CV_8U);
         }
 
     }

@@ -1,6 +1,6 @@
 # Yamashita.ML
 Machine Learning (機械学習)の略です。  
-物体検出用のYOLOと汎用分類器のSVMを実装しています。  
+物体検出用のYOLOと汎用分類器のSVM & Bayes Classifierを実装しています。  
 
 # YOLO
   

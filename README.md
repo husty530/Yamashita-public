@@ -9,10 +9,11 @@
 ----- [Yamashita.Control](Library/Yamashita.Control) ... カルマンフィルタ & パーティクルフィルタ & マルチトラッカー  
 ----- [Yamashita.DepthCamera](Library/Yamashita.DepthCamera) ... Kinect & Realsense  
 ----- [Yamashita.Feature](Library/Yamashita.Feature) ... 1次元および2次元のフーリエ変換 & HOG特徴量  
------ [Yamashita.ML](Library/Yamashita.ML) ... サポートベクタマシン & YOLO  
+----- [Yamashita.ML](Library/Yamashita.ML) ... サポートベクタマシン & ベイズ分類器 & YOLO  
 ----- [Yamashita.TcpSocket](Library/Yamashita.TcpSocket) ... C#のServer & Client  
 
 ### Samples
+----- [BayesBinarization](/Samples/Samples.BayesBinarization)  
 ----- [DepthCameras](/Samples/Samples.DepthCameras)  
 ----- [Socket](/Samples/Samples.Socket) ... 昔作った[SocketSamples](https://github.com/husty530/SocketSamples)で他言語(Node.js, C++, Python)との連携やってます。  
 ----- [Tracking](/Samples/Samples.Tracking)  

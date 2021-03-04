@@ -94,7 +94,7 @@ namespace Yamashita.DepthCamera
         unsafe public (Mat Color, Mat Depth8, Mat Depth16, Mat PointCloud) GetOneFrameSet(int position)
         {
             Seek(position * 3);
-            var (color, _, _) = ReadFrame();
+            var (color, time, _) = ReadFrame();
             var (depth16, _, _) = ReadFrame();
             var (pointCloud, _, _) = ReadFrame();
             var depth8 = new Mat(depth16.Height, depth16.Width, MatType.CV_8U);
@@ -106,6 +106,7 @@ namespace Yamashita.DepthCamera
                 else if (d16[j] < _maxDistance) d8[j] = (byte)((d16[j] - _minDistance) * 255 / (_maxDistance - _minDistance));
                 else d8[j] = 255;
             }
+            _pretime = time;
             return (color, depth8, depth16, pointCloud);
         }
 

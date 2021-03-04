@@ -1,8 +1,10 @@
-﻿namespace Yamashita.ML
+﻿using System.Collections.Generic;
+
+namespace Yamashita.ML
 {
     public enum Mode { Train, Inference }
 
-    public interface ISvm
+    public interface IStats
     {
         // 学習フェーズ
 
@@ -31,8 +33,9 @@
         /// <summary>
         /// 現在のデータセットで学習
         /// </summary>
-        /// <param name="gamma">RBFのパラメータ</param>
-        public void Train(double gamma = 0.1, bool append = true);
+        /// <param name="append">もとのモデルを追加学習するか</param>
+        /// <param name="param">各モデル用のパラメータ</param>
+        public void Train(bool append, double? param);
 
 
         // 推論フェーズ
@@ -40,8 +43,8 @@
         /// <summary>
         /// 推論処理
         /// </summary>
-        /// <param name="input">float配列にした入力特徴量ベクトル</param>
-        /// <param name="result">出力ラベル (0 or 1)</param>
-        public void Predict(float[] input, out float result);
+        /// <param name="input">float配列にした入力特徴量ベクトルの配列</param>
+        /// <param name="output">出力ラベル (0 or 1) の配列</param>
+        public void Predict(List<float[]> input, out List<float> output);
     }
 }

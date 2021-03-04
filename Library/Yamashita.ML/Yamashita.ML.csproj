@@ -11,6 +11,10 @@
     <Version>1.0.4</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="OpenCvSharp4" Version="4.5.0.20201013" />
   </ItemGroup>

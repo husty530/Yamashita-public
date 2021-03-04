@@ -67,7 +67,7 @@ SomeFunction(list);
 ```  
 ↑↑↑　条件検索をかけることが可能になります。  
 
-# SVM (Support Vector Machine)
+# SVM (Support Vector Machine) & Bayes Classifier
 気が向いたらちゃんと説明書きます。  
 とりあえずこれでも見といてください。↓↓  
 * [【SVM(サポートベクターマシーン)についてまとめてみた】](https://qiita.com/arata-honda/items/bc24cbd953bd9d2c743c)

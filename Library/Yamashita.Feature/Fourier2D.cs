@@ -6,8 +6,17 @@ namespace Yamashita.Feature
     public class Fourier2D
     {
 
+        // フィールド
+
         private readonly Mat _complex;
+
+
+        // プロパティ
+
         public Mat ViewImage { private set; get; }
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 画像データに対する2次元フーリエ変換
@@ -26,6 +35,9 @@ namespace Yamashita.Feature
             _complex = new Mat();
             Cv2.Merge(planes, _complex);
         }
+
+
+        // メソッド
 
         /// <summary>
         /// 離散フーリエ変換

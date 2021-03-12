@@ -7,6 +7,9 @@ namespace Yamashita.Control
 {
     public class MultiTracker : IMultiTracker
     {
+
+        // フィールド
+
         private int _id;
         private readonly double _dt;
         private readonly OutputType _type;
@@ -15,6 +18,9 @@ namespace Yamashita.Control
         private readonly int _maxMissCount;
         private readonly List<Individual> _trackers;
         private readonly Scalar[] _colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
+
+
+        // コンストラクタ
 
         /// <summary>
         /// トラッカーを生成
@@ -33,6 +39,9 @@ namespace Yamashita.Control
             _maxMissCount = maxMissCount;
             _trackers = new List<Individual>();
         }
+
+
+        // メソッド
 
         public void Update(ref Mat frame, List<(string Label, Point Center, Size Size)> detections, out List<(int Id, string Label, float Iou, Point Center, Size Size)> results)
         {
@@ -145,5 +154,6 @@ namespace Yamashita.Control
             var textColor = Cv2.Mean(_colors[id % 80]).Val0 < 70 ? Scalar.White : Scalar.Black;
             Cv2.PutText(image, label, new Point(x1, y1 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
         }
+
     }
 }

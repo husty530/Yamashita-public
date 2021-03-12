@@ -8,10 +8,25 @@ namespace Yamashita.ML
 {
     public class Svm : Stats
     {
+
+        // フィールド
+
         private SVM _classifier;
 
+
+        // コンストラクタ
+
+        /// <summary>
+        /// Yamashita専用SVM
+        /// </summary>
+        /// <param name="mode">学習か推論か</param>
+        /// <param name="modelPath"></param>
+        /// <param name="dataPath"></param>
         public Svm(Mode mode, string modelPath = "SvmModel.xml", string dataPath = "SvmTrainData.csv")
             : base(mode, modelPath, dataPath) { }
+
+
+        // メソッド
 
         protected override void LoadModel() => _classifier = SVM.Load(_modelPath);
 
@@ -44,5 +59,6 @@ namespace Yamashita.ML
             output = new List<float>();
             for (int i = 0; i < outputMat.Rows; i++) output.Add(outputMat.At<float>(i, 0));
         }
+
     }
 }

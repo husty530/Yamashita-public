@@ -21,11 +21,17 @@ namespace Yamashita.Control
     /// </summary>
     public class KalmanFilter : IFilter
     {
+
+        // フィールド
+
         private readonly MatType type = MatType.CV_64F;
         private readonly OpenCvSharp.KalmanFilter _kalman;
         private readonly int k;
         private readonly int m;
         private readonly int n;
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 一番シンプルなもの
@@ -221,6 +227,9 @@ namespace Yamashita.Control
 
         }
 
+
+        // メソッド
+
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
             var correctMat = _kalman.Correct(new Mat(m, 1, type, measurementVec));
@@ -235,5 +244,6 @@ namespace Yamashita.Control
             }
             return (correctArray, predictArray);
         }
+
     }
 }

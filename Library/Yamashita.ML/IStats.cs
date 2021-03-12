@@ -6,6 +6,7 @@ namespace Yamashita.ML
 
     public interface IStats
     {
+
         // 学習フェーズ
 
         /// <summary>

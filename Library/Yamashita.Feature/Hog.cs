@@ -6,8 +6,13 @@ namespace Yamashita.Feature
     public class Hog
     {
 
+        // フィールド
+
         private readonly HOGDescriptor _hog;
         private readonly Size _imageSize;
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 簡易版HOG。分類には使えるが検出には使えない。
@@ -26,6 +31,9 @@ namespace Yamashita.Feature
             _imageSize = (Size)s1;
         }
 
+
+        // メソッド
+
         /// <summary>
         /// 1フレームに対する処理
         /// </summary>
@@ -37,5 +45,6 @@ namespace Yamashita.Feature
             Cv2.Resize(input, input, _imageSize);
             result = _hog.Compute(input);
         }
+
     }
 }

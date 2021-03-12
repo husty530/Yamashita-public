@@ -9,6 +9,8 @@ namespace Yamashita.DepthCamera
     public class Realsense : IDepthCamera
     {
 
+        // フィールド
+
         private readonly Pipeline _pipeline;
         private readonly Align _align;
         private readonly DecimationFilter _dfill;
@@ -19,15 +21,30 @@ namespace Yamashita.DepthCamera
         private readonly HoleFillingFilter _hfill;
         private readonly RealsenseConverter _converter;
 
+
+        // プロパティ
+
+        public Realsense() : this(640, 480) { }
+
+        public (int Width, int Height) FrameSize { private set; get; }
+
+
+        // コンストラクタ
+
+        /// <summary>
+        /// Realsenseのコンストラクタ
+        /// </summary>
+        /// <param name="width">所望の画像幅</param>
+        /// <param name="height">所望の画像高さ</param>
         public Realsense(int width, int height)
         {
             FrameSize = (width, height);
             _pipeline = new Pipeline();
             var cfg = new Config();
-            cfg.EnableStream(Intel.RealSense.Stream.Depth, width, height);
-            cfg.EnableStream(Intel.RealSense.Stream.Color, Format.Rgb8);
+            cfg.EnableStream(Stream.Depth, width, height);
+            cfg.EnableStream(Stream.Color, Format.Rgb8);
             var p = _pipeline.Start(cfg);
-            _align = new Align(Intel.RealSense.Stream.Depth);
+            _align = new Align(Stream.Depth);
             _dfill = new DecimationFilter();
             _depthto = new DisparityTransform(true);
             _todepth = new DisparityTransform(false);
@@ -37,9 +54,8 @@ namespace Yamashita.DepthCamera
             _converter = new RealsenseConverter(width, height);
         }
 
-        public Realsense() : this(640, 480) { }
-
-        public (int Width, int Height) FrameSize { private set; get; }
+        
+        // メソッド
 
         public IObservable<(Mat ColorMat, Mat DepthMat, Mat PointCloudMat)> Connect()
         {

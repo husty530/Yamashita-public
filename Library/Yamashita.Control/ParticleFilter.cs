@@ -10,6 +10,8 @@ namespace Yamashita.Control
     public class ParticleFilter : IFilter
     {
 
+        // フィールド
+
         private readonly int k;
         private readonly int m;
         private readonly int n;
@@ -21,7 +23,13 @@ namespace Yamashita.Control
         private readonly Matrix<double> _measureNoiseInv;
         private readonly double _denominator;
 
+
+        // プロパティ
+
         public List<Vector<double>> Particles { private set; get; }
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 一番シンプルなもの
@@ -212,6 +220,9 @@ namespace Yamashita.Control
             _measureNoiseInv = measureNoise.Inverse();
 
         }
+
+
+        // メソッド
 
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {

@@ -5,9 +5,15 @@ namespace Yamashita.Feature
 {
     public class Fourier1D
     {
+
+        // フィールド
+
         private readonly double _samplingRate;
         private readonly int _sampleCount;
         private readonly Mat _complex;
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 時系列データに対する1次元フーリエ解析
@@ -22,6 +28,9 @@ namespace Yamashita.Feature
             _complex = new Mat();
             Cv2.Merge(new Mat[] { real, new Mat(_sampleCount, 1, MatType.CV_32F, 0.0) }, _complex);
         }
+
+
+        // メソッド
 
         /// <summary>
         /// 離散フーリエ変換
@@ -94,5 +103,6 @@ namespace Yamashita.Feature
                 }
             }
         }
+
     }
 }

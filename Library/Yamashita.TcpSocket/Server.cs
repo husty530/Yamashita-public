@@ -6,6 +6,9 @@ namespace Yamashita.TcpSocket
 {
     public class Server : TcpSocket
     {
+
+        // コンストラクタ
+
         /// <summary>
         /// TCPサーバーの待機から接続まで
         /// </summary>
@@ -27,6 +30,9 @@ namespace Yamashita.TcpSocket
                 return;
             }
         }
+
+
+        // メソッド
 
         /// <summary>
         /// サーバーを閉じる

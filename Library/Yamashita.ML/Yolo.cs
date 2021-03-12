@@ -9,6 +9,8 @@ namespace Yamashita.ML
     public class Yolo : IYolo
     {
 
+        // フィールド
+
         private readonly DrawingMode _draw;
         private readonly Net _net;
         private readonly float _threshold;
@@ -16,6 +18,9 @@ namespace Yamashita.ML
         private readonly string[] _labels;
         private readonly Size _blobSize;
         private readonly Scalar[] _colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
+
+
+        // コンストラクタ
 
         /// <summary>
         /// 検出器の初期化
@@ -36,6 +41,9 @@ namespace Yamashita.ML
             _labels = File.ReadAllLines(names).ToArray();
             _net = CvDnn.ReadNetFromDarknet(cfg, weights);
         }
+
+
+        // メソッド
 
         public void Run(ref Mat frame, out YoloResults results)
         {
@@ -118,5 +126,6 @@ namespace Yamashita.ML
             var textColor = Cv2.Mean(_colors[classes]).Val0 < 70 ? Scalar.White : Scalar.Black;
             Cv2.PutText(image, label, new Point(x1, y1 - baseline), HersheyFonts.HersheyTriplex, 0.3, textColor);
         }
+
     }
 }

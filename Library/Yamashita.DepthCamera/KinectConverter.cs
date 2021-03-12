@@ -6,6 +6,9 @@ namespace Yamashita.DepthCamera
 {
     public class KinectConverter
     {
+
+        // フィールド
+
         private readonly int _width;
         private readonly int _height;
         private readonly double pitch;
@@ -14,8 +17,16 @@ namespace Yamashita.DepthCamera
         private readonly double cy;
         private readonly double fx;
         private readonly double fy;
+
+
+        // プロパティ
+
         private double CenterX => _width / 2;
+
         private double CenterY => _height / 2;
+
+
+        // コンストラクタ
 
         public KinectConverter(Size size, double pitchDeg = 5.8, double yawDeg = 1.3, double cx = 154.418, double cy = 169.663, double fx = 251.977, double fy = 252.004)
         {
@@ -28,6 +39,9 @@ namespace Yamashita.DepthCamera
             this.fx = fx;
             this.fy = fy;
         }
+
+
+        // メソッド
 
         public void ToColorMat(Image colorImg, ref Mat colorMat)
         {

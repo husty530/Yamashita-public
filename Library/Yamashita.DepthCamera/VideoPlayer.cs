@@ -13,6 +13,8 @@ namespace Yamashita.DepthCamera
     public class VideoPlayer
     {
 
+        // フィールド
+
         private readonly BinaryReader _binReader;
         private readonly long[] _indexes;
         private readonly int _minDistance;
@@ -20,8 +22,15 @@ namespace Yamashita.DepthCamera
         private long _pretime;
         private int _positionIndex;
 
+
+        // プロパティ
+
         public int FrameCount => _indexes.Length;
+
         public int PositionMax => FrameCount / 3;
+
+
+        // コンストラクタ
 
         /// <summary>
         /// DepthCamera用のプレーヤー
@@ -51,6 +60,9 @@ namespace Yamashita.DepthCamera
             _maxDistance = maxDistance;
             _pretime = 0;
         }
+
+
+        // メソッド
 
         /// <summary>
         /// ストリーム配信開始(RefCount方式)
@@ -134,5 +146,6 @@ namespace Yamashita.DepthCamera
         {
             if (index > -1 && index < FrameCount) _positionIndex = index;
         }
+
     }
 }

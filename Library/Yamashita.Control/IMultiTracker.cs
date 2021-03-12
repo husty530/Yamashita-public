@@ -29,21 +29,42 @@ namespace Yamashita.Control
 
     }
 
+
+    /// <summary>
+    /// マルチトラッカーに管理させる個別のオブジェクト
+    /// </summary>
     class Individual
     {
+
+        // フィールド
+
         private readonly IFilter _filter;
 
+
+        // プロパティ
+
         public string Label { set; get; }
+
         public float Iou { set; get; }
+
         public Point Center { set; get; }
+
         public Size Size { set; get; }
+
         public Point NextCenter { set; get; }
+
         public Size NextSize { set; get; }
+
         public int DetectCount { set; get; }
+
         public int MissCount { set; get; }
+
         public int Id { private set; get; }
+
         public string Mark { private set; get; }
 
+
+        // コンストラクタ
 
         public Individual(Point center, Size size, int id, double dt, string label = "", string mark = "")
         {
@@ -72,6 +93,9 @@ namespace Yamashita.Control
             _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, 0.5);
             //_filter = new ParticleFilter(state, transitionMatrix, measurementMatrix);
         }
+
+
+        // メソッド
 
         public void Predict(Point center, Size size)
         {

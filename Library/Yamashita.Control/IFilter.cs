@@ -2,6 +2,7 @@
 {
     public interface IFilter
     {
+
         /// <summary>
         /// フィルタ適用.
         /// 観測値で更新→次期の予測を行う

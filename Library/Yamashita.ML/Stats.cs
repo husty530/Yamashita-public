@@ -8,11 +8,16 @@ namespace Yamashita.ML
     public abstract class Stats : IStats
     {
 
+        // フィールド
+
         protected Mode _mode;
         protected string _modelPath;
         protected List<float[]> _features;
         protected List<int> _labels;
         private readonly string _dataPath;
+
+
+        // コンストラクタ
 
         /// <summary>
         /// Yamashita専用統計分類器
@@ -36,6 +41,9 @@ namespace Yamashita.ML
                 LoadModel();
             }
         }
+
+
+        // メソッド
 
         public void AddData(float[] feature, int label)
         {
@@ -87,7 +95,8 @@ namespace Yamashita.ML
                 using var sr = new StreamReader(_dataPath);
                 var strs = sr.ReadLine().Split(",");
                 var feature = new List<float>();
-                for (int i = 0; i < strs.Length - 1; i++) feature.Add(float.Parse(strs[i]));
+                for (int i = 0; i < strs.Length - 1; i++)
+                    feature.Add(float.Parse(strs[i]));
                 _features.Add(feature.ToArray());
                 _labels.Add(int.Parse(strs[strs.Length - 1]));
             }

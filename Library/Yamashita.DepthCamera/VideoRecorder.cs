@@ -9,9 +9,14 @@ namespace Yamashita.DepthCamera
     public class VideoRecorder
     {
 
+        // フィールド
+
         private readonly BinaryWriter _binWriter;
         private readonly List<long> _indexes = new List<long>();
         private readonly DateTimeOffset _firstTime;
+
+
+        // コンストラクタ
 
         /// <summary>
         /// DepthCamera用のレコーダ
@@ -29,6 +34,9 @@ namespace Yamashita.DepthCamera
             _binWriter.Write(time.Offset.Ticks);
             _firstTime = time;
         }
+
+
+        // メソッド
 
         /// <summary>
         /// 一時刻分の書き込み

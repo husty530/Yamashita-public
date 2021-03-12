@@ -5,6 +5,9 @@ namespace Yamashita.TcpSocket
 {
     public class Client : TcpSocket
     {
+
+        // コンストラクタ
+
         /// <summary>
         /// TCPクライアントの接続開始
         /// </summary>
@@ -24,6 +27,9 @@ namespace Yamashita.TcpSocket
                 return;
             }
         }
+
+
+        // メソッド
 
         /// <summary>
         /// クライアントを閉じる

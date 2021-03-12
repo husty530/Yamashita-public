@@ -8,10 +8,27 @@ namespace Yamashita.DepthCamera
 {
     public class Kinect : IDepthCamera
     {
+
+        // フィールド
+
         private readonly Device _device;
         private readonly Transformation _transformation;
         private readonly KinectConverter _converter;
 
+
+        // プロパティ
+
+        public DeviceConfiguration Config { private set; get; }
+
+        public Size FrameSize { private set; get; }
+
+
+        // コンストラクタ
+
+        /// <summary>
+        /// Kinectのコンストラクタ
+        /// </summary>
+        /// <param name="config">デバイスのユーザー設定(任意)</param>
         public Kinect(DeviceConfiguration config)
         {
             _device = Device.Open();
@@ -23,6 +40,9 @@ namespace Yamashita.DepthCamera
             _converter = new KinectConverter(FrameSize);
         }
 
+        /// <summary>
+        /// Kinectのデフォルトコンストラクタ
+        /// </summary>
         public Kinect()
             : this(new DeviceConfiguration
             {
@@ -34,9 +54,8 @@ namespace Yamashita.DepthCamera
             })
         { }
 
-        public DeviceConfiguration Config { private set; get; }
-        public Size FrameSize { private set; get; }
 
+        // メソッド
 
         public IObservable<(Mat ColorMat, Mat DepthMat, Mat PointCloudMat)> Connect()
         {
@@ -60,6 +79,7 @@ namespace Yamashita.DepthCamera
         }
 
         public void Disconnect() => _device?.Dispose();
+
     }
 
 }

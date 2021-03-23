@@ -81,19 +81,17 @@ namespace Samples.Yolo_Validation
             var recall = (double)totalTp / (totalTp + totalFn);
             if ((bool)save)
             {
-                using (var sr = new StreamWriter($"Validation.csv"))
-                {
-                    sr.WriteLine($"Width,{_width},Height,{_height}");
-                    sr.WriteLine("");
-                    sr.WriteLine("TotalTime,AverageTime,TotalTp,TotalFp,TotalFn");
-                    sr.WriteLine($"{totalTime},{avgTime},{totalTp},{totalFp},{totalFn}");
-                    sr.WriteLine("");
-                    sr.WriteLine("Precision,Recall,Ap");
-                    sr.WriteLine($"{precision},{recall},{ap}");
-                    sr.WriteLine("");
-                    sr.WriteLine("FileName,Time,Tp,Fp,Fn");
-                    foreach (var s in strs) sr.WriteLine(s);
-                }
+                using var sr = new StreamWriter($"Validation.csv");
+                sr.WriteLine($"Width,{_width},Height,{_height}");
+                sr.WriteLine("");
+                sr.WriteLine("TotalTime,AverageTime,TotalTp,TotalFp,TotalFn");
+                sr.WriteLine($"{totalTime},{avgTime},{totalTp},{totalFp},{totalFn}");
+                sr.WriteLine("");
+                sr.WriteLine("Precision,Recall,Ap");
+                sr.WriteLine($"{precision},{recall},{ap}");
+                sr.WriteLine("");
+                sr.WriteLine("FileName,Time,Tp,Fp,Fn");
+                foreach (var s in strs) sr.WriteLine(s);
             }
             return (_className, totalTime, avgTime, totalTp, totalFp, totalFn, precision, recall, ap);
         }

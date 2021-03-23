@@ -48,14 +48,16 @@ namespace Yamashita.Control
 
             k = initialStateVec.Length;
             m = initialStateVec.Length;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type);
-            _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
-            _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
-            _kalman.TransitionMatrix = Mat.Zeros(new Size(k, k), type);
-            _kalman.MeasurementMatrix = Mat.Zeros(new Size(m, k), type);
-            _kalman.MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type);
-            _kalman.ProcessNoiseCov = Mat.Zeros(new Size(k, k), type);
-            _kalman.ErrorCovPre = Mat.Zeros(new Size(k, k), type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type)
+            {
+                StatePre = new Mat(k, 1, type, initialStateVec),
+                StatePost = new Mat(k, 1, type, initialStateVec),
+                TransitionMatrix = Mat.Zeros(new Size(k, k), type),
+                MeasurementMatrix = Mat.Zeros(new Size(m, k), type),
+                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type),
+                ProcessNoiseCov = Mat.Zeros(new Size(k, k), type),
+                ErrorCovPre = Mat.Zeros(new Size(k, k), type)
+            };
             for (int i = 0; i < k; i++)
             {
                 _kalman.TransitionMatrix.At<double>(i, i) = 1;
@@ -83,15 +85,17 @@ namespace Yamashita.Control
 
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type);
-            _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
-            _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
-            _kalman.TransitionMatrix = new Mat(k, k, type, transitionMatrix);
-            _kalman.MeasurementMatrix = new Mat(m, k, type, measurementMatrix);
-            _kalman.MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type)
+            {
+                StatePre = new Mat(k, 1, type, initialStateVec),
+                StatePost = new Mat(k, 1, type, initialStateVec),
+                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
+                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
+                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type),
+                ProcessNoiseCov = Mat.Zeros(new Size(k, k), type),
+                ErrorCovPre = Mat.Zeros(new Size(k, k), type)
+            };
             for (int i = 0; i < m; i++) _kalman.MeasurementNoiseCov.At<double>(i, i) = measurementNoise;
-            _kalman.ProcessNoiseCov = Mat.Zeros(new Size(k, k), type);
-            _kalman.ErrorCovPre = Mat.Zeros(new Size(k, k), type);
             for (int i = 0; i < k; i++)
             {
                 _kalman.ProcessNoiseCov.At<double>(i, i) = processNoise;
@@ -115,14 +119,16 @@ namespace Yamashita.Control
 
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type);
-            _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
-            _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
-            _kalman.TransitionMatrix = new Mat(k, k, type, transitionMatrix);
-            _kalman.MeasurementMatrix = new Mat(m, k, type, measurementMatrix);
-            _kalman.MeasurementNoiseCov = new Mat(m, m, type, measurementNoiseMatrix);
-            _kalman.ProcessNoiseCov = new Mat(k, k, type, processNoiseMatrix);
-            _kalman.ErrorCovPre = new Mat(k, k, type, preErrorMatrix);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type)
+            {
+                StatePre = new Mat(k, 1, type, initialStateVec),
+                StatePost = new Mat(k, 1, type, initialStateVec),
+                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
+                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
+                MeasurementNoiseCov = new Mat(m, m, type, measurementNoiseMatrix),
+                ProcessNoiseCov = new Mat(k, k, type, processNoiseMatrix),
+                ErrorCovPre = new Mat(k, k, type, preErrorMatrix)
+            };
 
         }
 
@@ -143,15 +149,17 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = initialStateVec.Length;
             n = controlMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type);
-            _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
-            _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
-            _kalman.ControlMatrix = new Mat(k, n, type, controlMatrix);
-            _kalman.TransitionMatrix = Mat.Zeros(new Size(k, k), type);
-            _kalman.MeasurementMatrix = Mat.Zeros(new Size(m, k), type);
-            _kalman.MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type);
-            _kalman.ProcessNoiseCov = Mat.Zeros(new Size(k, k), type);
-            _kalman.ErrorCovPre = Mat.Zeros(new Size(k, k), type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type)
+            {
+                StatePre = new Mat(k, 1, type, initialStateVec),
+                StatePost = new Mat(k, 1, type, initialStateVec),
+                ControlMatrix = new Mat(k, n, type, controlMatrix),
+                TransitionMatrix = Mat.Zeros(new Size(k, k), type),
+                MeasurementMatrix = Mat.Zeros(new Size(m, k), type),
+                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type),
+                ProcessNoiseCov = Mat.Zeros(new Size(k, k), type),
+                ErrorCovPre = Mat.Zeros(new Size(k, k), type)
+            };
             for (int i = 0; i < k; i++)
             {
                 _kalman.TransitionMatrix.At<double>(i, i) = 1;
@@ -180,13 +188,15 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type);
-            _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
-            _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
-            _kalman.ControlMatrix = new Mat(k, n, type, controlMatrix);
-            _kalman.TransitionMatrix = new Mat(k, k, type, transitionMatrix);
-            _kalman.MeasurementMatrix = new Mat(m, k, type, measurementMatrix);
-            _kalman.MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type)
+            {
+                StatePre = new Mat(k, 1, type, initialStateVec),
+                StatePost = new Mat(k, 1, type, initialStateVec),
+                ControlMatrix = new Mat(k, n, type, controlMatrix),
+                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
+                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
+                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type)
+            };
             for (int i = 0; i < m; i++) _kalman.MeasurementNoiseCov.At<double>(i, i) = measurementNoise;
             _kalman.ProcessNoiseCov = Mat.Zeros(new Size(k, k), type);
             _kalman.ErrorCovPre = Mat.Zeros(new Size(k, k), type);
@@ -215,15 +225,17 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type);
-            _kalman.StatePre = new Mat(k, 1, type, initialStateVec);
-            _kalman.StatePost = new Mat(k, 1, type, initialStateVec);
-            _kalman.ControlMatrix = new Mat(k, n, type, controlMatrix);
-            _kalman.TransitionMatrix = new Mat(k, k, type, transitionMatrix);
-            _kalman.MeasurementMatrix = new Mat(m, k, type, measurementMatrix);
-            _kalman.MeasurementNoiseCov = new Mat(m, m, type, measurementNoiseMatrix);
-            _kalman.ProcessNoiseCov = new Mat(k, k, type, processNoiseMatrix);
-            _kalman.ErrorCovPre = new Mat(k, k, type, preErrorMatrix);
+            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type)
+            {
+                StatePre = new Mat(k, 1, type, initialStateVec),
+                StatePost = new Mat(k, 1, type, initialStateVec),
+                ControlMatrix = new Mat(k, n, type, controlMatrix),
+                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
+                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
+                MeasurementNoiseCov = new Mat(m, m, type, measurementNoiseMatrix),
+                ProcessNoiseCov = new Mat(k, k, type, processNoiseMatrix),
+                ErrorCovPre = new Mat(k, k, type, preErrorMatrix)
+            };
 
         }
 

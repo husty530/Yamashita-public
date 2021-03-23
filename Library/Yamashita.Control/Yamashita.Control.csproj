@@ -9,7 +9,7 @@
     <Authors>yamashita</Authors>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
     <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Control</PackageProjectUrl>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>

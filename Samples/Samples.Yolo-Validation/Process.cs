@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using OpenCvSharp;
@@ -188,10 +189,10 @@ namespace Samples.Yolo_Validation
             var r1 = new Rect(p1, s1);
             var r2 = new Rect(p2, s2);
             if (r1.Left > r2.Right || r2.Left > r1.Right || r1.Top > r2.Bottom || r2.Top > r1.Bottom) return 0.0;
-            var left = (r1.Left > r2.Left) ? r1.Left : r2.Left;
-            var right = (r1.Right < r2.Right) ? r1.Right : r2.Right;
-            var top = (r1.Top > r2.Top) ? r1.Top : r2.Top;
-            var bottom = (r1.Bottom < r2.Bottom) ? r1.Bottom : r2.Bottom;
+            var left = Math.Max(r1.Left, r2.Left);
+            var right = Math.Min(r1.Right, r2.Right);
+            var top = Math.Max(r1.Top, r2.Top);
+            var bottom = Math.Min(r1.Bottom, r2.Bottom);
             var and = (right - left) * (bottom - top);
             return (double)and / (area1 + area2 - and);
         }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using OpenCvSharp;
@@ -52,10 +53,10 @@ namespace Yamashita.ML
             var outNames = _net.GetUnconnectedOutLayersNames();
             var outs = outNames.Select(_ => new Mat()).ToArray();
             _net.Forward(outs, outNames);
-            results = new YoloResults(GetResults(outs, frame).ToList());
+            results = new YoloResults(GetResults(outs, frame));
         }
 
-        private IEnumerable<(string Label, float Confidence, Point Center, Size Size)> GetResults(IEnumerable<Mat> output, Mat image)
+        private List<(string Label, float Confidence, Point Center, Size Size)> GetResults(Mat[] output, Mat image)
         {
             var classIds = new List<int>();
             var confidences = new List<float>();
@@ -64,34 +65,39 @@ namespace Yamashita.ML
             var boxes = new List<Rect2d>();
             var w = image.Width;
             var h = image.Height;
-            foreach (var pred in output)
+            unsafe 
             {
-                for (var i = 0; i < pred.Rows; i++)
+                foreach (var pred in output)
                 {
-                    var confidence = pred.At<float>(i, 4);
-                    if (confidence > _threshold)
+                    var p = (float*)pred.Data;
+                    for (var i = 0; i < pred.Rows; i++, p += pred.Cols)
                     {
-                        Cv2.MinMaxLoc(pred.Row(i).ColRange(5, pred.Cols), out _, out Point classIdPoint);
-                        var probability = pred.At<float>(i, classIdPoint.X + 5);
-                        if (probability > _threshold)
+                        var confidence = p[4];
+                        if (confidence > _threshold)
                         {
-                            var centerX = pred.At<float>(i, 0) * w;
-                            var centerY = pred.At<float>(i, 1) * h;
-                            var width = pred.At<float>(i, 2) * w;
-                            var height = pred.At<float>(i, 3) * h;
-                            classIds.Add(classIdPoint.X);
-                            confidences.Add(confidence);
-                            probabilities.Add(probability);
-                            centers.Add(new Point(centerX, centerY));
-                            boxes.Add(new Rect2d(centerX - width / 2, centerY - height / 2, width, height));
+                            Cv2.MinMaxLoc(pred.Row(i).ColRange(5, pred.Cols), out _, out Point classIdPoint);
+                            var probability = p[classIdPoint.X + 5];
+                            if (probability > _threshold)
+                            {
+                                var centerX = p[0] * w;
+                                var centerY = p[1] * h;
+                                var width = p[2] * w;
+                                var height = p[3] * h;
+                                classIds.Add(classIdPoint.X);
+                                confidences.Add(confidence);
+                                probabilities.Add(probability);
+                                centers.Add(new Point(centerX, centerY));
+                                boxes.Add(new Rect2d(centerX - width / 2, centerY - height / 2, width, height));
+                            }
                         }
                     }
                 }
             }
-
+            var results = new List<(string Label, float Confidence, Point Center, Size Size)>();
             CvDnn.NMSBoxes(boxes, confidences, _threshold, _nmsThreshold, out int[] indices);
             foreach (var i in indices)
             {
+                results.Add((_labels[classIds[i]], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height)));
                 switch (_draw)
                 {
                     case (DrawingMode.Off):
@@ -103,8 +109,8 @@ namespace Yamashita.ML
                         DrawRect(image, classIds[i], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height));
                         break;
                 }
-                yield return (_labels[classIds[i]], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height));
             }
+            return results;
         }
 
         private void DrawPoint(Mat image, int classes, Point center)
@@ -115,11 +121,10 @@ namespace Yamashita.ML
         private void DrawRect(Mat image, int classes, float confidence, Point center, Size size)
         {
             var label = $"{_labels[classes]}{confidence * 100:0}%";
-            var x1 = (center.X - size.Width / 2) < 0 ? 0 : center.X - size.Width / 2;
-            var y1 = (center.Y - size.Height / 2) < 0 ? 0 : center.Y - size.Height / 2;
-            var x2 = (center.X + size.Width / 2) < 0 ? 0 : center.X + size.Width / 2;
-            var y2 = (center.Y + size.Height / 2) < 0 ? 0 : center.Y + size.Height / 2;
-            Cv2.Rectangle(image, new Point(x1, y1), new Point(x2, y2), _colors[classes], 2);
+            var x1 = Math.Max(center.X - size.Width / 2, 0);
+            var y1 = Math.Max(center.Y - size.Height / 2, 0);
+            var x2 = Math.Min(center.X + size.Width / 2, image.Width);
+            var y2 = Math.Min(center.Y + size.Height / 2, image.Height);
             var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
             Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),
                 new Size(textSize.Width, textSize.Height + baseline)), _colors[classes], Cv2.FILLED);

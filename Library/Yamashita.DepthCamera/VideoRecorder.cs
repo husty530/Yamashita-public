@@ -74,7 +74,7 @@ namespace Yamashita.DepthCamera
             _binWriter.Seek(16, SeekOrigin.Begin);
             _binWriter.Write(_binWriter.BaseStream.Length);
             _binWriter.Seek(0, SeekOrigin.End);
-            foreach (var pos in _indexes) _binWriter.Write(pos);
+            _indexes.ForEach(p => _binWriter.Write(p));
             _binWriter.Flush();
             _binWriter.Close();
             _binWriter.Dispose();

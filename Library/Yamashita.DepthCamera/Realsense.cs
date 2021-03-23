@@ -24,8 +24,6 @@ namespace Yamashita.DepthCamera
 
         // プロパティ
 
-        public Realsense() : this(640, 480) { }
-
         public (int Width, int Height) FrameSize { private set; get; }
 
 
@@ -53,6 +51,8 @@ namespace Yamashita.DepthCamera
             _hfill = new HoleFillingFilter();
             _converter = new RealsenseConverter(width, height);
         }
+
+        public Realsense() : this(640, 480) { }
 
         
         // メソッド

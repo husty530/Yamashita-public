@@ -52,9 +52,9 @@ namespace Yamashita.DepthCamera
             e1.ExtractToFile(@"D.png", true);
             var e3 = archive.GetEntry("P.png");
             e3.ExtractToFile(@"P.png", true);
-            using var color = new Mat(@"C.png");
-            using var depth = new Mat(@"D.png", ImreadModes.Unchanged);
-            using var points = new Mat(@"P.png", ImreadModes.Unchanged);
+            var color = new Mat(@"C.png");
+            var depth = new Mat(@"D.png", ImreadModes.Unchanged);
+            var points = new Mat(@"P.png", ImreadModes.Unchanged);
             return (color, depth, points);
         }
 

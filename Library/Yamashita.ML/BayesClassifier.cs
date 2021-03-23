@@ -36,7 +36,7 @@ namespace Yamashita.ML
             SaveDataset(append);
             using var bayes = NormalBayesClassifier.Create();
             var list = new List<float>();
-            foreach (var feature in _features) list.AddRange(feature);
+            _features.ForEach(f => list.AddRange(f));
             using var featureMat = new Mat(_features.Count, list.Count / _features.Count, MatType.CV_32F, list.ToArray());
             using var labelMat = new Mat(_labels.Count, 1, MatType.CV_32S, _labels.ToArray());
             bayes.Train(featureMat, SampleTypes.RowSample, labelMat);

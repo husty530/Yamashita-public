@@ -38,7 +38,7 @@ namespace Yamashita.ML
             svm.KernelType = SVM.KernelTypes.Rbf;
             svm.Gamma = (double)param;
             var list = new List<float>();
-            foreach (var feature in _features) list.AddRange(feature);
+            _features.ForEach(f => list.AddRange(f));
             using var featureMat = new Mat(_features.Count, list.Count / _features.Count, MatType.CV_32F, list.ToArray());
             using var labelMat = new Mat(_labels.Count, 1, MatType.CV_32S, _labels.ToArray());
             svm.Train(featureMat, SampleTypes.RowSample, labelMat);

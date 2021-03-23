@@ -75,11 +75,11 @@ namespace Yamashita.ML
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
             using var sw = new StreamWriter(_dataPath, append);
             int count = 0;
-            foreach (var f in _features)
+            _features.ForEach(f =>
             {
                 for (int i = 0; i < f.Length; i++) sw.Write($"{f[i]},");
                 sw.Write($"{_labels[count++]}\n");
-            }
+            });
         }
 
         public abstract void Train(bool append, double? param);

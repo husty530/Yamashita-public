@@ -125,6 +125,7 @@ namespace Yamashita.ML
             var y1 = Math.Max(center.Y - size.Height / 2, 0);
             var x2 = Math.Min(center.X + size.Width / 2, image.Width);
             var y2 = Math.Min(center.Y + size.Height / 2, image.Height);
+            Cv2.Rectangle(image, new Rect(x1, y1, x2 - x1, y2 - y1), _colors[classes], 2);
             var textSize = Cv2.GetTextSize(label, HersheyFonts.HersheyTriplex, 0.3, 0, out var baseline);
             Cv2.Rectangle(image, new Rect(new Point(x1, y1 - textSize.Height - baseline),
                 new Size(textSize.Width, textSize.Height + baseline)), _colors[classes], Cv2.FILLED);

@@ -37,9 +37,9 @@ namespace Samples.BayesBinarization
                     Console.WriteLine($"{oneRects.Length} Rects is selected.");
                     var bay = new BayesClassifier(Mode.Train);
                     foreach (var r in zeroRects)
-                        foreach (var bgr in ImageToNormalizedList(image[r].Clone())) bay.AddData(bgr, 0);
+                        ImageToNormalizedList(image[r].Clone()).ForEach(bgr => bay.AddData(bgr, 0));
                     foreach (var r in oneRects)
-                        foreach (var bgr in ImageToNormalizedList(image[r].Clone())) bay.AddData(bgr, 1);
+                        ImageToNormalizedList(image[r].Clone()).ForEach(bgr => bay.AddData(bgr, 1));
                     bay.Train(false);
                 }
                 else if (mode == 1)

@@ -43,7 +43,7 @@ namespace Yamashita.DepthCamera
             var cfg = new Config();
             cfg.EnableStream(Stream.Depth, width, height);
             cfg.EnableStream(Stream.Color, Format.Rgb8);
-            var p = _pipeline.Start(cfg);
+            _pipeline.Start(cfg);
             _align = new Align(Stream.Depth);
             _dfill = new DecimationFilter();
             _depthto = new DisparityTransform(true);
@@ -67,16 +67,16 @@ namespace Yamashita.DepthCamera
                 {
                     var frames = _pipeline.WaitForFrames();
                     frames = _align.Process(frames).AsFrameSet();
-                    var color = frames.ColorFrame.DisposeWith(frames);
-                    var depth = frames.DepthFrame.DisposeWith(frames);
+                    using var color = frames.ColorFrame.DisposeWith(frames);
+                    using var depth = frames.DepthFrame.DisposeWith(frames);
                     var filterd = _dfill.Process(depth);
                     filterd = _depthto.Process(filterd);
                     filterd = _sfill.Process(filterd);
                     filterd = _tfill.Process(filterd);
                     filterd = _todepth.Process(filterd);
-                    depth = _hfill.Process<DepthFrame>(filterd);
+                    using var depth2 = _hfill.Process<DepthFrame>(filterd);
                     _converter.ToColorMat(color, ref colorMat);
-                    _converter.ToPointCloudMat(depth, ref pointCloudMat);
+                    _converter.ToPointCloudMat(depth2, ref pointCloudMat);
                     depthMat = pointCloudMat.Split()[2].Clone();
                     return (colorMat, depthMat, pointCloudMat);
                 })

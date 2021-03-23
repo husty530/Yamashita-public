@@ -24,7 +24,7 @@ namespace Yamashita.Feature
         {
             _samplingRate = 1.0 / dt;
             _sampleCount = inputList.Count;
-            var real = new Mat(_sampleCount, 1, MatType.CV_32F, inputList.ToArray());
+            using var real = new Mat(_sampleCount, 1, MatType.CV_32F, inputList.ToArray());
             _complex = new Mat();
             Cv2.Merge(new Mat[] { real, new Mat(_sampleCount, 1, MatType.CV_32F, 0.0) }, _complex);
         }

@@ -151,12 +151,12 @@ namespace Samples.DepthCameras
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             _videoConnector?.Dispose();
-            using (var cofd = new CommonOpenFileDialog()
+            using var cofd = new CommonOpenFileDialog()
             {
                 Title = "動画を選択してください",
                 InitialDirectory = "D:",
                 IsFolderPicker = false,
-            })
+            };
             {
                 if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
                 {

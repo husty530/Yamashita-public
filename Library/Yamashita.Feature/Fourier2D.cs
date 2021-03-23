@@ -25,7 +25,7 @@ namespace Yamashita.Feature
         public Fourier2D(Mat image)
         {
             if (image.Type() != MatType.CV_8U) throw new Exception("MatType must be CV_8U.");
-            var padded = new Mat();
+            using var padded = new Mat();
             var r = Cv2.GetOptimalDFTSize(image.Rows);
             var c = Cv2.GetOptimalDFTSize(image.Cols);
             Cv2.CopyMakeBorder(image, padded, 0, r - image.Rows, 0, c - image.Cols, BorderTypes.Constant, new Scalar(0));
@@ -63,10 +63,10 @@ namespace Yamashita.Feature
             var tr = new Rect(cx, 0, cx, cy);
             var bl = new Rect(0, cy, cx, cy);
             var br = new Rect(cx, cy, cx, cy);
-            var tl1 = tmp[tl];
-            var tr1 = tmp[tr];
-            var bl1 = tmp[bl];
-            var br1 = tmp[br];
+            using var tl1 = tmp[tl];
+            using var tr1 = tmp[tr];
+            using var bl1 = tmp[bl];
+            using var br1 = tmp[br];
             ViewImage = new Mat(tmp.Rows, tmp.Cols, MatType.CV_8U);
             tl1.CopyTo(ViewImage[br]);
             tr1.CopyTo(ViewImage[bl]);
@@ -82,7 +82,7 @@ namespace Yamashita.Feature
         {
             Cv2.Idft(_complex, _complex, DftFlags.Scale);
             Cv2.Split(_complex, out Mat[] planes);
-            var tmp = planes[0][new Rect(0, 0, planes[0].Width, planes[0].Height)].Clone();
+            using var tmp = planes[0][new Rect(0, 0, planes[0].Width, planes[0].Height)].Clone();
             feature = new float[tmp.Rows * tmp.Cols];
             var data = (float*)tmp.Data;
             for (int i = 0; i < feature.Length; i++)

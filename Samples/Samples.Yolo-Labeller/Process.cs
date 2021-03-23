@@ -36,18 +36,16 @@ namespace Yolo_Labeller
                 var labelPath = Path.ChangeExtension(_imgPaths[i], ".txt");
                 if (File.Exists(labelPath))
                 {
-                    using (var sr = new StreamReader(labelPath))
+                    using var sr = new StreamReader(labelPath);
+                    while (sr.Peek() != -1)
                     {
-                        while (sr.Peek() != -1)
-                        {
-                            var str = sr.ReadLine().Split(" ");
-                            var label = int.Parse(str[0]);
-                            var w = (int)(double.Parse(str[3]) * _size.Width);
-                            var h = (int)(double.Parse(str[4]) * _size.Height);
-                            var l = (int)(double.Parse(str[1]) * _size.Width) - w / 2;
-                            var t = (int)(double.Parse(str[2]) * _size.Height) - h / 2;
-                            _items[i].Add((new Rect(l, t, w, h), label));
-                        }
+                        var str = sr.ReadLine().Split(" ");
+                        var label = int.Parse(str[0]);
+                        var w = (int)(double.Parse(str[3]) * _size.Width);
+                        var h = (int)(double.Parse(str[4]) * _size.Height);
+                        var l = (int)(double.Parse(str[1]) * _size.Width) - w / 2;
+                        var t = (int)(double.Parse(str[2]) * _size.Height) - h / 2;
+                        _items[i].Add((new Rect(l, t, w, h), label));
                     }
                 }
             }
@@ -109,16 +107,14 @@ namespace Yolo_Labeller
         public static void Save()
         {
             var filename = Path.GetFileNameWithoutExtension(_imgPaths[FrameNumber]);
-            using (var sw = new StreamWriter($"{_saveDirectory}\\{filename}.txt", false))
+            using var sw = new StreamWriter($"{_saveDirectory}\\{filename}.txt", false);
+            foreach (var item in _items[FrameNumber])
             {
-                foreach (var item in _items[FrameNumber])
-                {
-                    var centerX = (double)(item.Rect.Left + item.Rect.Width / 2) / _size.Width;
-                    var centerY = (double)(item.Rect.Top + item.Rect.Height / 2) / _size.Height;
-                    var width = (double)item.Rect.Width / _size.Width;
-                    var height = (double)item.Rect.Height / _size.Height;
-                    sw.WriteLine($"{item.LabelIndex} {centerX:f6} {centerY:f6} {width:f6} {height:f6}");
-                }
+                var centerX = (double)(item.Rect.Left + item.Rect.Width / 2) / _size.Width;
+                var centerY = (double)(item.Rect.Top + item.Rect.Height / 2) / _size.Height;
+                var width = (double)item.Rect.Width / _size.Width;
+                var height = (double)item.Rect.Height / _size.Height;
+                sw.WriteLine($"{item.LabelIndex} {centerX:f6} {centerY:f6} {width:f6} {height:f6}");
             }
         }
 
@@ -142,9 +138,7 @@ namespace Yolo_Labeller
         {
             Cv2.Resize(img, img, _size);
             foreach (var item in _items[FrameNumber])
-            {
                 Cv2.Rectangle(img, item.Rect, _colors[item.LabelIndex], 3);
-            }
         }
     }
 }

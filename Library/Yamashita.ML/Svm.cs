@@ -39,8 +39,8 @@ namespace Yamashita.ML
             svm.Gamma = (double)param;
             var list = new List<float>();
             foreach (var feature in _features) list.AddRange(feature);
-            var featureMat = new Mat(_features.Count, list.Count / _features.Count, MatType.CV_32F, list.ToArray());
-            var labelMat = new Mat(_labels.Count, 1, MatType.CV_32S, _labels.ToArray());
+            using var featureMat = new Mat(_features.Count, list.Count / _features.Count, MatType.CV_32F, list.ToArray());
+            using var labelMat = new Mat(_labels.Count, 1, MatType.CV_32S, _labels.ToArray());
             svm.Train(featureMat, SampleTypes.RowSample, labelMat);
             svm.Save(_modelPath);
         }
@@ -53,8 +53,8 @@ namespace Yamashita.ML
                 output = new List<float>();
                 return;
             }
-            var inputMat = new Mat(input.Count, input[0].Length, MatType.CV_32F, input.SelectMany(i => i).ToArray());
-            var outputMat = new Mat();
+            using var inputMat = new Mat(input.Count, input[0].Length, MatType.CV_32F, input.SelectMany(i => i).ToArray());
+            using var outputMat = new Mat();
             _classifier.Predict(inputMat, outputMat);
             output = new List<float>();
             for (int i = 0; i < outputMat.Rows; i++) output.Add(outputMat.At<float>(i, 0));

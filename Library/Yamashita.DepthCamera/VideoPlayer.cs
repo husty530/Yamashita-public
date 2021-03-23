@@ -109,7 +109,7 @@ namespace Yamashita.DepthCamera
             var (color, time, _) = ReadFrame();
             var (depth16, _, _) = ReadFrame();
             var (pointCloud, _, _) = ReadFrame();
-            var depth8 = new Mat(depth16.Height, depth16.Width, MatType.CV_8U);
+            using var depth8 = new Mat(depth16.Height, depth16.Width, MatType.CV_8U);
             var d8 = depth8.DataPointer;
             var d16 = (ushort*)depth16.Data;
             for (int j = 0; j < depth16.Width * depth16.Height; j++)

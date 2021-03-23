@@ -232,9 +232,9 @@ namespace Yamashita.Control
 
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
-            var correctMat = _kalman.Correct(new Mat(m, 1, type, measurementVec));
-            var controlMat = controlVec != null ? new Mat(n, 1, type, controlVec) : null;
-            var predictMat = _kalman.Predict(controlMat);
+            using var correctMat = _kalman.Correct(new Mat(m, 1, type, measurementVec));
+            using var controlMat = controlVec != null ? new Mat(n, 1, type, controlVec) : null;
+            using var predictMat = _kalman.Predict(controlMat);
             var correctArray = new double[k];
             var predictArray = new double[k];
             for (int i = 0; i < k; i++)

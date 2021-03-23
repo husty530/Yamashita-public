@@ -28,6 +28,7 @@ namespace Samples.Yolo_Validation
 
         public static (string ClassName, int TotalTime, int AvgTime, int Tp, int Fp, int Fn, double P, double R, double Ap) Go(bool? save = false)
         {
+
             var totalTp = 0;
             var totalFp = 0;
             var totalFn = 0;
@@ -110,13 +111,11 @@ namespace Samples.Yolo_Validation
             }
             if (cfg == "" || names == "" || weights == "") return "Model Not Found Error";
             var count = 0;
-            using (var sr = new StreamReader(names))
+            using var sr = new StreamReader(names);
+            while (sr.Peek() != -1)
             {
-                while (sr.Peek() != -1)
-                {
-                    var className = sr.ReadLine();
-                    if (count++ == classNum) _className = className;
-                }
+                var className = sr.ReadLine();
+                if (count++ == classNum) _className = className;
             }
             if (classNum < 0 || classNum > count - 1) return "Invalid Class Number Error";
             if (_iouThresh < 0.0 || _iouThresh > 1.0) return "Invalid IoU Threshold Range Error";
@@ -153,27 +152,25 @@ namespace Samples.Yolo_Validation
                 _dataSet = new List<(string Name, Mat Image, List<(int Label, Point Center, Size Size)> Labels)>();
                 for (int i = 0; i < imgPaths.Count; i++)
                 {
-                    var img = new Mat(imgPaths[i]);
+                    using var img = new Mat(imgPaths[i]);
                     var name = Path.GetFileNameWithoutExtension(imgPaths[i]);
                     foreach (var lp in labPaths)
                     {
                         if (name == Path.GetFileNameWithoutExtension(lp))
                         {
-                            using (var sw = new StreamReader(lp))
+                            using var sw = new StreamReader(lp);
+                            var labList = new List<(int, Point, Size)>();
+                            while (sw.Peek() != -1)
                             {
-                                var labList = new List<(int, Point, Size)>();
-                                while (sw.Peek() != -1)
-                                {
-                                    var s = sw.ReadLine().Split(" ");
-                                    var label = int.Parse(s[0]);
-                                    var x = (int)(double.Parse(s[1]) * img.Width);
-                                    var y = (int)(double.Parse(s[2]) * img.Height);
-                                    var w = (int)(double.Parse(s[3]) * img.Width);
-                                    var h = (int)(double.Parse(s[4]) * img.Height);
-                                    labList.Add((label, new Point(x, y), new Size(w, h)));
-                                }
-                                _dataSet.Add((name, img, labList));
+                                var s = sw.ReadLine().Split(" ");
+                                var label = int.Parse(s[0]);
+                                var x = (int)(double.Parse(s[1]) * img.Width);
+                                var y = (int)(double.Parse(s[2]) * img.Height);
+                                var w = (int)(double.Parse(s[3]) * img.Width);
+                                var h = (int)(double.Parse(s[4]) * img.Height);
+                                labList.Add((label, new Point(x, y), new Size(w, h)));
                             }
+                            _dataSet.Add((name, img, labList));
                             break;
                         }
                     }

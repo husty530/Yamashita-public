@@ -65,9 +65,9 @@ namespace Yamashita.DepthCamera
             var observable = Observable.Range(0, int.MaxValue, ThreadPoolScheduler.Instance)
                 .Select(i =>
                 {
-                    var capture = _device.GetCapture();
-                    var colorImg = _transformation.ColorImageToDepthCamera(capture);
-                    var pointCloudImg = _transformation.DepthImageToPointCloud(capture.Depth);
+                    using var capture = _device.GetCapture();
+                    using var colorImg = _transformation.ColorImageToDepthCamera(capture);
+                    using var pointCloudImg = _transformation.DepthImageToPointCloud(capture.Depth);
                     _converter.ToColorMat(colorImg, ref colorMat);
                     _converter.ToPointCloudMat(pointCloudImg, ref pointCloudMat);
                     depthMat = pointCloudMat.Split()[2].Clone();

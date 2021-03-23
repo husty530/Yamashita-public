@@ -23,7 +23,7 @@ namespace Samples.BayesBinarization
                 Console.WriteLine("Target image's path. The image must have 3 channels");
                 Console.Write("Input : ");
                 var path = Console.ReadLine();
-                var image = Cv2.ImRead(path);
+                using var image = Cv2.ImRead(path);
                 Cv2.Resize(image, image, new Size(640, 480));
                 _width = image.Width;
                 _height = image.Height;
@@ -54,7 +54,7 @@ namespace Samples.BayesBinarization
                     watch.Start();
                     if (choice == 0)
                     {
-                        var result = new Mat();
+                        using var result = new Mat();
                         Cv2.BitwiseNot(ListToImage(output), result);
                         Cv2.ImShow(" ", result);
                     }

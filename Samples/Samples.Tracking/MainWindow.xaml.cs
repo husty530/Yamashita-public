@@ -17,6 +17,7 @@ namespace Samples.Tracking
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
+
         private IDisposable _connector;
         private readonly IYolo detector;
 

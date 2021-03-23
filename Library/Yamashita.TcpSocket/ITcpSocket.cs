@@ -1,5 +1,4 @@
-﻿using System.IO;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 
 namespace Yamashita.TcpSocket
 {
@@ -22,8 +21,8 @@ namespace Yamashita.TcpSocket
         /// <summary>
         /// byte配列を送る
         /// </summary>
-        /// <param name="sendBytes"></param>
-        public void SendBytes(byte[] sendBytes);
+        /// <param name="bytes"></param>
+        public void SendBytes(byte[] bytes);
 
         /// <summary>
         /// byte配列を受け取る

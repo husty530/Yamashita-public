@@ -136,16 +136,13 @@ namespace Samples.DepthCameras
 
         private void SelectDirButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var cofd = new CommonOpenFileDialog()
+            using var cofd = new CommonOpenFileDialog()
             {
                 Title = "フォルダを選択してください",
                 InitialDirectory = "D:",
                 IsFolderPicker = true,
-            })
-            {
-                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
-                    SaveDir.Value = cofd.FileName;
-            }
+            };
+            if (cofd.ShowDialog() == CommonFileDialogResult.Ok) SaveDir.Value = cofd.FileName;
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -157,28 +154,26 @@ namespace Samples.DepthCameras
                 InitialDirectory = "D:",
                 IsFolderPicker = false,
             };
+            if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    _isConnected = true;
-                    PlayPauseButton.Content = "| |";
-                    PlayPauseButton.IsEnabled = true;
-                    PlayPauseButton.Visibility = Visibility.Visible;
-                    PlaySlider.Visibility = Visibility.Visible;
-                    _player = new VideoPlayer(cofd.FileName);
-                    PlaySlider.Maximum = _player.PositionMax;
-                    _videoConnector = _player.Start(0)
-                        .Finally(() => _isConnected = false)
-                        .Subscribe(www =>
+                _isConnected = true;
+                PlayPauseButton.Content = "| |";
+                PlayPauseButton.IsEnabled = true;
+                PlayPauseButton.Visibility = Visibility.Visible;
+                PlaySlider.Visibility = Visibility.Visible;
+                _player = new VideoPlayer(cofd.FileName);
+                PlaySlider.Maximum = _player.PositionMax;
+                _videoConnector = _player.Start(0)
+                    .Finally(() => _isConnected = false)
+                    .Subscribe(www =>
+                    {
+                        Dispatcher.Invoke(() =>
                         {
-                            Dispatcher.Invoke(() =>
-                            {
-                                ColorFrame.Value = www.Color.ToBitmapSource();
-                                DepthFrame.Value = www.Depth8.ToBitmapSource();
-                                PlaySlider.Value = www.Position;
-                            });
+                            ColorFrame.Value = www.Color.ToBitmapSource();
+                            DepthFrame.Value = www.Depth8.ToBitmapSource();
+                            PlaySlider.Value = www.Position;
                         });
-                }
+                    });
             }
         }
 

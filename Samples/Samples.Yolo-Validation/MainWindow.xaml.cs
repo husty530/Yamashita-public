@@ -18,52 +18,46 @@ namespace Samples.Yolo_Validation
 
         private void ModelDirButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var cofd = new CommonOpenFileDialog()
+            using var cofd = new CommonOpenFileDialog()
             {
                 Title = "フォルダを選択してください",
                 InitialDirectory = selectedDir,
                 IsFolderPicker = true,
-            })
+            };
+            if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    ModelDirButton.Content = cofd.FileName;
-                    selectedDir = cofd.FileName;
-                }
+                ModelDirButton.Content = cofd.FileName;
+                selectedDir = cofd.FileName;
             }
         }
 
         private void ImageDirButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var cofd = new CommonOpenFileDialog()
+            using var cofd = new CommonOpenFileDialog()
             {
                 Title = "フォルダを選択してください",
                 InitialDirectory = selectedDir,
                 IsFolderPicker = true,
-            })
+            };
+            if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    ImageDirButton.Content = cofd.FileName;
-                    selectedDir = cofd.FileName;
-                }
+                ImageDirButton.Content = cofd.FileName;
+                selectedDir = cofd.FileName;
             }
         }
 
         private void LabelDirButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var cofd = new CommonOpenFileDialog()
+            using var cofd = new CommonOpenFileDialog()
             {
                 Title = "フォルダを選択してください",
                 InitialDirectory = selectedDir,
                 IsFolderPicker = true,
-            })
+            };
+            if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                if (cofd.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    LabelDirButton.Content = cofd.FileName;
-                    selectedDir = cofd.FileName;
-                }
+                LabelDirButton.Content = cofd.FileName;
+                selectedDir = cofd.FileName;
             }
         }
 

@@ -36,8 +36,7 @@ namespace Samples.Tracking
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             _connector?.Dispose();
-            var op = new OpenFileDialog();
-            op.Filter = "Video(*.mp4, *.avi)|*.mp4;*.avi";
+            var op = new OpenFileDialog { Filter = "Video(*.mp4, *.avi)|*.mp4;*.avi" };
             if (op.ShowDialog() == true)
             {
                 var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3);

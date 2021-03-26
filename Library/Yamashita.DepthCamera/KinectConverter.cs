@@ -1,5 +1,4 @@
-﻿using System;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 using Microsoft.Azure.Kinect.Sensor;
 
 namespace Yamashita.DepthCamera
@@ -9,80 +8,48 @@ namespace Yamashita.DepthCamera
 
         // フィールド
 
-        private readonly int _width;
-        private readonly int _height;
-        private readonly double pitch;
-        private readonly double yaw;
-        private readonly double cx;
-        private readonly double cy;
-        private readonly double fx;
-        private readonly double fy;
-
-
-        // プロパティ
-
-        private double CenterX => _width / 2;
-
-        private double CenterY => _height / 2;
+        private readonly int width;
+        private readonly int height;
 
 
         // コンストラクタ
 
-        public KinectConverter(Size size, double pitchDeg = 5.8, double yawDeg = 1.3, double cx = 154.418, double cy = 169.663, double fx = 251.977, double fy = 252.004)
+        public KinectConverter(Size size)
         {
-            _width = size.Width;
-            _height = size.Height;
-            pitch = pitchDeg * Math.PI / 180;
-            yaw = yawDeg * Math.PI / 180;
-            this.cx = cx;
-            this.cy = cy;
-            this.fx = fx;
-            this.fy = fy;
+            this.width = size.Width;
+            this.height = size.Height;
         }
 
 
         // メソッド
 
-        public void ToColorMat(Image colorImg, ref Mat colorMat)
+        public unsafe void ToColorMat(Image colorImg, ref Mat colorMat)
         {
-            if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(_height, _width, MatType.CV_8UC3);
-            var colorArray = colorImg.GetPixels<BGRA>().ToArray();
-            unsafe
+            if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(height, width, MatType.CV_8UC3);
+            var cAry = colorImg.GetPixels<BGRA>().ToArray();
+            var p = colorMat.DataPointer;
+            int index = 0;
+            for (int i = 0; i < cAry.Length; i++)
             {
-                var pixels = colorMat.DataPointer;
-                int index = 0;
-                for (int i = 0; i < colorArray.Length; i++)
-                {
-                    pixels[index++] = colorArray[i].B;
-                    pixels[index++] = colorArray[i].G;
-                    pixels[index++] = colorArray[i].R;
-                }
+                p[index++] = cAry[i].B;
+                p[index++] = cAry[i].G;
+                p[index++] = cAry[i].R;
             }
         }
 
-        public void ToPointCloudMat(Image pointCloudImg, ref Mat pointCloudMat)
+        public unsafe void ToPointCloudMat(Image pointCloudImg, ref Mat pointCloudMat)
         {
-            if (pointCloudMat.Type() != MatType.CV_16SC3) pointCloudMat = new Mat(_height, _width, MatType.CV_16UC3);
-            var pointCloudArray = pointCloudImg.GetPixels<Short3>().ToArray();
-            unsafe
+            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(height, width, MatType.CV_16UC3);
+            var pdAry = pointCloudImg.GetPixels<Short3>().ToArray();
+            var p = (ushort*)pointCloudMat.Data;
+            int index = 0;
+            for (int i = 0; i < pdAry.Length; i++)
             {
-                var pixels = (ushort*)pointCloudMat.Data;
-                int index = 0;
-                for (int i = 0; i < pointCloudArray.Length; i++)
-                {
-                    var px = i % _width;
-                    var py = i / _width;
-                    var prex = (px - cx) * (ushort)pointCloudArray[i].Z / fx;
-                    var prey = (py - cy) * (ushort)pointCloudArray[i].Z / fy;
-                    var prez = (short)((ushort)pointCloudArray[i].Z * Math.Cos(pitch) - prey * Math.Sin(pitch));
-                    var z3d = (short)(prez * Math.Cos(yaw) + prex * Math.Sin(yaw));
-                    var x3d = (px - CenterX) * z3d / fx;
-                    var y3d = (py - CenterY) * z3d / fy;
-                    pixels[index++] = (ushort)x3d;
-                    pixels[index++] = (ushort)y3d;
-                    pixels[index++] = (ushort)z3d;
-                }
+                p[index++] = (ushort)pdAry[i].X;
+                p[index++] = (ushort)pdAry[i].Y;
+                p[index++] = (ushort)pdAry[i].Z;
             }
         }
+
     }
-    }
+}

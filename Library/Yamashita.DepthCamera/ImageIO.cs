@@ -18,17 +18,15 @@ namespace Yamashita.DepthCamera
         /// </summary>
         /// <param name="saveDirectory">保存先ディレクトリ</param>
         /// <param name="baseName">ファイルの識別名</param>
-        /// <param name="colorMat">RGB画像</param>
-        /// <param name="depthMat">Depth画像</param>
-        /// <param name="pointCloudMat">PointCloud画像</param>
-        public static void SaveAsZip(string saveDirectory, string baseName, Mat colorMat, Mat depthMat, Mat pointCloudMat)
+        public static void SaveAsZip(string saveDirectory, string baseName, BgrXyzMat input)
         {
             var zipFileNumber = 0;
+            if (!Directory.Exists(saveDirectory)) throw new System.Exception("Directory doesn't Exist!");
             while (File.Exists($"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip")) zipFileNumber++;
             var filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
-            Cv2.ImWrite($"{filePath}_C.png", colorMat);
-            Cv2.ImWrite($"{filePath}_D.png", depthMat);
-            Cv2.ImWrite($"{filePath}_P.png", pointCloudMat);
+            Cv2.ImWrite($"{filePath}_C.png", input.BGR);
+            Cv2.ImWrite($"{filePath}_D.png", input.Depth16);
+            Cv2.ImWrite($"{filePath}_P.png", input.XYZ);
             using var z = ZipFile.Open($"{filePath}", ZipArchiveMode.Update);
             z.CreateEntryFromFile($"{filePath}_C.png", $"C.png", CompressionLevel.Optimal);
             z.CreateEntryFromFile($"{filePath}_D.png", $"D.png", CompressionLevel.Optimal);
@@ -39,23 +37,17 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// zipからRGB, D, PointCloud画像を取り出す
+        /// zipからRGB, PointCloud画像を取り出す
         /// </summary>
         /// <param name="filePath">zipのファイルパス</param>
-        /// <returns>3枚の画像のタプル</returns>
-        public static (Mat Color, Mat Depth, Mat PointCloud) OpenZip(string filePath)
+        /// <returns></returns>
+        public static BgrXyzMat OpenZip(string filePath)
         {
+            if (!File.Exists(filePath)) throw new System.Exception("File doesn't Exist!");
             using var archive = ZipFile.OpenRead(filePath);
-            var e1 = archive.GetEntry("C.png");
-            e1.ExtractToFile(@"C.png", true);
-            var e2 = archive.GetEntry("D.png");
-            e1.ExtractToFile(@"D.png", true);
-            var e3 = archive.GetEntry("P.png");
-            e3.ExtractToFile(@"P.png", true);
-            var color = new Mat(@"C.png");
-            var depth = new Mat(@"D.png", ImreadModes.Unchanged);
-            var points = new Mat(@"P.png", ImreadModes.Unchanged);
-            return (color, depth, points);
+            archive.GetEntry("C.png").ExtractToFile(@"C.png", true);
+            archive.GetEntry("P.png").ExtractToFile(@"P.png", true);
+            return new BgrXyzMat(new Mat(@"C.png"), new Mat(@"P.png", ImreadModes.Unchanged));
         }
 
     }

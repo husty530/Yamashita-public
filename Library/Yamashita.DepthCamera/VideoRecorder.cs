@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using OpenCvSharp;
 
 namespace Yamashita.DepthCamera
 {
@@ -41,29 +40,31 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// 一時刻分の書き込み
         /// </summary>
-        /// <param name="color"></param>
-        /// <param name="depth"></param>
-        /// <param name="pointCloud"></param>
-        public void WriteFrame(Mat color, Mat depth, Mat pointCloud)
+        /// <param name="Bgrxyz"></param>
+        public void WriteFrame(BgrXyzMat Bgrxyz)
         {
+
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
             _binWriter.Write((ushort)0);
-            var _buffer = color.ImEncode();
-            _binWriter.Write(_buffer.Length);
-            _binWriter.Write(_buffer);
+            var buffer = Bgrxyz.BGR.ImEncode();
+            _binWriter.Write(buffer.Length);
+            _binWriter.Write(buffer);
+
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
             _binWriter.Write((ushort)0);
-            _buffer = depth.ImEncode();
-            _binWriter.Write(_buffer.Length);
-            _binWriter.Write(_buffer);
+            buffer = Bgrxyz.Depth16.ImEncode();
+            _binWriter.Write(buffer.Length);
+            _binWriter.Write(buffer);
+
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
             _binWriter.Write((ushort)0);
-            _buffer = pointCloud.ImEncode();
-            _binWriter.Write(_buffer.Length);
-            _binWriter.Write(_buffer);
+            buffer = Bgrxyz.XYZ.ImEncode();
+            _binWriter.Write(buffer.Length);
+            _binWriter.Write(buffer);
+
         }
 
         /// <summary>

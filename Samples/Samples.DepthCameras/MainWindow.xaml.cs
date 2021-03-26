@@ -22,10 +22,16 @@ namespace Samples.DepthCameras
         private IDisposable _videoConnector;
         private bool _isConnected;
         private VideoPlayer _player;
+        private OpenCvSharp.Point left = new OpenCvSharp.Point(130, 0);
+        private OpenCvSharp.Point right = new OpenCvSharp.Point(190, 0);
+        private OpenCvSharp.Point top = new OpenCvSharp.Point(0, 114);
+        private OpenCvSharp.Point bottom = new OpenCvSharp.Point(0, 174);
 
         public ReactiveProperty<string> StartButtonFace { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> RecButtonFace { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> SaveDir { private set; get; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> LR { private set; get; } = new ReactiveProperty<string>();
+        public ReactiveProperty<string> TB { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<BitmapSource> ColorFrame { private set; get; } = new ReactiveProperty<BitmapSource>();
         public ReactiveProperty<BitmapSource> DepthFrame { private set; get; } = new ReactiveProperty<BitmapSource>();
 
@@ -63,10 +69,17 @@ namespace Samples.DepthCameras
                 _cameraConnector = _camera.Connect()
                     .Subscribe(imgs =>
                     {
+                        var l = imgs.GetPointInfo(left);
+                        var r = imgs.GetPointInfo(right);
+                        var t = imgs.GetPointInfo(top);
+                        var b = imgs.GetPointInfo(bottom);
+                        var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            ColorFrame.Value = imgs.ColorMat.ToBitmapSource();
-                            DepthFrame.Value = imgs.DepthMat.ToBitmapSource();
+                            LR.Value = $"R - L = {r.Z - l.Z} px";
+                            TB.Value = $"B - T = {b.Z - t.Z} px";
+                            ColorFrame.Value = imgs.BGR.ToBitmapSource();
+                            DepthFrame.Value = d8.ToBitmapSource();
                         });
                     });
             }
@@ -87,8 +100,8 @@ namespace Samples.DepthCameras
             _camera.Connect()
                 .TakeWhile(imgs =>
                 {
-                    if (imgs.ColorMat.Empty()) return true;
-                    ImageIO.SaveAsZip(SaveDir.Value, "", imgs.ColorMat, imgs.DepthMat, imgs.PointCloudMat);
+                    if (imgs.BGR.Empty()) return true;
+                    ImageIO.SaveAsZip(SaveDir.Value, "", imgs);
                     return false;
                 })
                 .Subscribe();
@@ -113,13 +126,20 @@ namespace Samples.DepthCameras
                 var writer = new VideoRecorder(filePath);
                 _cameraConnector = _camera.Connect()
                     .Finally(() => writer.Close())
-                    .Subscribe(www =>
+                    .Subscribe(imgs =>
                     {
-                        writer.WriteFrame(www.ColorMat, www.DepthMat, www.PointCloudMat);
+                        writer.WriteFrame(imgs);
+                        var l = imgs.GetPointInfo(left);
+                        var r = imgs.GetPointInfo(right);
+                        var t = imgs.GetPointInfo(top);
+                        var b = imgs.GetPointInfo(bottom);
+                        var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            ColorFrame.Value = www.ColorMat.ToBitmapSource();
-                            DepthFrame.Value = www.DepthMat.ToBitmapSource();
+                            LR.Value = $"R - L = {r.Z - l.Z} px";
+                            TB.Value = $"B - T = {b.Z - t.Z} px";
+                            ColorFrame.Value = imgs.BGR.ToBitmapSource();
+                            DepthFrame.Value = d8.ToBitmapSource();
                         });
                     });
             }
@@ -165,13 +185,14 @@ namespace Samples.DepthCameras
                 PlaySlider.Maximum = _player.PositionMax;
                 _videoConnector = _player.Start(0)
                     .Finally(() => _isConnected = false)
-                    .Subscribe(www =>
+                    .Subscribe(ww =>
                     {
+                        var d8 = ww.Bgrxyz.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            ColorFrame.Value = www.Color.ToBitmapSource();
-                            DepthFrame.Value = www.Depth8.ToBitmapSource();
-                            PlaySlider.Value = www.Position;
+                            ColorFrame.Value = ww.Bgrxyz.BGR.ToBitmapSource();
+                            DepthFrame.Value = d8.ToBitmapSource();
+                            PlaySlider.Value = ww.Position;
                         });
                     });
             }
@@ -193,13 +214,14 @@ namespace Samples.DepthCameras
                 PlayPauseButton.Content = "| |";
                 _videoConnector = _player.Start((int)PlaySlider.Value)
                     .Finally(() =>_isConnected = false)
-                    .Subscribe(www =>
+                    .Subscribe(ww =>
                     {
+                        var d8 = ww.Bgrxyz.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            ColorFrame.Value = www.Color.ToBitmapSource();
-                            DepthFrame.Value = www.Depth8.ToBitmapSource();
-                            PlaySlider.Value = www.Position;
+                            ColorFrame.Value = ww.Bgrxyz.BGR.ToBitmapSource();
+                            DepthFrame.Value = d8.ToBitmapSource();
+                            PlaySlider.Value = ww.Position;
                         });
                     });
             }
@@ -207,9 +229,9 @@ namespace Samples.DepthCameras
 
         private void PlaySlider_PreviewMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var (color, depth, _, _) = _player.GetOneFrameSet((int)PlaySlider.Value);
-            ColorFrame.Value = color.ToBitmapSource();
-            DepthFrame.Value = depth.ToBitmapSource();
+            var imgs = _player.GetOneFrameSet((int)PlaySlider.Value);
+            ColorFrame.Value = imgs.BGR.ToBitmapSource();
+            DepthFrame.Value = imgs.Depth8(300, 5000).ToBitmapSource();
         }
 
         private bool AttemptConnection()

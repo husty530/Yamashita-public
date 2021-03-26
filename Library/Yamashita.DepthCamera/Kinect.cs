@@ -14,6 +14,9 @@ namespace Yamashita.DepthCamera
         private readonly Device _device;
         private readonly Transformation _transformation;
         private readonly KinectConverter _converter;
+        private readonly float pitch;
+        private readonly float yaw;
+        private readonly float roll;
 
 
         // プロパティ
@@ -29,8 +32,11 @@ namespace Yamashita.DepthCamera
         /// Kinectのコンストラクタ
         /// </summary>
         /// <param name="config">デバイスのユーザー設定(任意)</param>
-        public Kinect(DeviceConfiguration config)
+        public Kinect(DeviceConfiguration config, float pitch = -5.8f, float yaw = -1.3f, float roll = 0f)
         {
+            this.pitch = (float)(pitch * Math.PI / 180);
+            this.yaw = (float)(yaw * Math.PI / 180);
+            this.roll = (float)(roll * Math.PI / 180);
             _device = Device.Open();
             _device.StartCameras(config);
             _transformation = _device.GetCalibration().CreateTransformation();
@@ -43,7 +49,7 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// Kinectのデフォルトコンストラクタ
         /// </summary>
-        public Kinect()
+        public Kinect(float pitch = 5.8f, float yaw = 1.3f, float roll = 0f)
             : this(new DeviceConfiguration
             {
                 ColorFormat = ImageFormat.ColorBGRA32,
@@ -57,10 +63,9 @@ namespace Yamashita.DepthCamera
 
         // メソッド
 
-        public IObservable<(Mat ColorMat, Mat DepthMat, Mat PointCloudMat)> Connect()
+        public IObservable<BgrXyzMat> Connect()
         {
             var colorMat = new Mat();
-            var depthMat = new Mat();
             var pointCloudMat = new Mat();
             var observable = Observable.Range(0, int.MaxValue, ThreadPoolScheduler.Instance)
                 .Select(i =>
@@ -70,8 +75,9 @@ namespace Yamashita.DepthCamera
                     using var pointCloudImg = _transformation.DepthImageToPointCloud(capture.Depth);
                     _converter.ToColorMat(colorImg, ref colorMat);
                     _converter.ToPointCloudMat(pointCloudImg, ref pointCloudMat);
-                    depthMat = pointCloudMat.Split()[2].Clone();
-                    return (colorMat, depthMat, pointCloudMat);
+                    var pc = new BgrXyzMat(colorMat, pointCloudMat);
+                    pc.Rotate(pitch, yaw, roll);
+                    return pc;
                 })
                 .Publish()
                 .RefCount();

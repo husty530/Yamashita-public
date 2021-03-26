@@ -1,5 +1,4 @@
 ﻿using System;
-using OpenCvSharp;
 
 namespace Yamashita.DepthCamera
 {
@@ -9,8 +8,8 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// カメラのストリーム配信開始
         /// </summary>
-        /// <returns>RGB, D, PointCloud画像のタプル</returns>
-        public IObservable<(Mat ColorMat, Mat DepthMat, Mat PointCloudMat)> Connect();
+        /// <returns></returns>
+        public IObservable<BgrXyzMat> Connect();
 
         /// <summary>
         /// 配信の停止
@@ -18,4 +17,5 @@ namespace Yamashita.DepthCamera
         public void Disconnect();
 
     }
+
 }

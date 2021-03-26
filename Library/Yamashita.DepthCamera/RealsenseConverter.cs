@@ -8,16 +8,16 @@ namespace Yamashita.DepthCamera
 
         // フィールド
 
-        private readonly int _width;
-        private readonly int _height;
+        private readonly int width;
+        private readonly int height;
 
 
         // コンストラクタ
 
         public RealsenseConverter(int width, int height)
         {
-            _width = width;
-            _height = height;
+            this.width = width;
+            this.height = height;
         }
 
 
@@ -25,7 +25,7 @@ namespace Yamashita.DepthCamera
 
         public void ToColorMat(VideoFrame frame, ref Mat colorMat)
         {
-            colorMat = new Mat(_height, _width, MatType.CV_8UC3);
+            colorMat = new Mat(height, width, MatType.CV_8UC3);
             unsafe
             {
                 var rgbData = (byte*)frame.Data;
@@ -37,12 +37,12 @@ namespace Yamashita.DepthCamera
                     pixels[i * 3 + 2] = rgbData[i * 3 + 0];
                 }
             }
-            Cv2.Resize(colorMat, colorMat, new Size(_width / 2, _height / 2));
+            Cv2.Resize(colorMat, colorMat, new Size(width / 2, height / 2));
         }
 
         public void ToPointCloudMat(DepthFrame frame, ref Mat pointCloudMat)
         {
-            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(_height / 2, _width / 2, MatType.CV_16UC3);
+            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(height / 2, width / 2, MatType.CV_16UC3);
             unsafe
             {
                 var pData = (float*)(new PointCloud().Process(frame).Data);

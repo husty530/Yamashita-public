@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Samples.DepthCameras"
         mc:Ignorable="d"
-        Title="Depth Cameras" Height="450" Width="800" Background="Black">
+        Title="Depth Cameras" Height="600" Width="800" Background="Black">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="1*"/>
@@ -35,19 +36,25 @@
         <Viewbox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Margin="5">
             <Label Content="{Binding SaveDir.Value}" Foreground="White"/>
         </Viewbox>
-        <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="10">
+        <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+            <Label Content="{Binding LR.Value}" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Margin="5">
+            <Label Content="{Binding TB.Value}" Foreground="White"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="10">
             <Image Source="{Binding ColorFrame.Value}"/>
         </Viewbox>
-        <Viewbox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Margin="10">
+        <Viewbox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Margin="10">
             <Image Source="{Binding DepthFrame.Value}"/>
         </Viewbox>
-        <Viewbox Grid.Row="2" Grid.Column="0" Margin="5">
+        <Viewbox Grid.Row="3" Grid.Column="0" Margin="5">
             <Button x:Name="PlayButton" Content="Play" Width="50" Click="PlayButton_Click"/>
         </Viewbox>
-        <Viewbox Grid.Row="2" Grid.Column="1" Margin="5">
+        <Viewbox Grid.Row="3" Grid.Column="1" Margin="5">
             <Button x:Name="PlayPauseButton" Content="▶" Foreground="Green" Width="50" Click="PlayPauseButton_Click" IsEnabled="False" Visibility="Hidden"/>
         </Viewbox>
-        <Viewbox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" Margin="5">
+        <Viewbox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="4" Margin="5">
             <Slider x:Name="PlaySlider" Width="250" IsEnabled="False" Visibility="Hidden" PreviewMouseLeftButtonUp="PlaySlider_PreviewMouseLeftButtonUp"/>
         </Viewbox>
     </Grid>

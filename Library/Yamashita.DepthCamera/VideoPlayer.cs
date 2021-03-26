@@ -17,8 +17,6 @@ namespace Yamashita.DepthCamera
 
         private readonly BinaryReader _binReader;
         private readonly long[] _indexes;
-        private readonly int _minDistance;
-        private readonly int _maxDistance;
         private long _pretime;
         private int _positionIndex;
 
@@ -36,17 +34,15 @@ namespace Yamashita.DepthCamera
         /// DepthCamera用のプレーヤー
         /// </summary>
         /// <param name="filePath"></param>
-        /// <param name="minDistance"></param>
-        /// <param name="maxDistance"></param>
-        public VideoPlayer(string filePath, int minDistance = 300, int maxDistance = 5000)
+        public VideoPlayer(string filePath)
         {
+            if (!File.Exists(filePath)) throw new Exception("File doesn't Exist!");
             _binReader = new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             var fileFormatCode = Encoding.ASCII.GetString(_binReader.ReadBytes(8));
             if (fileFormatCode != "HQIMST00" && fileFormatCode != "HUSTY000") throw new Exception();
             _binReader.BaseStream.Seek(8, SeekOrigin.Current);
             var indexesPos = _binReader.ReadInt64();
             if (indexesPos <= 0) throw new Exception();
-
             _binReader.BaseStream.Position = indexesPos;
             var indexes = new List<long>();
             while (_binReader.BaseStream.Position < _binReader.BaseStream.Length)
@@ -56,8 +52,6 @@ namespace Yamashita.DepthCamera
             }
             _indexes = indexes.ToArray();
             _binReader.BaseStream.Position = 0;
-            _minDistance = minDistance;
-            _maxDistance = maxDistance;
             _pretime = 0;
         }
 
@@ -69,29 +63,22 @@ namespace Yamashita.DepthCamera
         /// </summary>
         /// <param name="position">開始するフレーム番号</param>
         /// <returns></returns>
-        unsafe public IObservable<(Mat Color, Mat Depth8, Mat Depth16, Mat PointCloud, int Position)> Start(int position)
+        unsafe public IObservable<(BgrXyzMat Bgrxyz, int Position)> Start(int position)
         {
             Seek(position * 3);
             var observable = Observable.Range(0, FrameCount / 3 - position, ThreadPoolScheduler.Instance)
                 .Select(i =>
                 {
                     var (color, time, _) = ReadFrame();
-                    var (depth16, _, _) = ReadFrame();
+
+                    var _ = ReadFrame();
+
                     var (pointCloud, _, _) = ReadFrame();
-                    var depth8 = new Mat(depth16.Height, depth16.Width, MatType.CV_8U);
-                    var d8 = depth8.DataPointer;
-                    var d16 = (ushort*)depth16.Data;
-                    for (int j = 0; j < depth16.Width * depth16.Height; j++)
-                    {
-                        if (d16[j] < 300) d8[j] = 0;
-                        else if (d16[j] < _maxDistance) d8[j] = (byte)((d16[j] - _minDistance) * 255 / (_maxDistance - _minDistance));
-                        else d8[j] = 255;
-                    }
                     time /= 10000;
                     var dt = time - _pretime > 15 ? (int)(time - _pretime - 15) : 0;
                     Thread.Sleep(dt);
                     _pretime = time;
-                    return (color, depth8, depth16, pointCloud, position++);
+                    return (new BgrXyzMat(color, pointCloud), position++);
                 })
                 .Publish()
                 .RefCount();
@@ -103,23 +90,16 @@ namespace Yamashita.DepthCamera
         /// </summary>
         /// <param name="position">取得するフレーム番号</param>
         /// <returns></returns>
-        unsafe public (Mat Color, Mat Depth8, Mat Depth16, Mat PointCloud) GetOneFrameSet(int position)
+        unsafe public BgrXyzMat GetOneFrameSet(int position)
         {
             Seek(position * 3);
             var (color, time, _) = ReadFrame();
-            var (depth16, _, _) = ReadFrame();
+
+            var _ = ReadFrame();
+
             var (pointCloud, _, _) = ReadFrame();
-            using var depth8 = new Mat(depth16.Height, depth16.Width, MatType.CV_8U);
-            var d8 = depth8.DataPointer;
-            var d16 = (ushort*)depth16.Data;
-            for (int j = 0; j < depth16.Width * depth16.Height; j++)
-            {
-                if (d16[j] < 300) d8[j] = 0;
-                else if (d16[j] < _maxDistance) d8[j] = (byte)((d16[j] - _minDistance) * 255 / (_maxDistance - _minDistance));
-                else d8[j] = 255;
-            }
             _pretime = time;
-            return (color, depth8, depth16, pointCloud);
+            return new BgrXyzMat(color, pointCloud);
         }
 
         /// <summary>

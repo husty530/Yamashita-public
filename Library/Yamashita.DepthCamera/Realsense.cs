@@ -57,10 +57,9 @@ namespace Yamashita.DepthCamera
         
         // メソッド
 
-        public IObservable<(Mat ColorMat, Mat DepthMat, Mat PointCloudMat)> Connect()
+        public IObservable<BgrXyzMat> Connect()
         {
             var colorMat = new Mat();
-            var depthMat = new Mat();
             var pointCloudMat = new Mat();
             var observable = Observable.Range(0, int.MaxValue, ThreadPoolScheduler.Instance)
                 .Select(i =>
@@ -77,8 +76,7 @@ namespace Yamashita.DepthCamera
                     using var depth2 = _hfill.Process<DepthFrame>(filterd);
                     _converter.ToColorMat(color, ref colorMat);
                     _converter.ToPointCloudMat(depth2, ref pointCloudMat);
-                    depthMat = pointCloudMat.Split()[2].Clone();
-                    return (colorMat, depthMat, pointCloudMat);
+                    return new BgrXyzMat(colorMat, pointCloudMat);
                 })
                 .Publish()
                 .RefCount();

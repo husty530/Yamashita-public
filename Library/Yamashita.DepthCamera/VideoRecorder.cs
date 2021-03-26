@@ -51,12 +51,6 @@ namespace Yamashita.DepthCamera
             var buffer = Bgrxyz.BGR.ImEncode();
             _binWriter.Write(buffer.Length);
             _binWriter.Write(buffer);
-            //_indexes.Add(_binWriter.BaseStream.Position);
-            //_binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
-            //_binWriter.Write((ushort)0);
-            //buffer = Bgrxyz.Depth16.ImEncode();
-            //_binWriter.Write(buffer.Length);
-            //_binWriter.Write(buffer);
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
             _binWriter.Write((ushort)0);

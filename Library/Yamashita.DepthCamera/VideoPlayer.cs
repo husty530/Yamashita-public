@@ -25,7 +25,7 @@ namespace Yamashita.DepthCamera
 
         public int FrameCount => _indexes.Length;
 
-        public int PositionMax => FrameCount / 3;
+        public int PositionMax => FrameCount / 2;
 
 
         // コンストラクタ
@@ -39,7 +39,8 @@ namespace Yamashita.DepthCamera
             if (!File.Exists(filePath)) throw new Exception("File doesn't Exist!");
             _binReader = new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             var fileFormatCode = Encoding.ASCII.GetString(_binReader.ReadBytes(8));
-            if (fileFormatCode != "HQIMST00" && fileFormatCode != "HUSTY000") throw new Exception();
+            //if (fileFormatCode != "HQIMST00" && fileFormatCode != "HUSTY000") throw new Exception();
+            if (fileFormatCode != "HUSTY000") throw new Exception();
             _binReader.BaseStream.Seek(8, SeekOrigin.Current);
             var indexesPos = _binReader.ReadInt64();
             if (indexesPos <= 0) throw new Exception();
@@ -65,14 +66,12 @@ namespace Yamashita.DepthCamera
         /// <returns></returns>
         unsafe public IObservable<(BgrXyzMat Bgrxyz, int Position)> Start(int position)
         {
-            Seek(position * 3);
-            var observable = Observable.Range(0, FrameCount / 3 - position, ThreadPoolScheduler.Instance)
+            Seek(position * 2);
+            var observable = Observable.Range(0, FrameCount / 2 - position, ThreadPoolScheduler.Instance)
                 .Select(i =>
                 {
                     var (color, time, _) = ReadFrame();
-
-                    var _ = ReadFrame();
-
+                    //var _ = ReadFrame();
                     var (pointCloud, _, _) = ReadFrame();
                     time /= 10000;
                     var dt = time - _pretime > 15 ? (int)(time - _pretime - 15) : 0;
@@ -92,11 +91,9 @@ namespace Yamashita.DepthCamera
         /// <returns></returns>
         unsafe public BgrXyzMat GetOneFrameSet(int position)
         {
-            Seek(position * 3);
+            Seek(position * 2);
             var (color, time, _) = ReadFrame();
-
-            var _ = ReadFrame();
-
+            //var _ = ReadFrame();
             var (pointCloud, _, _) = ReadFrame();
             _pretime = time;
             return new BgrXyzMat(color, pointCloud);

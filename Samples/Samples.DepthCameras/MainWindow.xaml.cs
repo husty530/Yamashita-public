@@ -8,6 +8,9 @@ using Reactive.Bindings;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using OpenCvSharp.WpfExtensions;
 using Yamashita.DepthCamera;
+using Scalar = OpenCvSharp.Scalar;
+using Point = OpenCvSharp.Point;
+using Cv2 = OpenCvSharp.Cv2;
 
 namespace Samples.DepthCameras
 {
@@ -22,10 +25,11 @@ namespace Samples.DepthCameras
         private IDisposable _videoConnector;
         private bool _isConnected;
         private VideoPlayer _player;
-        private OpenCvSharp.Point left = new OpenCvSharp.Point(130, 0);
-        private OpenCvSharp.Point right = new OpenCvSharp.Point(190, 0);
-        private OpenCvSharp.Point top = new OpenCvSharp.Point(0, 114);
-        private OpenCvSharp.Point bottom = new OpenCvSharp.Point(0, 174);
+        private Scalar red = new Scalar(0, 0, 255);
+        private Point left = new Point(130, 144);
+        private Point right = new Point(190, 144);
+        private Point top = new Point(160, 114);
+        private Point bottom = new Point(160, 174);
 
         public ReactiveProperty<string> StartButtonFace { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> RecButtonFace { private set; get; } = new ReactiveProperty<string>();
@@ -73,6 +77,10 @@ namespace Samples.DepthCameras
                         var r = imgs.GetPointInfo(right);
                         var t = imgs.GetPointInfo(top);
                         var b = imgs.GetPointInfo(bottom);
+                        Cv2.Circle(imgs.BGR, left, 2, red, 2);
+                        Cv2.Circle(imgs.BGR, right, 2, red, 2);
+                        Cv2.Circle(imgs.BGR, top, 2, red, 2);
+                        Cv2.Circle(imgs.BGR, bottom, 2, red, 2);
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
@@ -133,6 +141,10 @@ namespace Samples.DepthCameras
                         var r = imgs.GetPointInfo(right);
                         var t = imgs.GetPointInfo(top);
                         var b = imgs.GetPointInfo(bottom);
+                        Cv2.Circle(imgs.BGR, left, 2, red, 2);
+                        Cv2.Circle(imgs.BGR, right, 2, red, 2);
+                        Cv2.Circle(imgs.BGR, top, 2, red, 2);
+                        Cv2.Circle(imgs.BGR, bottom, 2, red, 2);
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {

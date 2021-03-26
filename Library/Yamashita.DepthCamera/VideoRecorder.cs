@@ -23,6 +23,7 @@ namespace Yamashita.DepthCamera
         /// <param name="filePath"></param>
         public VideoRecorder(string filePath)
         {
+            if (!Directory.Exists(Path.GetDirectoryName(filePath))) throw new Exception("Directory doesn't Exist!");
             _binWriter = new BinaryWriter(File.Open(filePath, FileMode.Create), Encoding.ASCII);
             var fileFormatCode = Encoding.ASCII.GetBytes("HUSTY000");
             _binWriter.Write(fileFormatCode);
@@ -50,14 +51,12 @@ namespace Yamashita.DepthCamera
             var buffer = Bgrxyz.BGR.ImEncode();
             _binWriter.Write(buffer.Length);
             _binWriter.Write(buffer);
-
-            _indexes.Add(_binWriter.BaseStream.Position);
-            _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
-            _binWriter.Write((ushort)0);
-            buffer = Bgrxyz.Depth16.ImEncode();
-            _binWriter.Write(buffer.Length);
-            _binWriter.Write(buffer);
-
+            //_indexes.Add(_binWriter.BaseStream.Position);
+            //_binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
+            //_binWriter.Write((ushort)0);
+            //buffer = Bgrxyz.Depth16.ImEncode();
+            //_binWriter.Write(buffer.Length);
+            //_binWriter.Write(buffer);
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
             _binWriter.Write((ushort)0);

@@ -29,7 +29,7 @@ var frame = BgrXyzMat
         .Rotate(0.1f, 0f, -0.2f);
 ```
 ```
-// 初期化と並進回転してからの距離の取得を一発で
+// 初期化と並進＆回転してからの距離の取得を一発で
 var distance = BgrXyzMat
         .Create(colorMat, pointCloudMat)
         .Move(new Vector3(0, 0, 1000))

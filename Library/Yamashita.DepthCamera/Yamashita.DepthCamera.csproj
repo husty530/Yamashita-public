@@ -9,7 +9,7 @@
     <Description>Azure Kinect, Intel Realsense</Description>
     <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.DepthCamera</PackageProjectUrl>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

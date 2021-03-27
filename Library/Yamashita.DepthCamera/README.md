@@ -10,12 +10,12 @@ Kinect, Realsenseが同一のインターフェースで動きます。
 * XYZ ... 実空間座標 (mm)
 * BgrXyzMat ( Mat bgr, Mat xyz ) ... コンストラクタ
 * BgrXyzMat (byte[] BGRBytes, byte[] XYZBytes ) ... コンストラクタ
-* Create (Mat bgr, Mat xyz ) ... メソッドで初期化
-* YmsDecode (byte[] BGRBytes, byte[] XYZBytes ) ... メソッドで初期化
+* Create ( Mat bgr, Mat xyz ) ... メソッドで初期化
+* YmsDecode ( byte[] BGRBytes, byte[] XYZBytes ) ... メソッドで初期化
 * YmsEncode () ... byte配列にエンコード
 * Empty () ... 中身の存在を確認
-* Depth8 (int minDistance, int maxDistance ) ... XYZを8bitグレースケールに圧縮
-* GetPointInfo (Point point ) ... 指定したピクセルの情報を構造体で返す
+* Depth8 ( int minDistance, int maxDistance ) ... XYZを8bitグレースケールに圧縮
+* GetPointInfo ( Point point ) ... 指定したピクセルの情報を構造体で返す
 * Move ( Vector3 delta ) ... 指定したベクトル分だけ全体を移動させる
 * Scale ( Vector3 delta ) ... 指定したベクトル分だけ全体のスケールを変える
 * Rotate ( float pitch, float yaw, float roll ) ... 右手系の3次元回転  

@@ -18,15 +18,15 @@ detector.Run(ref frame, out var results);
 ```  
   
 出力のYoloResultsクラスはそれぞれList型のLabels, Confidences, Centers, Sizesに加え、インデクサを実装、IEnumerable<>・IEnumerator<>を継承しているのでforeachとLinqが使えます。  
-これの何がありがたいかというと、  
+これの何がありがたいかは以下のとおり。  
   
 ```
+// 各要素のListを取り出せる
 detector.Run(ref frame, out var results);  
 SomeFunction(results.Centers);  
-```
-↑↑↑　のように各要素のListを取り出せるほか、  
-  
+``` 
 ```  
+// for文でのアクセスの仕方が自由
 detector.Run(ref frame, out var results);  
 for (int i = 0; i < results.Count; i++)  
 {  
@@ -34,9 +34,9 @@ for (int i = 0; i < results.Count; i++)
 　　SomeFunction(results.Centers[i]);  
 　　SomeFunction(results[i].Center);  
 }  
+```   
 ```  
-↑↑↑　for文でのアクセスの仕方が自由になり、  
-```  
+// foreach文内でも要素を取り出せる
 detector.Run(ref frame, out var results);  
 var list = new List<(string, Point, Size)>();  
 foreach (var r in results)  
@@ -45,18 +45,16 @@ foreach (var r in results)
 }  
 SomeFunction(list);  
 ```  
-↑↑↑　foreach文内でも要素を取り出せたり、  
-  
 ```  
+// Linq使えばforeachすら要らない
 detector.Run(ref frame, out var results);
 var list = results  
 　　.Select(r => (r.Label, r.Center, r.Size))  
 　　.ToList();  
 SomeFunction(list);  
 ``` 
-↑↑↑　なんならLinq使えばforeachすら要らなかったり、  
-  
 ```
+// 条件検索をかけることも可能に
 detector.Run(ref frame, out var results);  
 var list = results  
 　　.Where(r => r.Label == "pumpkin")  
@@ -65,7 +63,6 @@ var list = results
 　　.ToList();  
 SomeFunction(list);  
 ```  
-↑↑↑　条件検索をかけることが可能になります。  
 
 # SVM (Support Vector Machine) & Bayes Classifier
 気が向いたらちゃんと説明書きます。  

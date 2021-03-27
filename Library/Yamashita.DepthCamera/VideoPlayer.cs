@@ -6,18 +6,45 @@ using System.Threading;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Linq;
-using OpenCvSharp;
 
 namespace Yamashita.DepthCamera
 {
-    public class VideoPlayer
+    /// <summary>
+    /// BGRXYZの映像をバイナリファイルから再生
+    /// 
+    /// データ構造
+    /// 
+    ///   byte        content
+    ///  
+    ///    1        Format Code
+    ///    8       Stream Length
+    ///    
+    ///    8        Time Stamp
+    ///    4         BGR Size
+    /// BGR Size     BGR Frame
+    ///    4         XYZ Size
+    /// XYZ Size     XYZ Frame
+    /// 
+    ///    .
+    ///    .
+    ///    .
+    ///    
+    ///    8      Frame 1 Position
+    ///    8      Frame 2 Position
+    ///    8      Frame 3 Position
+    ///   
+    ///    .
+    ///    .
+    ///    .
+    ///    
+    /// </summary>
+    public class VideoPlayer : IDisposable
     {
 
         // フィールド
 
         private readonly BinaryReader _binReader;
         private readonly long[] _indexes;
-        private long _pretime;
         private int _positionIndex;
 
 
@@ -25,7 +52,9 @@ namespace Yamashita.DepthCamera
 
         public int FrameCount => _indexes.Length;
 
-        public int PositionMax => FrameCount / 2;
+        public int FPS { set; get; }
+
+        private int Interval => 800 / FPS;
 
 
         // コンストラクタ
@@ -34,25 +63,20 @@ namespace Yamashita.DepthCamera
         /// DepthCamera用のプレーヤー
         /// </summary>
         /// <param name="filePath"></param>
-        public VideoPlayer(string filePath)
+        public VideoPlayer(string filePath, int fps = 15)
         {
             if (!File.Exists(filePath)) throw new Exception("File doesn't Exist!");
             _binReader = new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read), Encoding.ASCII);
             var fileFormatCode = Encoding.ASCII.GetString(_binReader.ReadBytes(8));
             if (fileFormatCode != "HUSTY000") throw new Exception();
-            _binReader.BaseStream.Seek(8, SeekOrigin.Current);
             var indexesPos = _binReader.ReadInt64();
             if (indexesPos <= 0) throw new Exception();
             _binReader.BaseStream.Position = indexesPos;
             var indexes = new List<long>();
-            while (_binReader.BaseStream.Position < _binReader.BaseStream.Length)
-            {
-                var pos = _binReader.ReadInt64();
-                indexes.Add(pos);
-            }
+            while (_binReader.BaseStream.Position < _binReader.BaseStream.Length) indexes.Add(_binReader.ReadInt64());
             _indexes = indexes.ToArray();
             _binReader.BaseStream.Position = 0;
-            _pretime = 0;
+            FPS = fps;
         }
 
 
@@ -63,19 +87,14 @@ namespace Yamashita.DepthCamera
         /// </summary>
         /// <param name="position">開始するフレーム番号</param>
         /// <returns></returns>
-        unsafe public IObservable<(BgrXyzMat Bgrxyz, int Position)> Start(int position)
+        public IObservable<(BgrXyzMat Frames, int Position)> Start(int position)
         {
-            Seek(position * 2);
-            var observable = Observable.Range(0, FrameCount / 2 - position, ThreadPoolScheduler.Instance)
+            if (position > -1 && position < FrameCount) _positionIndex = position;
+            var observable = Observable.Range(0, FrameCount - position, ThreadPoolScheduler.Instance)
                 .Select(i =>
                 {
-                    var (color, time, _) = ReadFrame();
-                    var (pointCloud, _, _) = ReadFrame();
-                    time /= 10000;
-                    var dt = time - _pretime > 15 ? (int)(time - _pretime - 15) : 0;
-                    Thread.Sleep(dt);
-                    _pretime = time;
-                    return (new BgrXyzMat(color, pointCloud), position++);
+                    Thread.Sleep(Interval);
+                    return (ReadFrames().Frames, position++);
                 })
                 .Publish()
                 .RefCount();
@@ -87,38 +106,30 @@ namespace Yamashita.DepthCamera
         /// </summary>
         /// <param name="position">取得するフレーム番号</param>
         /// <returns></returns>
-        unsafe public BgrXyzMat GetOneFrameSet(int position)
+        public BgrXyzMat GetOneFrameSet(int position)
         {
-            Seek(position * 2);
-            var (color, time, _) = ReadFrame();
-            var (pointCloud, _, _) = ReadFrame();
-            _pretime = time;
-            return new BgrXyzMat(color, pointCloud);
+            if (position > -1 && position < FrameCount) _positionIndex = position;
+            return ReadFrames().Frames;
         }
 
         /// <summary>
         /// 閉じる処理
         /// </summary>
-        public void Close()
+        public void Dispose()
         {
             _binReader.Close();
             _binReader.Dispose();
         }
 
-        private (Mat Frame, long Time, byte[]? NULL) ReadFrame()
+        private (BgrXyzMat Frames, long Time) ReadFrames()
         {
-            var pos = _indexes[_positionIndex++];
-            _binReader.BaseStream.Seek(pos, SeekOrigin.Begin);
+            _binReader.BaseStream.Seek(_indexes[_positionIndex++], SeekOrigin.Begin);
             var time = _binReader.ReadInt64();
-            _binReader.BaseStream.Seek(2, SeekOrigin.Current);
-            var imageDataSize = _binReader.ReadInt32();
-            var image = Cv2.ImDecode(_binReader.ReadBytes(imageDataSize), ImreadModes.Unchanged);
-            return (image, time, null);
-        }
-
-        private void Seek(int index)
-        {
-            if (index > -1 && index < FrameCount) _positionIndex = index;
+            var bgrDataSize = _binReader.ReadInt32();
+            var bgrBytes = _binReader.ReadBytes(bgrDataSize);
+            var xyzDataSize = _binReader.ReadInt32();
+            var xyzBytes = _binReader.ReadBytes(xyzDataSize);
+            return (new BgrXyzMat(bgrBytes, xyzBytes), time);
         }
 
     }

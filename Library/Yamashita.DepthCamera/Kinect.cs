@@ -14,9 +14,9 @@ namespace Yamashita.DepthCamera
         private readonly Device _device;
         private readonly Transformation _transformation;
         private readonly KinectConverter _converter;
-        private readonly float pitch;
-        private readonly float yaw;
-        private readonly float roll;
+        private readonly float pitchRad;
+        private readonly float yawRad;
+        private readonly float rollRad;
 
 
         // プロパティ
@@ -32,11 +32,11 @@ namespace Yamashita.DepthCamera
         /// Kinectのコンストラクタ
         /// </summary>
         /// <param name="config">デバイスのユーザー設定(任意)</param>
-        public Kinect(DeviceConfiguration config, float pitch = -5.8f, float yaw = -1.3f, float roll = 0f)
+        public Kinect(DeviceConfiguration config, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
-            this.pitch = (float)(pitch * Math.PI / 180);
-            this.yaw = (float)(yaw * Math.PI / 180);
-            this.roll = (float)(roll * Math.PI / 180);
+            pitchRad = (float)(pitchDeg * Math.PI / 180);
+            yawRad = (float)(yawDeg * Math.PI / 180);
+            rollRad = (float)(rollDeg * Math.PI / 180);
             _device = Device.Open();
             _device.StartCameras(config);
             _transformation = _device.GetCalibration().CreateTransformation();
@@ -75,9 +75,7 @@ namespace Yamashita.DepthCamera
                     using var pointCloudImg = _transformation.DepthImageToPointCloud(capture.Depth);
                     _converter.ToColorMat(colorImg, ref colorMat);
                     _converter.ToPointCloudMat(pointCloudImg, ref pointCloudMat);
-                    var pc = new BgrXyzMat(colorMat, pointCloudMat);
-                    pc.Rotate(pitch, yaw, roll);
-                    return pc;
+                    return BgrXyzMat.Create(colorMat, pointCloudMat).Rotate(pitchRad, yawRad, rollRad);
                 })
                 .Publish()
                 .RefCount();

@@ -41,8 +41,50 @@ namespace Yamashita.DepthCamera
             XYZ = xyz;
         }
 
+        /// <summary>
+        /// byte配列からデコードして復元
+        /// </summary>
+        /// <param name="BGRBytes"></param>
+        /// <param name="XYZBytes"></param>
+        public BgrXyzMat(byte[] BGRBytes, byte[] XYZBytes)
+        {
+            BGR = Cv2.ImDecode(BGRBytes, ImreadModes.Unchanged);
+            XYZ = Cv2.ImDecode(XYZBytes, ImreadModes.Unchanged);
+        }
+
 
         // メソッド
+
+        /// <summary>
+        /// コンストラクタと同義
+        /// </summary>
+        /// <param name="bgr">カラー画像</param>
+        /// <param name="xyz">点群画像(カラーと同じサイズ)</param>
+        /// <returns></returns>
+        public static BgrXyzMat Create(Mat bgr, Mat xyz)
+            => new BgrXyzMat(bgr, xyz);
+
+        /// <summary>
+        /// デコードしてbyteから復元
+        /// </summary>
+        /// <param name="BGRBytes"></param>
+        /// <param name="XYZBytes"></param>
+        /// <returns></returns>
+        public static BgrXyzMat YmsDecode(byte[] BGRBytes, byte[] XYZBytes)
+            => new BgrXyzMat(Cv2.ImDecode(BGRBytes, ImreadModes.Unchanged), Cv2.ImDecode(XYZBytes, ImreadModes.Unchanged));
+
+        /// <summary>
+        /// エンコードしてbyte出力
+        /// </summary>
+        /// <returns></returns>
+        public (byte[] BGRBytes, byte[] XYZBytes) YmsEncode()
+            => (BGR.ImEncode(), XYZ.ImEncode());
+
+        /// <summary>
+        /// 空確認
+        /// </summary>
+        /// <returns></returns>
+        public bool Empty() => BGR.Empty();
 
         /// <summary>
         /// 距離画像(0～255に丸めたもの)を取得
@@ -50,8 +92,19 @@ namespace Yamashita.DepthCamera
         /// <param name="minDistance">最小値(mm)</param>
         /// <param name="maxDistance">最大値(mm)</param>
         /// <returns></returns>
-        public Mat Depth8(int minDistance = 0, int maxDistance = 10000) 
-            => ToDepth8(minDistance, maxDistance);
+        public unsafe Mat Depth8(int minDistance, int maxDistance)
+        {
+            var depth8 = new Mat(XYZ.Height, XYZ.Width, MatType.CV_8U);
+            var d8 = depth8.DataPointer;
+            var d16 = (ushort*)Depth16.Data;
+            for (int j = 0; j < XYZ.Width * XYZ.Height; j++)
+            {
+                if (d16[j] < 300) d8[j] = 0;
+                else if (d16[j] < maxDistance) d8[j] = (byte)((d16[j] - minDistance) * 255 / (maxDistance - minDistance));
+                else d8[j] = 255;
+            }
+            return depth8;
+        }
 
         /// <summary>
         /// 指定した点の情報を取得
@@ -76,7 +129,7 @@ namespace Yamashita.DepthCamera
         /// 点群を3次元的に移動
         /// </summary>
         /// <param name="delta">移動量のベクトル</param>
-        public unsafe void Move(Vector3 delta)
+        public unsafe BgrXyzMat Move(Vector3 delta)
         {
             var s = (short*)XYZ.Data;
             var index = 0;
@@ -86,13 +139,14 @@ namespace Yamashita.DepthCamera
                 s[index++] += delta.Y;
                 s[index++] += delta.Z;
             }
+            return this;
         }
 
         /// <summary>
         /// 点群の大きさを変換
         /// </summary>
         /// <param name="delta">XYZ方向のスケール</param>
-        public unsafe void Scale(Vector3 delta)
+        public unsafe BgrXyzMat Scale(Vector3 delta)
         {
             var s = (short*)XYZ.Data;
             var index = 0;
@@ -102,6 +156,7 @@ namespace Yamashita.DepthCamera
                 s[index++] *= delta.Y;
                 s[index++] *= delta.Z;
             }
+            return this;
         }
 
         /// <summary>
@@ -110,7 +165,7 @@ namespace Yamashita.DepthCamera
         /// <param name="pitch">ピッチ角(X座標中心時計回り)</param>
         /// <param name="yaw">ヨー角(Y座標中心時計回り)</param>
         /// <param name="roll">ロール角(Z座標中心時計回り)</param>
-        public unsafe void Rotate(float pitch, float yaw, float roll)
+        public unsafe BgrXyzMat Rotate(float pitch, float yaw, float roll)
         {
             Mat rot = ZRot(roll) * YRot(yaw) * XRot(pitch);
             var d = (float*)rot.Data;
@@ -124,22 +179,9 @@ namespace Yamashita.DepthCamera
                 s[i + 1] = (short)(d[3] * x + d[4] * y + d[5] * z);
                 s[i + 2] = (short)(d[6] * x + d[7] * y + d[8] * z);
             }
+            return this;
         }
 
-
-        private unsafe Mat ToDepth8(int minDistance, int maxDistance)
-        {
-            var depth8 = new Mat(XYZ.Height, XYZ.Width, MatType.CV_8U);
-            var d8 = depth8.DataPointer;
-            var d16 = (ushort*)Depth16.Data;
-            for (int j = 0; j < XYZ.Width * XYZ.Height; j++)
-            {
-                if (d16[j] < 300) d8[j] = 0;
-                else if (d16[j] < maxDistance) d8[j] = (byte)((d16[j] - minDistance) * 255 / (maxDistance - minDistance));
-                else d8[j] = 255;
-            }
-            return depth8;
-        }
 
         private Mat XRot(float rad)
             => new Mat(3, 3, MatType.CV_32F, new float[] { 1, 0, 0, 0, (float)Math.Cos(rad), -(float)Math.Sin(rad), 0, (float)Math.Sin(rad), (float)Math.Cos(rad) });

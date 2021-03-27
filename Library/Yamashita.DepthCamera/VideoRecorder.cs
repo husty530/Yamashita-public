@@ -5,7 +5,36 @@ using System.Text;
 
 namespace Yamashita.DepthCamera
 {
-    public class VideoRecorder
+    /// <summary>
+    /// BGRXYZの映像をバイナリ形式で保存
+    /// 
+    /// データ構造
+    /// 
+    ///   byte        content
+    ///  
+    ///    1        Format Code
+    ///    8       Stream Length
+    ///    
+    ///    8        Time Stamp
+    ///    4         BGR Size
+    /// BGR Size     BGR Frame
+    ///    4         XYZ Size
+    /// XYZ Size     XYZ Frame
+    /// 
+    ///    .
+    ///    .
+    ///    .
+    ///    
+    ///    8      Frame 1 Position
+    ///    8      Frame 2 Position
+    ///    8      Frame 3 Position
+    ///   
+    ///    .
+    ///    .
+    ///    .
+    ///    
+    /// </summary>
+    public class VideoRecorder : IDisposable
     {
 
         // フィールド
@@ -27,12 +56,8 @@ namespace Yamashita.DepthCamera
             _binWriter = new BinaryWriter(File.Open(filePath, FileMode.Create), Encoding.ASCII);
             var fileFormatCode = Encoding.ASCII.GetBytes("HUSTY000");
             _binWriter.Write(fileFormatCode);
-            _binWriter.Write(Encoding.ASCII.GetBytes("        "));
             _binWriter.Write(-1L);
-            var time = DateTimeOffset.Now;
-            _binWriter.Write(time.Ticks);
-            _binWriter.Write(time.Offset.Ticks);
-            _firstTime = time;
+            _firstTime = DateTimeOffset.Now;
         }
 
 
@@ -44,28 +69,22 @@ namespace Yamashita.DepthCamera
         /// <param name="Bgrxyz"></param>
         public void WriteFrame(BgrXyzMat Bgrxyz)
         {
-
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
-            _binWriter.Write((ushort)0);
-            var buffer = Bgrxyz.BGR.ImEncode();
-            _binWriter.Write(buffer.Length);
-            _binWriter.Write(buffer);
-            _indexes.Add(_binWriter.BaseStream.Position);
-            _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
-            _binWriter.Write((ushort)0);
-            buffer = Bgrxyz.XYZ.ImEncode();
-            _binWriter.Write(buffer.Length);
-            _binWriter.Write(buffer);
+            var (bgr, xyz) = Bgrxyz.YmsEncode();
+            _binWriter.Write(bgr.Length);
+            _binWriter.Write(bgr);
+            _binWriter.Write(xyz.Length);
+            _binWriter.Write(xyz);
 
         }
 
         /// <summary>
         /// 閉じる処理
         /// </summary>
-        public void Close()
+        public void Dispose()
         {
-            _binWriter.Seek(16, SeekOrigin.Begin);
+            _binWriter.Seek(8, SeekOrigin.Begin);
             _binWriter.Write(_binWriter.BaseStream.Length);
             _binWriter.Seek(0, SeekOrigin.End);
             _indexes.ForEach(p => _binWriter.Write(p));

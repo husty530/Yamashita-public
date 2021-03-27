@@ -58,6 +58,8 @@ namespace Samples.DepthCameras
 
         private void StartPauseButton_Click(object sender, RoutedEventArgs e)
         {
+            _videoConnector?.Dispose();
+            _player?.Dispose();
             if (!_isConnected)
             {
                 StartButtonFace.Value = "Close";
@@ -77,10 +79,6 @@ namespace Samples.DepthCameras
                         var r = imgs.GetPointInfo(right);
                         var t = imgs.GetPointInfo(top);
                         var b = imgs.GetPointInfo(bottom);
-                        Cv2.Circle(imgs.BGR, left, 2, red, 2);
-                        Cv2.Circle(imgs.BGR, right, 2, red, 2);
-                        Cv2.Circle(imgs.BGR, top, 2, red, 2);
-                        Cv2.Circle(imgs.BGR, bottom, 2, red, 2);
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
@@ -108,7 +106,7 @@ namespace Samples.DepthCameras
             _camera.Connect()
                 .TakeWhile(imgs =>
                 {
-                    if (imgs.BGR.Empty()) return true;
+                    if (imgs.Empty()) return true;
                     ImageIO.SaveAsZip(SaveDir.Value, "", imgs);
                     return false;
                 })
@@ -117,6 +115,8 @@ namespace Samples.DepthCameras
 
         private void RecButton_Click(object sender, RoutedEventArgs e)
         {
+            _videoConnector?.Dispose();
+            _player?.Dispose();
             if (!_isConnected)
             {
                 RecButtonFace.Value = "Stop";
@@ -133,7 +133,7 @@ namespace Samples.DepthCameras
                 var filePath = $"{SaveDir.Value}\\Movie_{fileNumber:D4}.yms";
                 var writer = new VideoRecorder(filePath);
                 _cameraConnector = _camera.Connect()
-                    .Finally(() => writer.Close())
+                    .Finally(() => writer.Dispose())
                     .Subscribe(imgs =>
                     {
                         writer.WriteFrame(imgs);
@@ -141,10 +141,6 @@ namespace Samples.DepthCameras
                         var r = imgs.GetPointInfo(right);
                         var t = imgs.GetPointInfo(top);
                         var b = imgs.GetPointInfo(bottom);
-                        Cv2.Circle(imgs.BGR, left, 2, red, 2);
-                        Cv2.Circle(imgs.BGR, right, 2, red, 2);
-                        Cv2.Circle(imgs.BGR, top, 2, red, 2);
-                        Cv2.Circle(imgs.BGR, bottom, 2, red, 2);
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
@@ -180,6 +176,7 @@ namespace Samples.DepthCameras
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             _videoConnector?.Dispose();
+            _player?.Dispose();
             using var cofd = new CommonOpenFileDialog()
             {
                 Title = "動画を選択してください",
@@ -194,15 +191,14 @@ namespace Samples.DepthCameras
                 PlayPauseButton.Visibility = Visibility.Visible;
                 PlaySlider.Visibility = Visibility.Visible;
                 _player = new VideoPlayer(cofd.FileName);
-                PlaySlider.Maximum = _player.PositionMax;
+                PlaySlider.Maximum = _player.FrameCount;
                 _videoConnector = _player.Start(0)
-                    .Finally(() => _isConnected = false)
                     .Subscribe(ww =>
                     {
-                        var d8 = ww.Bgrxyz.Depth8(300, 5000);
+                        var d8 = ww.Frames.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            ColorFrame.Value = ww.Bgrxyz.BGR.ToBitmapSource();
+                            ColorFrame.Value = ww.Frames.BGR.ToBitmapSource();
                             DepthFrame.Value = d8.ToBitmapSource();
                             PlaySlider.Value = ww.Position;
                         });
@@ -225,13 +221,12 @@ namespace Samples.DepthCameras
                 PlaySlider.IsEnabled = false;
                 PlayPauseButton.Content = "| |";
                 _videoConnector = _player.Start((int)PlaySlider.Value)
-                    .Finally(() =>_isConnected = false)
                     .Subscribe(ww =>
                     {
-                        var d8 = ww.Bgrxyz.Depth8(300, 5000);
+                        var d8 = ww.Frames.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            ColorFrame.Value = ww.Bgrxyz.BGR.ToBitmapSource();
+                            ColorFrame.Value = ww.Frames.BGR.ToBitmapSource();
                             DepthFrame.Value = d8.ToBitmapSource();
                             PlaySlider.Value = ww.Position;
                         });

@@ -13,8 +13,8 @@ YOLOとは？という方はコチラ↓↓
   
 ### <使用例>  
 ```
-var detector = new Yolo( cfg, names, weights, new Size(640, 480), DrawingMode.Rectangle, 0.5f, 0.3f );  
-detector.Run( ref frame, out var results );  
+var detector = new Yolo( cfg, names, weights, new Size ( 640, 480 ), DrawingMode.Rectangle, 0.5f, 0.3f );  
+detector.Run ( ref frame, out var results );  
 ```  
   
 出力のYoloResultsクラスはそれぞれList型のLabels, Confidences, Centers, Sizesに加え、インデクサを実装、IEnumerable<>・IEnumerator<>を継承しているのでforeachとLinqが使えます。  

@@ -5,12 +5,12 @@
 # Contents
 詳細は各プロジェクトフォルダに記載しました。  
 
-### Library
------ [Yamashita.Control](Library/Yamashita.Control) ... カルマンフィルタ & パーティクルフィルタ & マルチトラッカー  
------ [Yamashita.DepthCamera](Library/Yamashita.DepthCamera) ... Kinect & Realsense  
------ [Yamashita.Feature](Library/Yamashita.Feature) ... 1次元および2次元のフーリエ変換 & HOG特徴量  
------ [Yamashita.ML](Library/Yamashita.ML) ... サポートベクタマシン & ベイズ分類器 & YOLO  
------ [Yamashita.TcpSocket](Library/Yamashita.TcpSocket) ... C#のServer & Client  
+### LIB-sharp
+----- [Yamashita.Control](LIB-sharp/Yamashita.Control) ... カルマンフィルタ & パーティクルフィルタ & マルチトラッカー  
+----- [Yamashita.DepthCamera](LIB-sharp/Yamashita.DepthCamera) ... Kinect & Realsense  
+----- [Yamashita.Feature](LIB-sharp/Yamashita.Feature) ... 1次元および2次元のフーリエ変換 & HOG特徴量  
+----- [Yamashita.ML](LIB-sharp/Yamashita.ML) ... サポートベクタマシン & ベイズ分類器 & YOLO  
+----- [Yamashita.TcpSocket](LIB-sharp/Yamashita.TcpSocket) ... C#のServer & Client  
 
 ### Samples
 ----- [BayesBinarization](/Samples/Samples.BayesBinarization)  

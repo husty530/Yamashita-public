@@ -23,7 +23,12 @@ namespace Samples.Yolo_tiny
 
         private void OpenButton_Click(object sender, RoutedEventArgs e)
         {
-            var detector = new Yolo("..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.cfg", "..\\..\\..\\..\\YoloModel-tiny\\coco.names", "..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.weights", new OpenCvSharp.Size(640, 480));
+            var detector = new Yolo(
+                "..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.cfg",
+                "..\\..\\..\\..\\YoloModel-tiny\\coco.names", 
+                "..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.weights", 
+                new OpenCvSharp.Size(640, 480)
+            );
             var op = new OpenFileDialog { Filter = "Image or Video(*.png, *.jpg, *.mp4, *.avi)|*.png;*.jpg;*mp4;*.avi" };
             if (op.ShowDialog() == true)
             {

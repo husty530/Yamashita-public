@@ -10,7 +10,6 @@ using OpenCvSharp.WpfExtensions;
 using Yamashita.DepthCamera;
 using Scalar = OpenCvSharp.Scalar;
 using Point = OpenCvSharp.Point;
-using Cv2 = OpenCvSharp.Cv2;
 
 namespace Samples.DepthCameras
 {

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Yamashita.TcpSocket\Yamashita.TcpSocket.csproj" />
+    <ProjectReference Include="..\..\LIB-sharp\Yamashita.TcpSocket\Yamashita.TcpSocket.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Yamashita.Control\Yamashita.Control.csproj" />
-    <ProjectReference Include="..\..\Library\Yamashita.Feature\Yamashita.Feature.csproj" />
-    <ProjectReference Include="..\..\Library\Yamashita.ML\Yamashita.ML.csproj" />
+    <ProjectReference Include="..\..\LIB-sharp\Yamashita.Control\Yamashita.Control.csproj" />
+    <ProjectReference Include="..\..\LIB-sharp\Yamashita.Feature\Yamashita.Feature.csproj" />
+    <ProjectReference Include="..\..\LIB-sharp\Yamashita.ML\Yamashita.ML.csproj" />
   </ItemGroup>
 
 </Project>

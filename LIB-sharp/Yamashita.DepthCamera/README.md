@@ -32,7 +32,7 @@ var frame = BgrXyzMat
 // 初期化と並進＆回転してからの距離の取得を一発で
 var distance = BgrXyzMat
         .Create ( colorMat, pointCloudMat )
-        .Move (new Vector3 ( 0, 0, 1000 ) )
+        .Move ( new Vector3 ( 0, 0, 1000 ) )
         .Rotate ( -0.5f, 0f, 0f ) )
         .GetPointInfo ( new Point ( 100, 150 ) )
         .Z;

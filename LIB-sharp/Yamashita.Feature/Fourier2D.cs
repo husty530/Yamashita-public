@@ -6,22 +6,22 @@ namespace Yamashita.Feature
     public class Fourier2D
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly Mat _complex;
 
 
-        // プロパティ
+        // ------- Properties ------- //
 
         public Mat ViewImage { private set; get; }
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// 画像データに対する2次元フーリエ変換
+        /// 2D Fourier transformation for Image Data.
         /// </summary>
-        /// <param name="image">入力画像</param>
+        /// <param name="image"></param>
         public Fourier2D(Mat image)
         {
             if (image.Type() != MatType.CV_8U) throw new Exception("MatType must be CV_8U.");
@@ -37,12 +37,12 @@ namespace Yamashita.Feature
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// 離散フーリエ変換
+        /// Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature">画像の周波数特徴量</param>
+        /// <param name="feature">Frequency Feature of Image Data</param>
         unsafe public void Dft(out float[] feature)
         {
             Cv2.Dft(_complex, _complex);
@@ -75,9 +75,9 @@ namespace Yamashita.Feature
         }
 
         /// <summary>
-        /// 逆変換
+        /// Inverse Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature"></param>
+        /// <param name="feature">Feature of Values</param>
         unsafe public void Idft(out float[] feature)
         {
             Cv2.Idft(_complex, _complex, DftFlags.Scale);

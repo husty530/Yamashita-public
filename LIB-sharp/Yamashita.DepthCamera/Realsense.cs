@@ -9,7 +9,7 @@ namespace Yamashita.DepthCamera
     public class Realsense : IDepthCamera
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly Pipeline _pipeline;
         private readonly Align _align;
@@ -22,18 +22,18 @@ namespace Yamashita.DepthCamera
         private readonly RealsenseConverter _converter;
 
 
-        // プロパティ
+        // ------- Properties ------- //
 
         public (int Width, int Height) FrameSize { private set; get; }
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// Realsenseのコンストラクタ
+        /// Open Device
         /// </summary>
-        /// <param name="width">所望の画像幅</param>
-        /// <param name="height">所望の画像高さ</param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public Realsense(int width, int height)
         {
             FrameSize = (width, height);
@@ -54,8 +54,8 @@ namespace Yamashita.DepthCamera
 
         public Realsense() : this(640, 480) { }
 
-        
-        // メソッド
+
+        // ------- Methods ------- //
 
         public IObservable<BgrXyzMat> Connect()
         {

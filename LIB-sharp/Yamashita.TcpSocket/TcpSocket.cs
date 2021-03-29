@@ -10,14 +10,14 @@ namespace Yamashita.TcpSocket
     public abstract class TcpSocket : ITcpSocket
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         protected TcpListener _listener;
         protected TcpClient _client;
         protected NetworkStream _stream;
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public abstract void Close();
 

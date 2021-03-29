@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,7 +9,7 @@
     <Description>Azure Kinect, Intel Realsense</Description>
     <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.DepthCamera</PackageProjectUrl>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

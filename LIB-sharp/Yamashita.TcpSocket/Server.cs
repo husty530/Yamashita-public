@@ -7,13 +7,13 @@ namespace Yamashita.TcpSocket
     public class Server : TcpSocket
     {
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// TCPサーバーの待機から接続まで
+        /// Listening and Connection
         /// </summary>
-        /// <param name="ip">IP</param>
-        /// <param name="port">ポート番号</param>
+        /// <param name="ip"></param>
+        /// <param name="port"></param>
         public Server(string ip, int port)
         {
             try
@@ -32,10 +32,10 @@ namespace Yamashita.TcpSocket
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// サーバーを閉じる
+        /// Close Server
         /// </summary>
         public override void Close()
         {

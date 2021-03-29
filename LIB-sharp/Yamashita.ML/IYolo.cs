@@ -10,26 +10,20 @@ namespace Yamashita.ML
     public interface IYolo
     {
         /// <summary>
-        /// 一枚の画像に対する処理
+        /// Process One Frame
         /// </summary>
-        /// <param name="frame">入出力画像</param>
-        /// <param name="results">検出結果</param>
+        /// <param name="frame"></param>
+        /// <param name="results"></param>
         public void Run(ref Mat frame, out YoloResults results);
 
     }
 
     /// <summary>
-    /// YOLOの検出結果を格納するためのクラス
+    /// For Accumulate Detection Results
     /// </summary>
     public class YoloResults : IEnumerable<(string Label, float Confidence, Point Center, Size Size)>, IEnumerator<(string Label, float Confidence, Point Center, Size Size)>
     {
 
-        // コンストラクタ
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        /// <param name="results">ラベル, 信頼度, 中心座標, 幅高さのタプルを配列化したもの</param>
         public YoloResults(IEnumerable<(string Label, float Confidence, Point Center, Size Size)> results)
         {
             Labels = new List<string>();
@@ -46,8 +40,6 @@ namespace Yamashita.ML
             }
         }
 
-
-        // 以下、気になさらずに
 
         private int position = -1;
 

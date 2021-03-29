@@ -9,7 +9,7 @@ namespace Yamashita.DepthCamera
     public class Kinect : IDepthCamera
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly Device _device;
         private readonly Transformation _transformation;
@@ -19,19 +19,19 @@ namespace Yamashita.DepthCamera
         private readonly float rollRad;
 
 
-        // プロパティ
+        // ------- Properties ------- //
 
         public DeviceConfiguration Config { private set; get; }
 
         public Size FrameSize { private set; get; }
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// Kinectのコンストラクタ
+        /// Open Device
         /// </summary>
-        /// <param name="config">デバイスのユーザー設定(任意)</param>
+        /// <param name="config">User Settings (optional)</param>
         public Kinect(DeviceConfiguration config, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
             pitchRad = (float)(pitchDeg * Math.PI / 180);
@@ -47,7 +47,7 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Kinectのデフォルトコンストラクタ
+        /// Open Device (default)
         /// </summary>
         public Kinect(float pitch = 5.8f, float yaw = 1.3f, float roll = 0f)
             : this(new DeviceConfiguration
@@ -61,7 +61,7 @@ namespace Yamashita.DepthCamera
         { }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public IObservable<BgrXyzMat> Connect()
         {

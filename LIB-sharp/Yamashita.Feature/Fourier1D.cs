@@ -6,20 +6,20 @@ namespace Yamashita.Feature
     public class Fourier1D
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly double _samplingRate;
         private readonly int _sampleCount;
         private readonly Mat _complex;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// 時系列データに対する1次元フーリエ解析
+        /// 1D Fourier transformation for Time Series Data.
         /// </summary>
-        /// <param name="inputList">変位のリスト</param>
-        /// <param name="dt">サンプリング時間</param>
+        /// <param name="inputList">List of Value</param>
+        /// <param name="dt">Sampling Time</param>
         public Fourier1D(List<double> inputList, double dt)
         {
             _samplingRate = 1.0 / dt;
@@ -30,12 +30,12 @@ namespace Yamashita.Feature
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// 離散フーリエ変換
+        /// Discrete Fourier Transformation
         /// </summary>
-        /// <param name="result">周波数と強度のヒストグラム</param>
+        /// <param name="result">Histogram of Frequency and Value</param>
         unsafe public void Dft(out List<(double Frequency, float Value)> result)
         {
             Cv2.Dft(_complex, _complex);
@@ -48,9 +48,9 @@ namespace Yamashita.Feature
         }
 
         /// <summary>
-        /// 離散フーリエ変換
+        /// Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature">周波数ごとの強度の特徴量</param>
+        /// <param name="feature">Feature of Values</param>
         public void Dft(out float[] feature)
         {
             Dft(out List<(double Frequency, float Value)> list);
@@ -60,9 +60,9 @@ namespace Yamashita.Feature
         }
 
         /// <summary>
-        /// 逆変換
+        /// Inverse Discrete Fourier Transformation
         /// </summary>
-        /// <param name="result">時間と変位</param>
+        /// <param name="result">Time and Value</param>
         unsafe public void Idft(out List<(double Time, float Value)> result)
         {
             Cv2.Idft(_complex, _complex, DftFlags.Scale);
@@ -74,9 +74,9 @@ namespace Yamashita.Feature
         }
 
         /// <summary>
-        /// 逆変換
+        /// Inverse Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature"></param>
+        /// <param name="feature">Feature of Values</param>
         public void Idft(out float[] feature)
         {
             Idft(out List<(double Time, float Value)> list);
@@ -86,10 +86,10 @@ namespace Yamashita.Feature
         }
 
         /// <summary>
-        /// バンドパスフィルタ
+        /// Band-pass Filter
         /// </summary>
-        /// <param name="minFrequency">最小周波数</param>
-        /// <param name="maxFrequency">最大周波数</param>
+        /// <param name="minFrequency"></param>
+        /// <param name="maxFrequency"></param>
         unsafe public void Filter(double minFrequency, double maxFrequency)
         {
             for (int i = 0; i < _sampleCount; i++)

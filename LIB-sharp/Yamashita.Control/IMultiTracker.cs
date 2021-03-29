@@ -10,11 +10,11 @@ namespace Yamashita.Control
     {
 
         /// <summary>
-        /// 観測を使って追跡状態を更新する
+        /// Using Observe, Update Status.
         /// </summary>
-        /// <param name="frame">入出力画像</param>
-        /// <param name="detections">検出結果のリスト</param>
-        /// <param name="results">更新結果</param>
+        /// <param name="frame"></param>
+        /// <param name="detections">List of Detection Results</param>
+        /// <param name="results"></param>
         public void Update(
             ref Mat frame,
             List<(string Label, Point Center, Size Size)> detections,
@@ -22,26 +22,26 @@ namespace Yamashita.Control
             );
 
         /// <summary>
-        /// 指定したIDの物体を削除する
+        /// Remove designatedID object.
         /// </summary>
-        /// <param name="id">削除対象のID</param>
+        /// <param name="id">Target ID</param>
         public void Remove(int id);
 
     }
 
 
     /// <summary>
-    /// マルチトラッカーに管理させる個別のオブジェクト
+    /// For Management by MultiTracker
     /// </summary>
     class Individual
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly IFilter _filter;
 
 
-        // プロパティ
+        // ------- Properties ------- //
 
         public string Label { set; get; }
 
@@ -64,7 +64,7 @@ namespace Yamashita.Control
         public string Mark { private set; get; }
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         public Individual(Point center, Size size, int id, double dt, string label = "", string mark = "")
         {
@@ -91,11 +91,10 @@ namespace Yamashita.Control
                             0, 0, 0, 0, 0, 1  };
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
             _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, 0.5);
-            //_filter = new ParticleFilter(state, transitionMatrix, measurementMatrix);
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public void Predict(Point center, Size size)
         {

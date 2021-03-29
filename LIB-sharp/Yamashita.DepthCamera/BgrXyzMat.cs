@@ -5,36 +5,36 @@ namespace Yamashita.DepthCamera
 {
 
     /// <summary>
-    /// 色付きの点群
+    /// Point Cloud with Color
     /// </summary>
     public class BgrXyzMat
     {
 
-        // プロパティ
+        // ------- Properties ------- //
 
         /// <summary>
-        /// カラー画像
+        /// Color Image
         /// </summary>
         public Mat BGR { private set; get; }
 
         /// <summary>
-        /// 点群画像
+        /// Point Cloud Image
         /// </summary>
         public Mat XYZ { private set; get; }
 
         /// <summary>
-        /// 距離画像(0～65535)(mm)
+        /// Depth Image (0～65535)(mm)
         /// </summary>
         public Mat Depth16 => XYZ.Split()[2];
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// 色付きの点群を保持
+        /// Hold Point Cloud with Color.
         /// </summary>
-        /// <param name="bgr">カラー画像</param>
-        /// <param name="xyz">点群画像(カラーと同じサイズ)</param>
+        /// <param name="bgr">Color Image</param>
+        /// <param name="xyz">Point Cloud Image (must be same size of Color Image)</param>
         public BgrXyzMat(Mat bgr, Mat xyz)
         {
             BGR = bgr;
@@ -42,7 +42,7 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// byte配列からデコードして復元
+        /// Decode from Byte Array.
         /// </summary>
         /// <param name="BGRBytes"></param>
         /// <param name="XYZBytes"></param>
@@ -53,19 +53,19 @@ namespace Yamashita.DepthCamera
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// コンストラクタと同義
+        /// Same function as Constructor.
         /// </summary>
-        /// <param name="bgr">カラー画像</param>
-        /// <param name="xyz">点群画像(カラーと同じサイズ)</param>
+        /// <param name="bgr">Color Image</param>
+        /// <param name="xyz">Point Cloud Image (must be same size of Color Image)</param>
         /// <returns></returns>
         public static BgrXyzMat Create(Mat bgr, Mat xyz)
             => new BgrXyzMat(bgr, xyz);
 
         /// <summary>
-        /// デコードしてbyteから復元
+        /// Decode from Byte Array.
         /// </summary>
         /// <param name="BGRBytes"></param>
         /// <param name="XYZBytes"></param>
@@ -74,23 +74,23 @@ namespace Yamashita.DepthCamera
             => new BgrXyzMat(Cv2.ImDecode(BGRBytes, ImreadModes.Unchanged), Cv2.ImDecode(XYZBytes, ImreadModes.Unchanged));
 
         /// <summary>
-        /// エンコードしてbyte出力
+        /// Output Encoded Byte Array.
         /// </summary>
         /// <returns></returns>
         public (byte[] BGRBytes, byte[] XYZBytes) YmsEncode()
             => (BGR.ImEncode(), XYZ.ImEncode());
 
         /// <summary>
-        /// 空確認
+        /// Check if it's Empty.
         /// </summary>
         /// <returns></returns>
         public bool Empty() => BGR.Empty();
 
         /// <summary>
-        /// 距離画像(0～255に丸めたもの)を取得
+        /// Get Depth Image (Normalize value in 0-255)
         /// </summary>
-        /// <param name="minDistance">最小値(mm)</param>
-        /// <param name="maxDistance">最大値(mm)</param>
+        /// <param name="minDistance">(mm)</param>
+        /// <param name="maxDistance">(mm)</param>
         /// <returns></returns>
         public unsafe Mat Depth8(int minDistance, int maxDistance)
         {
@@ -107,10 +107,10 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// 指定した点の情報を取得
+        /// Get Information of where you input.
         /// </summary>
-        /// <param name="point">座標</param>
-        /// <returns>色と実座標</returns>
+        /// <param name="point">Pixel Coordinate</param>
+        /// <returns>Real 3D Coordinate with Color</returns>
         public unsafe BGRXYZ GetPointInfo(Point point)
         {
             var index = (point.Y * BGR.Cols + point.X) * 3;
@@ -126,9 +126,9 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// 点群を3次元的に移動
+        /// Move All Point Cloud.
         /// </summary>
-        /// <param name="delta">移動量のベクトル</param>
+        /// <param name="delta">3D Vector of Transform (mm)</param>
         public unsafe BgrXyzMat Move(Vector3 delta)
         {
             var s = (short*)XYZ.Data;
@@ -143,9 +143,9 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// 点群の大きさを変換
+        /// Change Point Cloud Scale.
         /// </summary>
-        /// <param name="delta">XYZ方向のスケール</param>
+        /// <param name="delta">Scale of XYZ Direction</param>
         public unsafe BgrXyzMat Scale(Vector3 delta)
         {
             var s = (short*)XYZ.Data;
@@ -160,11 +160,11 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// 右手系の3次元回転
+        /// Rotate 3D of Right Hand System.
         /// </summary>
-        /// <param name="pitch">ピッチ角(X座標中心時計回り)</param>
-        /// <param name="yaw">ヨー角(Y座標中心時計回り)</param>
-        /// <param name="roll">ロール角(Z座標中心時計回り)</param>
+        /// <param name="pitch">Pitch Angle (rad, Clockwise of X axis)</param>
+        /// <param name="yaw">Yaw Angle (rad, Clockwise of Y axis)</param>
+        /// <param name="roll">Roll Angle (rad, Clockwise of Z axis)</param>
         public unsafe BgrXyzMat Rotate(float pitch, float yaw, float roll)
         {
             Mat rot = ZRot(roll) * YRot(yaw) * XRot(pitch);
@@ -196,7 +196,7 @@ namespace Yamashita.DepthCamera
 
 
     /// <summary>
-    /// 色付きの点
+    /// Struct of Point and Color
     /// </summary>
     public struct BGRXYZ
     {

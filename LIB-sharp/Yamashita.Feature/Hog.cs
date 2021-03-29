@@ -6,21 +6,21 @@ namespace Yamashita.Feature
     public class Hog
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly HOGDescriptor _hog;
         private readonly Size _imageSize;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// 簡易版HOG。分類には使えるが検出には使えない。
+        /// Simple HOG Descriptor
         /// </summary>
-        /// <param name="imageSize">入力画像のサイズ</param>
-        /// <param name="blockSize">正規化する単位ブロックのサイズ</param>
-        /// <param name="blockStride">ブロックのスライド幅</param>
-        /// <param name="cellSize">HOGを計算する1単位のサイズ</param>
+        /// <param name="imageSize"></param>
+        /// <param name="blockSize">For Normalization</param>
+        /// <param name="blockStride"></param>
+        /// <param name="cellSize">Unit Size for Computation</param>
         public Hog(Size? imageSize = null, Size? blockSize = null, Size? blockStride = null, Size? cellSize = null)
         {
             var s1 = (imageSize == null) ? new Size(64, 64) : imageSize;
@@ -32,13 +32,13 @@ namespace Yamashita.Feature
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// 1フレームに対する処理
+        /// Process one Frame.
         /// </summary>
-        /// <param name="input">8bitグレースケール画像。勝手にリサイズされる</param>
-        /// <param name="result">float配列の出力</param>
+        /// <param name="input">8 Bit Gray Image. It's going to be Resized automatically.</param>
+        /// <param name="result">Feature of Values</param>
         public void Compute(Mat input, out float[] result)
         {
             if (input.Type() != MatType.CV_8U) new Exception("MatType should be 'CV_8U'.");

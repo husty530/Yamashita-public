@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenCvSharp.ML;
 
 namespace Yamashita.ML
 {
     public abstract class Stats : IStats
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         protected Mode _mode;
         protected string _modelPath;
@@ -17,14 +16,14 @@ namespace Yamashita.ML
         private readonly string _dataPath;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// Yamashita専用統計分類器
+        /// For Yamashita's private Use
         /// </summary>
-        /// <param name="mode">学習か推論か</param>
-        /// <param name="modelPath">学習モデル(.xml)</param>
-        /// <param name="dataPath">学習データ格納テキスト(.csv)</param>
+        /// <param name="mode">Train or Inference</param>
+        /// <param name="modelPath">(.xml)</param>
+        /// <param name="dataPath">(.csv)</param>
         public Stats(Mode mode, string modelPath, string dataPath)
         {
             _mode = mode;
@@ -43,7 +42,7 @@ namespace Yamashita.ML
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public void AddData(float[] feature, int label)
         {

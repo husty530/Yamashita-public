@@ -6,13 +6,13 @@ namespace Yamashita.DepthCamera
     {
 
         /// <summary>
-        /// カメラのストリーム配信開始
+        /// Start Streaming
         /// </summary>
         /// <returns></returns>
         public IObservable<BgrXyzMat> Connect();
 
         /// <summary>
-        /// 配信の停止
+        /// Stop Streaming
         /// </summary>
         public void Disconnect();
 

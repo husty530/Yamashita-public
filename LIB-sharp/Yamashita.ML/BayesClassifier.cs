@@ -9,24 +9,18 @@ namespace Yamashita.ML
     public class BayesClassifier : Stats
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private NormalBayesClassifier _classifier;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
-        /// <summary>
-        /// Yamashita専用ベイズ分類器
-        /// </summary>
-        /// <param name="mode">学習か推論か</param>
-        /// <param name="modelPath"></param>
-        /// <param name="dataPath"></param>
         public BayesClassifier(Mode mode, string modelPath = "BayesModel.xml", string dataPath = "BayesTrainData.csv")
             : base(mode, modelPath, dataPath) { }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         protected override void LoadModel() => _classifier = NormalBayesClassifier.Load(_modelPath);
 

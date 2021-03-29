@@ -9,24 +9,18 @@ namespace Yamashita.ML
     public class Svm : Stats
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private SVM _classifier;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
-        /// <summary>
-        /// Yamashita専用SVM
-        /// </summary>
-        /// <param name="mode">学習か推論か</param>
-        /// <param name="modelPath"></param>
-        /// <param name="dataPath"></param>
         public Svm(Mode mode, string modelPath = "SvmModel.xml", string dataPath = "SvmTrainData.csv")
             : base(mode, modelPath, dataPath) { }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         protected override void LoadModel() => _classifier = SVM.Load(_modelPath);
 

@@ -10,7 +10,7 @@ namespace Yamashita.Control
     public class ParticleFilter : IFilter
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly int k;
         private readonly int m;
@@ -24,23 +24,23 @@ namespace Yamashita.Control
         private readonly double _denominator;
 
 
-        // プロパティ
+        // ------- Properties ------- //
 
         public List<Vector<double>> Particles { private set; get; }
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// 一番シンプルなもの
-        /// 出力と内部状態、観測パラメータがすべて同じ場合に使用可能
-        /// 制御入力はできない
-        /// 与える誤差分散の値はデフォルト引数にしている
+        /// The most simple.
+        /// Use same Status and Observe parameter.
+        /// You can't input Control.
+        /// Noise covariance is default value.
         /// </summary>
-        /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="measurementNoise">R : 観測ノイズの共分散行列 (デフォルト値)</param>
-        /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
-        /// <param name="N">粒子数 (デフォルト値)</param>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="measurementNoise">R (default)</param>
+        /// <param name="processNoise">Q (default)</param>
+        /// <param name="N">Particles Count (default)</param>
         public ParticleFilter(double[] initialStateVec, double measurementNoise = 3, double processNoise = 3, int N = 100)
         {
             k = initialStateVec.Length;
@@ -65,15 +65,15 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// 出力と内部状態、観測のパラメータが異なる場合
-        /// 制御入力はできない
+        /// In the case of that Observe differ from Status.
+        /// You can't input Control.
         /// </summary>
-        /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="transitionMatrix">A : 状態の遷移行列 (k * k)</param>
-        /// <param name="measurementMatrix">C : 観測値の遷移行列 (m * k)</param>
-        /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
-        /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
-        /// <param name="N">粒子数 (デフォルト値)</param>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="transitionMatrix">A (k * k)</param>
+        /// <param name="measurementMatrix">C (m * k)</param>
+        /// <param name="measurementNoise">R (default)</param>
+        /// <param name="processNoise">Q (default)</param>
+        /// <param name="N">Particles Count (default)</param>
         public ParticleFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 3, double processNoise = 3, int N = 100)
         {
             k = initialStateVec.Length;
@@ -95,15 +95,15 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// 誤差の共分散行列を指定したい場合
-        /// 制御入力はできない
+        /// You can design Noise Covariance Matrix.
+        /// But can't input Control.
         /// </summary>
-        /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="transitionMatrix">A : 状態の遷移行列 (k * k)</param>
-        /// <param name="measurementMatrix">C : 観測値の遷移行列 (m * k)</param>
-        /// <param name="measurementNoiseMatrix">R : 観測ノイズの共分散行列。観測側の不正確さ (m * m)</param>
-        /// <param name="processNoiseMatrix">Q : プロセスノイズの共分散行列。被観測側の不正確さ (k * k)</param>
-        /// <param name="N">粒子数 (デフォルト値)</param>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="transitionMatrix">A (k * k)</param>
+        /// <param name="measurementMatrix">C (m * k)</param>
+        /// <param name="measurementNoiseMatrix">R (m * m)</param>
+        /// <param name="processNoiseMatrix">Q (k * k)</param>
+        /// <param name="N">Particles Count (default)</param>
         public ParticleFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, int N = 100)
         {
             k = initialStateVec.Length;
@@ -121,16 +121,16 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// 一番シンプルなもの
-        /// 出力と内部状態、観測パラメータがすべて同じ場合に使用可能
-        /// 制御入力できる
-        /// 与える誤差分散の値はデフォルト引数にしている
+        /// The most simple.
+        /// Use same Status and Observe parameter.
+        /// You can input Control.
+        /// Noise covariance is default value.
         /// </summary>        
-        /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="controlMatrix">B : 制御入力の遷移行列 (k * n)</param>
-        /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
-        /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
-        /// <param name="N">粒子数 (デフォルト値)</param>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="controlMatrix">B (k * n)</param>
+        /// <param name="measurementNoise">R (default)</param>
+        /// <param name="processNoise">Q (default)</param>
+        /// <param name="N">Particles Count (default)</param>
         public ParticleFilter(double[] initialStateVec, double[] controlMatrix, double measurementNoise = 0.01, double processNoise = 0.01, int N = 100)
         {
 
@@ -158,16 +158,16 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// 出力と内部状態、観測のパラメータが異なる場合
-        /// 制御入力できる
+        /// In the case of that Observe differ from Status.
+        /// You can input Control.
         /// </summary>
-        /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="controlMatrix">B : 制御入力の遷移行列 (k * n)</param>
-        /// <param name="transitionMatrix">A : 状態の遷移行列 (k * k)</param>
-        /// <param name="measurementMatrix">C : 観測値の遷移行列 (m * k)</param>
-        /// <param name="measurementNoise">R : 観測ノイズの共分散行列。観測側の不正確さ (デフォルト値)</param>
-        /// <param name="processNoise">Q : プロセスノイズの共分散行列。被観測側の不正確さ (デフォルト値)</param>
-        /// <param name="N">粒子数 (デフォルト値)</param>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="controlMatrix">B (k * n)</param>
+        /// <param name="transitionMatrix">A (k * k)</param>
+        /// <param name="measurementMatrix">C (m * k)</param>
+        /// <param name="measurementNoise">R (default)</param>
+        /// <param name="processNoise">Q (default)</param>
+        /// <param name="N">Particles Count(default)</param>
         public ParticleFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, int N = 100)
         {
             k = initialStateVec.Length;
@@ -192,16 +192,16 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// 誤差の共分散行列を指定したい場合
-        /// 制御入力できる
+        /// You can design Noise Covariance Matrix.
+        /// But can input Control.
         /// </summary>
-        /// <param name="initialStateVec">X : 初期状態ベクトル (k * 1)</param>
-        /// <param name="controlMatrix">B : 制御入力の遷移行列 (k * n)</param>
-        /// <param name="transitionMatrix">A : 状態の遷移行列 (k * k)</param>
-        /// <param name="measurementMatrix">C : 観測値の遷移行列 (m * k)</param>
-        /// <param name="measurementNoiseMatrix">R : 観測ノイズの共分散行列。観測側の不正確さ (m * m)</param>
-        /// <param name="processNoiseMatrix">Q : プロセスノイズの共分散行列。被観測側の不正確さ (k * k)</param>
-        /// <param name="N">粒子数 (デフォルト値)</param>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="controlMatrix">B (k * n)</param>
+        /// <param name="transitionMatrix">A (k * k)</param>
+        /// <param name="measurementMatrix">C (m * k)</param>
+        /// <param name="measurementNoiseMatrix">R (m * m)</param>
+        /// <param name="processNoiseMatrix">Q (k * k)</param>
+        /// <param name="N">Particles Count (default)</param>
         public ParticleFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, int N = 100)
         {
             k = initialStateVec.Length;
@@ -222,7 +222,7 @@ namespace Yamashita.Control
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
@@ -247,7 +247,6 @@ namespace Yamashita.Control
             return (correct, predict);
         }
 
-        // ベクトルにプロセスノイズを加えて返す
         private DenseVector MakeVectorRandom(Vector<double> vec)
         {
             var value = new double[k];
@@ -256,7 +255,6 @@ namespace Yamashita.Control
             return new DenseVector(value);
         }
 
-        // 尤度の計算
         private double CalcLikelihood(Vector<double> x, Vector<double> y)
         {
             var err = y - _measureMatrix * x;
@@ -265,7 +263,6 @@ namespace Yamashita.Control
             return Math.Exp(index) / _denominator;
         }
 
-        // 系統サンプリング
         private IEnumerable<Vector<double>> Resample(List<double> likelihoodList)
         {
             for (double d = 1.0 / N / 2; d < 1.0; d += 1.0 / N)
@@ -283,7 +280,6 @@ namespace Yamashita.Control
             }
         }
 
-        // 次期の予測
         private IEnumerable<Vector<double>> PredictNextState(double[] controlVec)
         {
             if (_controlMatrix == null || controlVec == null)

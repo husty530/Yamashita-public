@@ -6,13 +6,13 @@ namespace Yamashita.DepthCamera
     public class RealsenseConverter
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly int width;
         private readonly int height;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         public RealsenseConverter(int width, int height)
         {
@@ -21,7 +21,7 @@ namespace Yamashita.DepthCamera
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public void ToColorMat(VideoFrame frame, ref Mat colorMat)
         {

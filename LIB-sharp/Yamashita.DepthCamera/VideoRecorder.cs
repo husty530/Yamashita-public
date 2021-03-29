@@ -37,17 +37,17 @@ namespace Yamashita.DepthCamera
     public class VideoRecorder : IDisposable
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly BinaryWriter _binWriter;
         private readonly List<long> _indexes = new List<long>();
         private readonly DateTimeOffset _firstTime;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// DepthCamera用のレコーダ
+        /// Movie Recorder for Depth Camera
         /// </summary>
         /// <param name="filePath"></param>
         public VideoRecorder(string filePath)
@@ -61,13 +61,13 @@ namespace Yamashita.DepthCamera
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// 一時刻分の書き込み
+        /// Write frames of the time.
         /// </summary>
         /// <param name="Bgrxyz"></param>
-        public void WriteFrame(BgrXyzMat Bgrxyz)
+        public void WriteFrames(BgrXyzMat Bgrxyz)
         {
             _indexes.Add(_binWriter.BaseStream.Position);
             _binWriter.Write((DateTimeOffset.Now - _firstTime).Ticks);
@@ -79,9 +79,6 @@ namespace Yamashita.DepthCamera
 
         }
 
-        /// <summary>
-        /// 閉じる処理
-        /// </summary>
         public void Dispose()
         {
             _binWriter.Seek(8, SeekOrigin.Begin);

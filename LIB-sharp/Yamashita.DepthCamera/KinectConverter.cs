@@ -6,13 +6,13 @@ namespace Yamashita.DepthCamera
     public class KinectConverter
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly int width;
         private readonly int height;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         public KinectConverter(Size size)
         {
@@ -21,7 +21,7 @@ namespace Yamashita.DepthCamera
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public unsafe void ToColorMat(Image colorImg, ref Mat colorMat)
         {

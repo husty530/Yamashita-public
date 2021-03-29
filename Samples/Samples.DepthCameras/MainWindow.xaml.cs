@@ -135,7 +135,7 @@ namespace Samples.DepthCameras
                     .Finally(() => writer.Dispose())
                     .Subscribe(imgs =>
                     {
-                        writer.WriteFrame(imgs);
+                        writer.WriteFrames(imgs);
                         var l = imgs.GetPointInfo(left);
                         var r = imgs.GetPointInfo(right);
                         var t = imgs.GetPointInfo(top);

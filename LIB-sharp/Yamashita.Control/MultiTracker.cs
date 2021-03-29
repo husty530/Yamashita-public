@@ -8,7 +8,7 @@ namespace Yamashita.Control
     public class MultiTracker : IMultiTracker
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private int _id;
         private readonly double _dt;
@@ -20,15 +20,15 @@ namespace Yamashita.Control
         private readonly Scalar[] _colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// トラッカーを生成
+        /// Generate Tracker.
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="iouThresh">同一物体とみなす重なり度合いの閾値</param>
-        /// <param name="maxMissCount">消えたとみなす連続見落とし数</param>
-        /// <param name="minDetectCount">発見とみなす最小検出数</param>
+        /// <param name="iouThresh">Threshold for regarding as same object.</param>
+        /// <param name="maxMissCount">For regarding as missed object.</param>
+        /// <param name="minDetectCount">For regarding as detected object.</param>
         public MultiTracker(OutputType type, float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1, double dt = 0.1)
         {
             if (iouThresh < 0 || iouThresh > 1 || maxMissCount < 1 || minDetectCount < 1) throw new Exception("");
@@ -41,7 +41,7 @@ namespace Yamashita.Control
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public void Update(ref Mat frame, List<(string Label, Point Center, Size Size)> detections, out List<(int Id, string Label, float Iou, Point Center, Size Size)> results)
         {

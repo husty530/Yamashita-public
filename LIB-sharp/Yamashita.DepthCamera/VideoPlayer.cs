@@ -41,14 +41,14 @@ namespace Yamashita.DepthCamera
     public class VideoPlayer : IDisposable
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly BinaryReader _binReader;
         private readonly long[] _indexes;
         private int _positionIndex;
 
 
-        // プロパティ
+        // ------- Properties ------- //
 
         public int FrameCount => _indexes.Length;
 
@@ -57,10 +57,10 @@ namespace Yamashita.DepthCamera
         private int Interval => 800 / FPS;
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// DepthCamera用のプレーヤー
+        /// Player for Movies captured by Depth Camera
         /// </summary>
         /// <param name="filePath"></param>
         public VideoPlayer(string filePath, int fps = 15)
@@ -80,12 +80,12 @@ namespace Yamashita.DepthCamera
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// ストリーム配信開始(RefCount方式)
+        /// Start Streaming (RefCount)
         /// </summary>
-        /// <param name="position">開始するフレーム番号</param>
+        /// <param name="position">Starting Frame Index</param>
         /// <returns></returns>
         public IObservable<(BgrXyzMat Frames, int Position)> Start(int position)
         {
@@ -102,9 +102,8 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// ストリームではなく1フレームだけ
         /// </summary>
-        /// <param name="position">取得するフレーム番号</param>
+        /// <param name="position">Frame Index</param>
         /// <returns></returns>
         public BgrXyzMat GetOneFrameSet(int position)
         {
@@ -112,9 +111,6 @@ namespace Yamashita.DepthCamera
             return ReadFrames().Frames;
         }
 
-        /// <summary>
-        /// 閉じる処理
-        /// </summary>
         public void Dispose()
         {
             _binReader.Close();

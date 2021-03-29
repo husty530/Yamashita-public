@@ -10,7 +10,7 @@ namespace Yamashita.ML
     public class Yolo : IYolo
     {
 
-        // フィールド
+        // ------- Fields ------- //
 
         private readonly DrawingMode _draw;
         private readonly Net _net;
@@ -21,18 +21,18 @@ namespace Yamashita.ML
         private readonly Scalar[] _colors = Enumerable.Repeat(false, 80).Select(x => Scalar.RandomColor()).ToArray();
 
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// 検出器の初期化
+        /// Initialize Detector
         /// </summary>
-        /// <param name="cfg">.cfgファイル</param>
-        /// <param name="names">.namesファイル</param>
-        /// <param name="weights">.weightsファイル</param>
-        /// <param name="blobSize">入力サイズ</param>
-        /// <param name="draw">描画の設定</param>
-        /// <param name="confThresh">確信度の閾値</param>
-        /// <param name="nmsThresh">重なりの閾値</param>
+        /// <param name="cfg"></param>
+        /// <param name="names"></param>
+        /// <param name="weights"></param>
+        /// <param name="blobSize"></param>
+        /// <param name="draw"></param>
+        /// <param name="confThresh"></param>
+        /// <param name="nmsThresh"></param>
         public Yolo(string cfg, string names, string weights, Size blobSize, DrawingMode draw = DrawingMode.Rectangle, float confThresh = 0.5f, float nmsThresh = 0.3f)
         {
             _blobSize = blobSize;
@@ -44,7 +44,7 @@ namespace Yamashita.ML
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         public void Run(ref Mat frame, out YoloResults results)
         {

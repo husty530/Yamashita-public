@@ -6,13 +6,13 @@ namespace Yamashita.TcpSocket
     public class Client : TcpSocket
     {
 
-        // コンストラクタ
+        // ------- Constructor ------- //
 
         /// <summary>
-        /// TCPクライアントの接続開始
+        /// Start Connection
         /// </summary>
-        /// <param name="ip">サーバーのIP</param>
-        /// <param name="port">ポート番号</param>
+        /// <param name="ip"></param>
+        /// <param name="port"></param>
         public Client(string ip, int port)
         {
             try
@@ -29,10 +29,10 @@ namespace Yamashita.TcpSocket
         }
 
 
-        // メソッド
+        // ------- Methods ------- //
 
         /// <summary>
-        /// クライアントを閉じる
+        /// Close Client
         /// </summary>
         public override void Close()
         {

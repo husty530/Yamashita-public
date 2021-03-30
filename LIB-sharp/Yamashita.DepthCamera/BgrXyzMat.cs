@@ -23,7 +23,7 @@ namespace Yamashita.DepthCamera
         public Mat XYZ { private set; get; }
 
         /// <summary>
-        /// Depth Image (0～65535)(mm)
+        /// Depth Image (0-65535)(mm)
         /// </summary>
         public Mat Depth16 => XYZ.Split()[2];
 

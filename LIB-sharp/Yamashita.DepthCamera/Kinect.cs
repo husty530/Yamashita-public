@@ -31,7 +31,7 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// Open Device
         /// </summary>
-        /// <param name="config">User Settings (optional)</param>
+        /// <param name="config">User Settings</param>
         public Kinect(DeviceConfiguration config, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
             pitchRad = (float)(pitchDeg * Math.PI / 180);
@@ -49,7 +49,7 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// Open Device (default)
         /// </summary>
-        public Kinect(float pitch = 5.8f, float yaw = 1.3f, float roll = 0f)
+        public Kinect(float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
             : this(new DeviceConfiguration
             {
                 ColorFormat = ImageFormat.ColorBGRA32,
@@ -57,7 +57,8 @@ namespace Yamashita.DepthCamera
                 DepthMode = DepthMode.NFOV_2x2Binned,
                 SynchronizedImagesOnly = true,
                 CameraFPS = FPS.FPS15
-            })
+            },
+            pitchDeg, yawDeg, rollDeg)
         { }
 
 

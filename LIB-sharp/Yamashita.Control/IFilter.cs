@@ -2,17 +2,21 @@
 {
     /// <summary>
     /// 
-    /// 状態数を"k", 観測数を"m", 制御入力数を"n"とする
+    /// k ... State Vector Length
+    /// m ... Measurement Vector Length
+    /// n ... Control Vector Length
     /// 
-    /// 以下、引数でMatrixなのに配列型になっているところがある
-    /// 行列で M = A B C
-    ///            D E F
-    ///            G H I
-    /// と書きたい場合は、
+    /// If you describe Matrix like,
+    /// 
+    ///     M = A B C
+    ///         D E F
+    ///         G H I
+    ///         
+    /// you should write code like this,
+    /// 
     /// m = { a, b, c, d, e, f, g, h, i }
-    /// のように一列の配列としてMatrixのデータを用意する
     /// 
-    /// 対角行列ですべて一定値でよい場合のために簡易版のコンストラクタもある
+    /// Simple version constructor is available if you need.
     /// 
     /// </summary>
     public interface IFilter

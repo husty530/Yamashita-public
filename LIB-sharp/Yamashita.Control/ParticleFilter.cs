@@ -12,15 +12,16 @@ namespace Yamashita.Control
 
         // ------- Fields ------- //
 
-        private readonly int k;
-        private readonly int m;
-        private readonly int n;
-        private readonly int N;
-        private readonly Matrix<double> _controlMatrix;
-        private readonly Matrix<double> _transitionMatrix;
-        private readonly Matrix<double> _measureMatrix;
-        private readonly Matrix<double> _processNoise;
-        private readonly Matrix<double> _measureNoiseInv;
+        private readonly int k;                 // State Vector Length
+        private readonly int m;                 // Measurement Vector Length
+        private readonly int n;                 // Control Vector Length
+        private readonly int N;                 // Count of Particle
+        private readonly Matrix<double> A;      // Transition Matrix
+        private readonly Matrix<double> B;      // Control Matrix
+        private readonly Matrix<double> C;      // Measure Matrix
+        private readonly Matrix<double> Q;      // Process Noise Matrix
+        private readonly Matrix<double> R;      // Measure Noise Matrix
+        private readonly Matrix<double> RInv;
         private readonly double _denominator;
 
 
@@ -46,22 +47,22 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = initialStateVec.Length;
             this.N = N;
-            _measureMatrix = DenseMatrix.OfArray(new double[m, k]);
-            _transitionMatrix = DenseMatrix.OfArray(new double[k, k]);
-            var measureNoise = DenseMatrix.OfArray(new double[m, m]);
-            _processNoise = DenseMatrix.OfArray(new double[k, k]);
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
             Particles = new List<Vector<double>>();
             for (int i = 0; i < k; i++)
             {
-                _measureMatrix[i, i] = 1;
-                _transitionMatrix[i, i] = 1;
-                measureNoise[i, i] = measurementNoise;
-                _processNoise[i, i] = processNoise;
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = measurementNoise;
+                Q[i, i] = processNoise;
             }
             for (int i = 0; i < N; i++)
                 Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
-            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * measureNoise.Determinant());
-            _measureNoiseInv = measureNoise.Inverse();
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
         }
 
         /// <summary>
@@ -79,19 +80,19 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             this.N = N;
-            _measureMatrix = new DenseMatrix(k, m, measurementMatrix).Transpose();
-            _transitionMatrix = new DenseMatrix(k, k, transitionMatrix).Transpose();
-            var measureNoise = DenseMatrix.OfArray(new double[m, m]);
-            _processNoise = DenseMatrix.OfArray(new double[k, k]);
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
             Particles = new List<Vector<double>>();
             for (int i = 0; i < k; i++)
-                _processNoise[i, i] = processNoise;
+                Q[i, i] = processNoise;
             for (int i = 0; i < m; i++)
-                measureNoise[i, i] = measurementNoise;
+                R[i, i] = measurementNoise;
             for (int i = 0; i < N; i++)
                 Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
-            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * measureNoise.Determinant());
-            _measureNoiseInv = measureNoise.Inverse();
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
         }
 
         /// <summary>
@@ -109,15 +110,15 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             this.N = N;
-            _measureMatrix = new DenseMatrix(k, m, measurementMatrix).Transpose();
-            _transitionMatrix = new DenseMatrix(k, k, transitionMatrix).Transpose();
-            var measureNoise = new DenseMatrix(m, m, measurementNoiseMatrix).Transpose();
-            _processNoise = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = new DenseMatrix(m, m, measurementNoiseMatrix).Transpose();
+            Q = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
             Particles = new List<Vector<double>>();
             for (int i = 0; i < N; i++)
                 Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
-            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * measureNoise.Determinant());
-            _measureNoiseInv = measureNoise.Inverse();
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
         }
 
         /// <summary>
@@ -138,23 +139,23 @@ namespace Yamashita.Control
             m = initialStateVec.Length;
             n = controlMatrix.Length / k;
             this.N = N;
-            _controlMatrix = new DenseMatrix(n, k, controlMatrix).Transpose();
-            _measureMatrix = DenseMatrix.OfArray(new double[m, k]);
-            _transitionMatrix = DenseMatrix.OfArray(new double[k, k]);
-            var measureNoise = DenseMatrix.OfArray(new double[m, m]);
-            _processNoise = DenseMatrix.OfArray(new double[k, k]);
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
             Particles = new List<Vector<double>>();
             for (int i = 0; i < k; i++)
             {
-                _measureMatrix[i, i] = 1;
-                _transitionMatrix[i, i] = 1;
-                measureNoise[i, i] = measurementNoise;
-                _processNoise[i, i] = processNoise;
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = measurementNoise;
+                Q[i, i] = processNoise;
             }
             for (int i = 0; i < N; i++)
                 Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
-            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * measureNoise.Determinant());
-            _measureNoiseInv = measureNoise.Inverse();
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
         }
 
         /// <summary>
@@ -174,20 +175,20 @@ namespace Yamashita.Control
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
             this.N = N;
-            _controlMatrix = new DenseMatrix(n, k, controlMatrix).Transpose();
-            _measureMatrix = new DenseMatrix(k, m, measurementMatrix).Transpose();
-            _transitionMatrix = new DenseMatrix(k, k, transitionMatrix).Transpose();
-            var measureNoise = DenseMatrix.OfArray(new double[m, m]);
-            _processNoise = DenseMatrix.OfArray(new double[k, k]);
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
             Particles = new List<Vector<double>>();
             for (int i = 0; i < k; i++)
-                _processNoise[i, i] = processNoise;
+                Q[i, i] = processNoise;
             for (int i = 0; i < m; i++)
-                measureNoise[i, i] = measurementNoise;
+                R[i, i] = measurementNoise;
             for (int i = 0; i < N; i++)
                 Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
-            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * measureNoise.Determinant());
-            _measureNoiseInv = measureNoise.Inverse();
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
 
         }
 
@@ -208,16 +209,16 @@ namespace Yamashita.Control
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
             this.N = N;
-            _controlMatrix = new DenseMatrix(n, k, controlMatrix).Transpose();
-            _measureMatrix = new DenseMatrix(k, m, measurementMatrix).Transpose();
-            _transitionMatrix = new DenseMatrix(k, k, transitionMatrix).Transpose();
-            var measureNoise = new DenseMatrix(m, m, measurementNoiseMatrix).Transpose();
-            _processNoise = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = new DenseMatrix(m, m, measurementNoiseMatrix).Transpose();
+            Q = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
             Particles = new List<Vector<double>>();
             for (int i = 0; i < N; i++)
                 Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
-            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * measureNoise.Determinant());
-            _measureNoiseInv = measureNoise.Inverse();
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
 
         }
 
@@ -251,15 +252,15 @@ namespace Yamashita.Control
         {
             var value = new double[k];
             for (int i = 0; i < k; i++)
-                value[i] = Normal.Samples(vec[i], _processNoise[i, i]).Take(1).ToArray()[0];
+                value[i] = Normal.Samples(vec[i], Q[i, i]).Take(1).ToArray()[0];
             return new DenseVector(value);
         }
 
         private double CalcLikelihood(Vector<double> x, Vector<double> y)
         {
-            var err = y - _measureMatrix * x;
+            var err = y - C * x;
             var errT = err.ToRowMatrix();
-            var index = (-errT * _measureNoiseInv * err / 2)[0];
+            var index = (-errT * RInv * err / 2)[0];
             return Math.Exp(index) / _denominator;
         }
 
@@ -282,12 +283,12 @@ namespace Yamashita.Control
 
         private IEnumerable<Vector<double>> PredictNextState(double[] controlVec)
         {
-            if (_controlMatrix == null || controlVec == null)
+            if (B == null || controlVec == null)
                 foreach (var p in Particles)
-                    yield return MakeVectorRandom(_transitionMatrix * p);
+                    yield return MakeVectorRandom(A * p);
             else
                 foreach (var p in Particles)
-                    yield return MakeVectorRandom(_transitionMatrix * p + _controlMatrix * new DenseVector(controlVec));
+                    yield return MakeVectorRandom(A * p + B * new DenseVector(controlVec));
         }
 
     }

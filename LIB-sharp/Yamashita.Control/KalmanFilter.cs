@@ -1,17 +1,23 @@
-﻿using OpenCvSharp;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Yamashita.Control
 {
-    public class KalmanFilter : IFilter
+    class KalmanFilter : IFilter
     {
 
         // ------- Fields ------- //
 
-        private readonly MatType type = MatType.CV_64F;
-        private readonly OpenCvSharp.KalmanFilter _kalman;
-        private readonly int k;
-        private readonly int m;
-        private readonly int n;
+        private readonly int k;                 // State Vector Length
+        private readonly int m;                 // Measurement Vector Length
+        private readonly int n;                 // Control Vector Length
+        private readonly Matrix<double> A;      // Transition Matrix
+        private readonly Matrix<double> B;      // Control Matrix
+        private readonly Matrix<double> C;      // Measure Matrix
+        private readonly Matrix<double> Q;      // Process Noise Matrix
+        private readonly Matrix<double> R;      // Measure Noise Matrix
+        private Matrix<double> P;               // Error Covariance Matrix
+        private Vector<double> X;               // State Vector
 
 
         // ------- Constructor ------- //
@@ -28,30 +34,23 @@ namespace Yamashita.Control
         /// <param name="preError">P (default)</param>
         public KalmanFilter(double[] initialStateVec, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
-
             k = initialStateVec.Length;
             m = initialStateVec.Length;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type)
-            {
-                StatePre = new Mat(k, 1, type, initialStateVec),
-                StatePost = new Mat(k, 1, type, initialStateVec),
-                TransitionMatrix = Mat.Zeros(new Size(k, k), type),
-                MeasurementMatrix = Mat.Zeros(new Size(m, k), type),
-                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type),
-                ProcessNoiseCov = Mat.Zeros(new Size(k, k), type),
-                ErrorCovPre = Mat.Zeros(new Size(k, k), type)
-            };
+            X = DenseVector.OfArray(initialStateVec);
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            P = DenseMatrix.OfArray(new double[k, k]);
             for (int i = 0; i < k; i++)
             {
-                _kalman.TransitionMatrix.At<double>(i, i) = 1;
-                _kalman.MeasurementMatrix.At<double>(i, i) = 1;
-                _kalman.MeasurementNoiseCov.At<double>(i, i) = measurementNoise;
-                _kalman.ProcessNoiseCov.At<double>(i, i) = processNoise;
-                _kalman.ErrorCovPre.At<double>(i, i) = preError;
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = measurementNoise;
+                Q[i, i] = processNoise;
+                P[i, i] = preError;
             }
-
         }
-
 
         /// <summary>
         /// In the case of that Observe differ from Status.
@@ -65,26 +64,21 @@ namespace Yamashita.Control
         /// <param name="preError">P (default)</param>
         public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
-
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type)
-            {
-                StatePre = new Mat(k, 1, type, initialStateVec),
-                StatePost = new Mat(k, 1, type, initialStateVec),
-                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
-                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
-                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type),
-                ProcessNoiseCov = Mat.Zeros(new Size(k, k), type),
-                ErrorCovPre = Mat.Zeros(new Size(k, k), type)
-            };
-            for (int i = 0; i < m; i++) _kalman.MeasurementNoiseCov.At<double>(i, i) = measurementNoise;
+            X = DenseVector.OfArray(initialStateVec);
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            P = DenseMatrix.OfArray(new double[k, k]);
             for (int i = 0; i < k; i++)
             {
-                _kalman.ProcessNoiseCov.At<double>(i, i) = processNoise;
-                _kalman.ErrorCovPre.At<double>(i, i) = preError;
+                Q[i, i] = processNoise;
+                P[i, i] = preError;
             }
-
+            for (int i = 0; i < m; i++)
+                R[i, i] = measurementNoise;
         }
 
         /// <summary>
@@ -96,31 +90,27 @@ namespace Yamashita.Control
         /// <param name="measurementMatrix">C (m * k)</param>
         /// <param name="measurementNoiseMatrix">R (m * m)</param>
         /// <param name="processNoiseMatrix">Q (k * k)</param>
-        /// <param name="preErrorMatrix">P (k * k)</param>
-        public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double[] preErrorMatrix)
+        /// <param name="preError">P (default)</param>
+        public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double preError = 1.0)
         {
-
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, 0, type)
-            {
-                StatePre = new Mat(k, 1, type, initialStateVec),
-                StatePost = new Mat(k, 1, type, initialStateVec),
-                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
-                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
-                MeasurementNoiseCov = new Mat(m, m, type, measurementNoiseMatrix),
-                ProcessNoiseCov = new Mat(k, k, type, processNoiseMatrix),
-                ErrorCovPre = new Mat(k, k, type, preErrorMatrix)
-            };
-
+            X = DenseVector.OfArray(initialStateVec);
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = new DenseMatrix(m, m, measurementNoiseMatrix).Transpose();
+            Q = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
+            P = DenseMatrix.OfArray(new double[k, k]);
+            for (int i = 0; i < k; i++)
+                P[i, i] = preError;
         }
 
         /// <summary>
         /// The most simple.
         /// Use same Status and Observe parameter.
-        /// You can't input Control.
+        /// You can input Control.
         /// Noise covariance is default value.
-        /// </summary>
+        /// </summary>        
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>
         /// <param name="measurementNoise">R (default)</param>
@@ -132,31 +122,26 @@ namespace Yamashita.Control
             k = initialStateVec.Length;
             m = initialStateVec.Length;
             n = controlMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type)
-            {
-                StatePre = new Mat(k, 1, type, initialStateVec),
-                StatePost = new Mat(k, 1, type, initialStateVec),
-                ControlMatrix = new Mat(k, n, type, controlMatrix),
-                TransitionMatrix = Mat.Zeros(new Size(k, k), type),
-                MeasurementMatrix = Mat.Zeros(new Size(m, k), type),
-                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type),
-                ProcessNoiseCov = Mat.Zeros(new Size(k, k), type),
-                ErrorCovPre = Mat.Zeros(new Size(k, k), type)
-            };
+            X = DenseVector.OfArray(initialStateVec);
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            P = DenseMatrix.OfArray(new double[k, k]);
             for (int i = 0; i < k; i++)
             {
-                _kalman.TransitionMatrix.At<double>(i, i) = 1;
-                _kalman.MeasurementMatrix.At<double>(i, i) = 1;
-                _kalman.MeasurementNoiseCov.At<double>(i, i) = measurementNoise;
-                _kalman.ProcessNoiseCov.At<double>(i, i) = processNoise;
-                _kalman.ErrorCovPre.At<double>(i, i) = preError;
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = measurementNoise;
+                Q[i, i] = processNoise;
+                P[i, i] = preError;
             }
-
         }
 
         /// <summary>
         /// In the case of that Observe differ from Status.
-        /// You can't input Control.
+        /// You can input Control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>
@@ -167,33 +152,28 @@ namespace Yamashita.Control
         /// <param name="preError">P (default)</param>
         public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
         {
-
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type)
-            {
-                StatePre = new Mat(k, 1, type, initialStateVec),
-                StatePost = new Mat(k, 1, type, initialStateVec),
-                ControlMatrix = new Mat(k, n, type, controlMatrix),
-                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
-                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
-                MeasurementNoiseCov = Mat.Zeros(new Size(m, m), type)
-            };
-            for (int i = 0; i < m; i++) _kalman.MeasurementNoiseCov.At<double>(i, i) = measurementNoise;
-            _kalman.ProcessNoiseCov = Mat.Zeros(new Size(k, k), type);
-            _kalman.ErrorCovPre = Mat.Zeros(new Size(k, k), type);
+            X = DenseVector.OfArray(initialStateVec);
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            P = DenseMatrix.OfArray(new double[k, k]);
             for (int i = 0; i < k; i++)
             {
-                _kalman.ProcessNoiseCov.At<double>(i, i) = processNoise;
-                _kalman.ErrorCovPre.At<double>(i, i) = preError;
+                Q[i, i] = processNoise;
+                P[i, i] = preError;
             }
-
+            for (int i = 0; i < m; i++)
+                R[i, i] = measurementNoise;
         }
 
         /// <summary>
         /// You can design Noise Covariance Matrix.
-        /// But can't input Control.
+        /// But can input Control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>
@@ -201,43 +181,65 @@ namespace Yamashita.Control
         /// <param name="measurementMatrix">C (m * k)</param>
         /// <param name="measurementNoiseMatrix">R (m * m)</param>
         /// <param name="processNoiseMatrix">Q (k * k)</param>
-        /// <param name="preErrorMatrix">P (k * k)</param>
-        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double[] preErrorMatrix)
+        /// <param name="preError">P (default)</param>
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double[] measurementNoiseMatrix, double[] processNoiseMatrix, double preError = 1.0)
         {
-
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
             n = controlMatrix.Length / k;
-            _kalman = new OpenCvSharp.KalmanFilter(k, m, n, type)
-            {
-                StatePre = new Mat(k, 1, type, initialStateVec),
-                StatePost = new Mat(k, 1, type, initialStateVec),
-                ControlMatrix = new Mat(k, n, type, controlMatrix),
-                TransitionMatrix = new Mat(k, k, type, transitionMatrix),
-                MeasurementMatrix = new Mat(m, k, type, measurementMatrix),
-                MeasurementNoiseCov = new Mat(m, m, type, measurementNoiseMatrix),
-                ProcessNoiseCov = new Mat(k, k, type, processNoiseMatrix),
-                ErrorCovPre = new Mat(k, k, type, preErrorMatrix)
-            };
-
+            X = DenseVector.OfArray(initialStateVec);
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = new DenseMatrix(k, m, measurementMatrix).Transpose();
+            A = new DenseMatrix(k, k, transitionMatrix).Transpose();
+            R = new DenseMatrix(m, m, measurementNoiseMatrix).Transpose();
+            Q = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
+            for (int i = 0; i < k; i++)
+                P[i, i] = preError;
         }
 
 
         // ------- Methods ------- //
 
+        /// <summary>
+        /// Using measurement infomation, correct current state.
+        /// </summary>
+        /// <param name="measurementVec"></param>
+        /// <returns></returns>
+        public double[] Correct(double[] measurementVec)
+        {
+            var Y = DenseVector.OfArray(measurementVec);
+            var CP = C * P;
+            var K = ((CP * C.Transpose() + R).Inverse() * CP).Transpose();
+            X += K * (Y - C * X);
+            P -= K * CP;
+            return X.ToArray();
+        }
+
+        /// <summary>
+        /// Predict next state, ControlVector is optional.
+        /// </summary>
+        /// <param name="controlVec"></param>
+        /// <returns></returns>
+        public double[] Predict(double[] controlVec = null)
+        {
+            X = A * X;
+            if (controlVec != null)
+                X += B * DenseVector.OfArray(controlVec);
+            P = A * P * A.Transpose() + Q;
+            return X.ToArray();
+        }
+
+        /// <summary>
+        /// Do Correct and Predict.
+        /// </summary>
+        /// <param name="measurementVec"></param>
+        /// <param name="controlVec"></param>
+        /// <returns></returns>
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
-            using var correctMat = _kalman.Correct(new Mat(m, 1, type, measurementVec));
-            using var controlMat = controlVec != null ? new Mat(n, 1, type, controlVec) : null;
-            using var predictMat = _kalman.Predict(controlMat);
-            var correctArray = new double[k];
-            var predictArray = new double[k];
-            for (int i = 0; i < k; i++)
-            {
-                correctArray[i] = correctMat.At<double>(i);
-                predictArray[i] = predictMat.At<double>(i);
-            }
-            return (correctArray, predictArray);
+            var correct = Correct(measurementVec);
+            var predict = Predict(controlVec);
+            return (correct, predict);
         }
 
     }

@@ -9,12 +9,12 @@
     <Authors>yamashita</Authors>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
     <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Control</PackageProjectUrl>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
-    <PackageReference Include="OpenCvSharp4" Version="4.5.0.20201013" />
+    <PackageReference Include="OpenCvSharp4" Version="4.5.1.20210210" />
   </ItemGroup>
 
 </Project>

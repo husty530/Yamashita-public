@@ -6,9 +6,9 @@ using System.Text;
 namespace Yamashita.DepthCamera
 {
     /// <summary>
-    /// BGRXYZの映像をバイナリ形式で保存
+    /// Save BGRXYZ movie as binary file.
     /// 
-    /// データ構造
+    /// Data Structure
     /// 
     ///   byte        content
     ///  

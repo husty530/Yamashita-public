@@ -10,9 +10,9 @@ using System.Linq;
 namespace Yamashita.DepthCamera
 {
     /// <summary>
-    /// BGRXYZの映像をバイナリファイルから再生
+    /// Playback BGRXYZ movie from binary file.
     /// 
-    /// データ構造
+    /// Data Structure
     /// 
     ///   byte        content
     ///  

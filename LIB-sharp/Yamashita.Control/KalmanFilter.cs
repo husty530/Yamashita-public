@@ -12,8 +12,11 @@ namespace Yamashita.Control
         private readonly int m;                 // Measurement Vector Length
         private readonly int n;                 // Control Vector Length
         private readonly Matrix<double> A;      // Transition Matrix
+        private readonly Matrix<double> AT;     // Transition Matrix Transpose
         private readonly Matrix<double> B;      // Control Matrix
+        private readonly Matrix<double> BT;     // Control Matrix Transpose
         private readonly Matrix<double> C;      // Measure Matrix
+        private readonly Matrix<double> CT;     // Measure Matrix Transpose
         private readonly Matrix<double> Q;      // Process Noise Matrix
         private readonly Matrix<double> R;      // Measure Noise Matrix
         private Matrix<double> P;               // Error Covariance Matrix
@@ -32,7 +35,7 @@ namespace Yamashita.Control
         /// <param name="measurementNoise">R (default)</param>
         /// <param name="processNoise">Q (default)</param>
         /// <param name="preError">P (default)</param>
-        public KalmanFilter(double[] initialStateVec, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double measurementNoise = 1.0, double processNoise = 1.0, double preError = 1.0)
         {
             k = initialStateVec.Length;
             m = initialStateVec.Length;
@@ -50,6 +53,8 @@ namespace Yamashita.Control
                 Q[i, i] = processNoise;
                 P[i, i] = preError;
             }
+            AT = A.Transpose();
+            CT = C.Transpose();
         }
 
         /// <summary>
@@ -62,7 +67,7 @@ namespace Yamashita.Control
         /// <param name="measurementNoise">R (default)</param>
         /// <param name="processNoise">Q (default)</param>
         /// <param name="preError">P (default)</param>
-        public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 1.0, double processNoise = 1.0, double preError = 1.0)
         {
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
@@ -79,6 +84,8 @@ namespace Yamashita.Control
             }
             for (int i = 0; i < m; i++)
                 R[i, i] = measurementNoise;
+            AT = A.Transpose();
+            CT = C.Transpose();
         }
 
         /// <summary>
@@ -103,6 +110,8 @@ namespace Yamashita.Control
             P = DenseMatrix.OfArray(new double[k, k]);
             for (int i = 0; i < k; i++)
                 P[i, i] = preError;
+            AT = A.Transpose();
+            CT = C.Transpose();
         }
 
         /// <summary>
@@ -116,7 +125,7 @@ namespace Yamashita.Control
         /// <param name="measurementNoise">R (default)</param>
         /// <param name="processNoise">Q (default)</param>
         /// <param name="preError">P (default)</param>
-        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double measurementNoise = 1.0, double processNoise = 1.0, double preError = 1.0)
         {
 
             k = initialStateVec.Length;
@@ -137,6 +146,9 @@ namespace Yamashita.Control
                 Q[i, i] = processNoise;
                 P[i, i] = preError;
             }
+            AT = A.Transpose();
+            BT = B.Transpose();
+            CT = C.Transpose();
         }
 
         /// <summary>
@@ -150,7 +162,7 @@ namespace Yamashita.Control
         /// <param name="measurementNoise">R (default)</param>
         /// <param name="processNoise">Q (default)</param>
         /// <param name="preError">P (default)</param>
-        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 0.01, double processNoise = 0.01, double preError = 1.0)
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double[] transitionMatrix, double[] measurementMatrix, double measurementNoise = 1.0, double processNoise = 1.0, double preError = 1.0)
         {
             k = initialStateVec.Length;
             m = measurementMatrix.Length / k;
@@ -169,6 +181,9 @@ namespace Yamashita.Control
             }
             for (int i = 0; i < m; i++)
                 R[i, i] = measurementNoise;
+            AT = A.Transpose();
+            BT = B.Transpose();
+            CT = C.Transpose();
         }
 
         /// <summary>
@@ -195,6 +210,9 @@ namespace Yamashita.Control
             Q = new DenseMatrix(k, k, processNoiseMatrix).Transpose();
             for (int i = 0; i < k; i++)
                 P[i, i] = preError;
+            AT = A.Transpose();
+            BT = B.Transpose();
+            CT = C.Transpose();
         }
 
 
@@ -209,9 +227,9 @@ namespace Yamashita.Control
         {
             var Y = DenseVector.OfArray(measurementVec);
             var CP = C * P;
-            var K = ((CP * C.Transpose() + R).Inverse() * CP).Transpose();
-            X += K * (Y - C * X);
-            P -= K * CP;
+            var G = P * CT * (CP * CT + R).Inverse();
+            X += G * (Y - C * X);
+            P -= G * CP;
             return X.ToArray();
         }
 
@@ -222,10 +240,16 @@ namespace Yamashita.Control
         /// <returns></returns>
         public double[] Predict(double[] controlVec = null)
         {
-            X = A * X;
             if (controlVec != null)
-                X += B * DenseVector.OfArray(controlVec);
-            P = A * P * A.Transpose() + Q;
+            {
+                X = A * X + B * DenseVector.OfArray(controlVec);
+                P = A * P * AT + B * Q * BT;
+            }
+            else
+            {
+                X = A * X;
+                P = A * P * AT + Q;
+            }
             return X.ToArray();
         }
 

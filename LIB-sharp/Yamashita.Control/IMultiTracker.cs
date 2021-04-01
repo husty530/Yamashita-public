@@ -90,7 +90,7 @@ namespace Yamashita.Control
                             0, 0, 0, 0, 1, 0,
                             0, 0, 0, 0, 0, 1  };
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
-            _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, 0.5);
+            _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, 30);
         }
 
 

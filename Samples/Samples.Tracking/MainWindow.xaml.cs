@@ -54,7 +54,7 @@ namespace Samples.Tracking
         private void CameraButton_Click(object sender, RoutedEventArgs e)
         {
             _connector?.Dispose();
-            var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3);
+            var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3, 0.1, 5);
             _connector = ConnectCamera(0)
                     .Subscribe(frame =>
                     {

@@ -12,6 +12,7 @@ namespace Yamashita.Control
 
         private int _id;
         private readonly double _dt;
+        private readonly double _filterStrength;
         private readonly OutputType _type;
         private readonly float _iouThresh;
         private readonly int _minDetectCount;
@@ -29,10 +30,11 @@ namespace Yamashita.Control
         /// <param name="iouThresh">Threshold for regarding as same object.</param>
         /// <param name="maxMissCount">For regarding as missed object.</param>
         /// <param name="minDetectCount">For regarding as detected object.</param>
-        public MultiTracker(OutputType type, float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1, double dt = 0.1)
+        public MultiTracker(OutputType type, float iouThresh = 0.2f, int maxMissCount = 1, int minDetectCount = 1, double dt = 0.1, double filterStrength = 1.0)
         {
             if (iouThresh < 0 || iouThresh > 1 || maxMissCount < 1 || minDetectCount < 1) throw new Exception("");
             _dt = dt;
+            _filterStrength = filterStrength;
             _type = type;
             _iouThresh = iouThresh;
             _minDetectCount = minDetectCount;
@@ -75,7 +77,7 @@ namespace Yamashita.Control
                 }
                 if (first)
                 {
-                    _trackers.Add(new Individual(detection.Center, detection.Size, _id++, _dt, detection.Label));
+                    _trackers.Add(new Individual(detection.Center, detection.Size, _id++, _dt, _filterStrength, detection.Label));
                 }
             }
         }

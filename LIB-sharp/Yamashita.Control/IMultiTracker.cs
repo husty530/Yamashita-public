@@ -66,7 +66,7 @@ namespace Yamashita.Control
 
         // ------- Constructor ------- //
 
-        public Individual(Point center, Size size, int id, double dt, string label = "", string mark = "")
+        public Individual(Point center, Size size, int id, double dt, double filterStrength = 1.0, string label = "", string mark = "")
         {
             Id = id;
             Label = label;
@@ -90,7 +90,9 @@ namespace Yamashita.Control
                             0, 0, 0, 0, 1, 0,
                             0, 0, 0, 0, 0, 1  };
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
-            _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, 30);
+            var mNoise = filterStrength;
+            var pNoise = 1.0 / filterStrength;
+            _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, mNoise, pNoise);
         }
 
 

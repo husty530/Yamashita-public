@@ -8,7 +8,7 @@
     <Product>product</Product>
     <Authors>yamashita</Authors>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.Control</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/LIB-sharp/Yamashita.Control</PackageProjectUrl>
     <Version>1.0.8</Version>
   </PropertyGroup>
 

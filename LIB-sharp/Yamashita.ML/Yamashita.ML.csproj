@@ -6,7 +6,7 @@
     <Company>office</Company>
     <Product>product</Product>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.ML</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/LIB-sharp/Yamashita.ML</PackageProjectUrl>
     <Description>YOLO is object detection algorithm. Support Vector Machine and Bayes Classifier have functions to make model by training dataset, and inference labels toward input data by loading your original model.</Description>
     <Version>1.0.7</Version>
   </PropertyGroup>

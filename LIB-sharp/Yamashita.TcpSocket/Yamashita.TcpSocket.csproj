@@ -5,7 +5,7 @@
     <Authors>yamashita</Authors>
     <Company>office</Company>
     <Product>product</Product>
-    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/Library/Yamashita.TcpSocket</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/LIB-sharp/Yamashita.TcpSocket</PackageProjectUrl>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
     <Description>TcpSocket server and client program which can process String, Array and Mat Image.</Description>
     <Version>1.0.9</Version>

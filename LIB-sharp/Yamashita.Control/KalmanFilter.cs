@@ -14,7 +14,6 @@ namespace Yamashita.Control
         private readonly Matrix<double> A;      // Transition Matrix
         private readonly Matrix<double> AT;     // Transition Matrix Transpose
         private readonly Matrix<double> B;      // Control Matrix
-        private readonly Matrix<double> BT;     // Control Matrix Transpose
         private readonly Matrix<double> C;      // Measure Matrix
         private readonly Matrix<double> CT;     // Measure Matrix Transpose
         private readonly Matrix<double> Q;      // Process Noise Matrix
@@ -147,7 +146,6 @@ namespace Yamashita.Control
                 P[i, i] = preError;
             }
             AT = A.Transpose();
-            BT = B.Transpose();
             CT = C.Transpose();
         }
 
@@ -182,7 +180,6 @@ namespace Yamashita.Control
             for (int i = 0; i < m; i++)
                 R[i, i] = measurementNoise;
             AT = A.Transpose();
-            BT = B.Transpose();
             CT = C.Transpose();
         }
 
@@ -211,7 +208,6 @@ namespace Yamashita.Control
             for (int i = 0; i < k; i++)
                 P[i, i] = preError;
             AT = A.Transpose();
-            BT = B.Transpose();
             CT = C.Transpose();
         }
 
@@ -240,16 +236,10 @@ namespace Yamashita.Control
         /// <returns></returns>
         public double[] Predict(double[] controlVec = null)
         {
+            X = A * X;
             if (controlVec != null)
-            {
-                X = A * X + B * DenseVector.OfArray(controlVec);
-                P = A * P * AT + B * Q * BT;
-            }
-            else
-            {
-                X = A * X;
-                P = A * P * AT + Q;
-            }
+                X += B * DenseVector.OfArray(controlVec);
+            P = A * P * AT + Q;
             return X.ToArray();
         }
 

@@ -39,7 +39,6 @@ namespace Yamashita.ML
         // ----- Inference -----
 
         /// <summary>
-        /// 推論処理
         /// </summary>
         /// <param name="input">Feature Vecto</param>
         /// <param name="output">0 or 1</param>

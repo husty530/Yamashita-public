@@ -39,7 +39,7 @@ namespace Samples.Tracking
             var op = new OpenFileDialog { Filter = "Video(*.mp4, *.avi)|*.mp4;*.avi" };
             if (op.ShowDialog() == true)
             {
-                var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3);
+                var tracker = new MultiTracker(OutputType.Predict, 0.2f, 7, 3, 0.1, 5);
                 _connector = PlayVideo(op.FileName)
                     .Subscribe(frame =>
                     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using OpenCvSharp;
 
-namespace Yolo_Labeller
+namespace Tools.Yolo_Labeller
 {
     static class Process
     {

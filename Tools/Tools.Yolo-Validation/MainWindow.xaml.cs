@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
-namespace Samples.Yolo_Validation
+namespace Tools.Yolo_Validation
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -72,7 +72,7 @@ namespace Samples.Yolo_Validation
             var classNum = int.Parse(ClassNumTx.Text);
             var iouThresh = double.Parse(IouTx.Text);
             var response = Process.Init(modelFolder, width, height, classNum, iouThresh, imgDir, labDir);
-            if(response != "Success")
+            if (response != "Success")
             {
                 ResultLabel.Content = response;
                 return;
@@ -87,5 +87,6 @@ namespace Samples.Yolo_Validation
             ResultLabel.Content += $"Recall : {r.R:f3}\n";
             ResultLabel.Content += $"AP : {r.Ap:f3}\n";
         }
+
     }
 }

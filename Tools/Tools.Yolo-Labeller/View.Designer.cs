@@ -1,5 +1,5 @@
 ﻿
-namespace Yolo_Labeller
+namespace Tools.Yolo_Labeller
 {
     partial class View
     {
@@ -35,14 +35,14 @@ namespace Yolo_Labeller
             this.SaveButton = new System.Windows.Forms.Button();
             this.UndoButton = new System.Windows.Forms.Button();
             this.ClearButton = new System.Windows.Forms.Button();
-            this.pictureBox = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.ProgressCount_label = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.comboBox = new System.Windows.Forms.ComboBox();
             this.WidthTx = new System.Windows.Forms.TextBox();
             this.HeightTx = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +50,7 @@ namespace Yolo_Labeller
             // 
             this.StartButton.Location = new System.Drawing.Point(12, 12);
             this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(90, 52);
+            this.StartButton.Size = new System.Drawing.Size(82, 50);
             this.StartButton.TabIndex = 0;
             this.StartButton.Text = "Open";
             this.StartButton.UseVisualStyleBackColor = true;
@@ -58,10 +58,9 @@ namespace Yolo_Labeller
             // 
             // BackButton
             // 
-            this.BackButton.ForeColor = System.Drawing.Color.Maroon;
-            this.BackButton.Location = new System.Drawing.Point(331, 12);
+            this.BackButton.Location = new System.Drawing.Point(325, 11);
             this.BackButton.Name = "BackButton";
-            this.BackButton.Size = new System.Drawing.Size(78, 52);
+            this.BackButton.Size = new System.Drawing.Size(77, 50);
             this.BackButton.TabIndex = 1;
             this.BackButton.Text = "◀(A)";
             this.BackButton.UseVisualStyleBackColor = true;
@@ -69,10 +68,9 @@ namespace Yolo_Labeller
             // 
             // NextButton
             // 
-            this.NextButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.NextButton.Location = new System.Drawing.Point(415, 12);
+            this.NextButton.Location = new System.Drawing.Point(408, 11);
             this.NextButton.Name = "NextButton";
-            this.NextButton.Size = new System.Drawing.Size(78, 52);
+            this.NextButton.Size = new System.Drawing.Size(77, 50);
             this.NextButton.TabIndex = 2;
             this.NextButton.Text = "▶(D)";
             this.NextButton.UseVisualStyleBackColor = true;
@@ -80,9 +78,9 @@ namespace Yolo_Labeller
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(499, 12);
+            this.SaveButton.Location = new System.Drawing.Point(491, 11);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(78, 52);
+            this.SaveButton.Size = new System.Drawing.Size(77, 50);
             this.SaveButton.TabIndex = 3;
             this.SaveButton.Text = "Save(S)";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -90,9 +88,9 @@ namespace Yolo_Labeller
             // 
             // UndoButton
             // 
-            this.UndoButton.Location = new System.Drawing.Point(583, 12);
+            this.UndoButton.Location = new System.Drawing.Point(574, 11);
             this.UndoButton.Name = "UndoButton";
-            this.UndoButton.Size = new System.Drawing.Size(78, 52);
+            this.UndoButton.Size = new System.Drawing.Size(77, 50);
             this.UndoButton.TabIndex = 4;
             this.UndoButton.Text = "Undo(X)";
             this.UndoButton.UseVisualStyleBackColor = true;
@@ -100,100 +98,99 @@ namespace Yolo_Labeller
             // 
             // ClearButton
             // 
-            this.ClearButton.Location = new System.Drawing.Point(667, 12);
+            this.ClearButton.Location = new System.Drawing.Point(657, 11);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(78, 52);
+            this.ClearButton.Size = new System.Drawing.Size(77, 50);
             this.ClearButton.TabIndex = 5;
             this.ClearButton.Text = "Clear(C)";
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(100, 30);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(27, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Size";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(215, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Progress";
+            // 
+            // ProgressCount_label
+            // 
+            this.ProgressCount_label.AutoSize = true;
+            this.ProgressCount_label.Location = new System.Drawing.Point(273, 29);
+            this.ProgressCount_label.Name = "ProgressCount_label";
+            this.ProgressCount_label.Size = new System.Drawing.Size(30, 15);
+            this.ProgressCount_label.TabIndex = 8;
+            this.ProgressCount_label.Text = "0 / 0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(754, 11);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 15);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Selected Class";
+            // 
             // pictureBox
             // 
-            this.pictureBox.Location = new System.Drawing.Point(12, 85);
+            this.pictureBox.Location = new System.Drawing.Point(13, 69);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(100, 50);
-            this.pictureBox.TabIndex = 6;
+            this.pictureBox.TabIndex = 12;
             this.pictureBox.TabStop = false;
             this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
             this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseUp);
             // 
-            // ProgressCount_label
-            // 
-            this.ProgressCount_label.AutoSize = true;
-            this.ProgressCount_label.Location = new System.Drawing.Point(276, 44);
-            this.ProgressCount_label.Name = "ProgressCount_label";
-            this.ProgressCount_label.Size = new System.Drawing.Size(30, 15);
-            this.ProgressCount_label.TabIndex = 7;
-            this.ProgressCount_label.Text = "0 / 0";
-            // 
             // comboBox
             // 
-            this.comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox.FormattingEnabled = true;
-            this.comboBox.Location = new System.Drawing.Point(751, 41);
+            this.comboBox.Location = new System.Drawing.Point(754, 30);
             this.comboBox.Name = "comboBox";
             this.comboBox.Size = new System.Drawing.Size(121, 23);
-            this.comboBox.TabIndex = 8;
+            this.comboBox.TabIndex = 13;
             this.comboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox_KeyPress);
             // 
             // WidthTx
             // 
-            this.WidthTx.Location = new System.Drawing.Point(142, 41);
+            this.WidthTx.Location = new System.Drawing.Point(134, 26);
             this.WidthTx.Name = "WidthTx";
-            this.WidthTx.Size = new System.Drawing.Size(30, 23);
-            this.WidthTx.TabIndex = 9;
+            this.WidthTx.Size = new System.Drawing.Size(29, 23);
+            this.WidthTx.TabIndex = 14;
             this.WidthTx.Text = "640";
             // 
             // HeightTx
             // 
-            this.HeightTx.Location = new System.Drawing.Point(178, 41);
+            this.HeightTx.Location = new System.Drawing.Point(169, 26);
             this.HeightTx.Name = "HeightTx";
-            this.HeightTx.Size = new System.Drawing.Size(30, 23);
-            this.HeightTx.TabIndex = 10;
+            this.HeightTx.Size = new System.Drawing.Size(29, 23);
+            this.HeightTx.TabIndex = 15;
             this.HeightTx.Text = "480";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(218, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 15);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "Progress";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(109, 44);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(27, 15);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Size";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(751, 20);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 15);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Selected Class";
             // 
             // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 711);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(899, 607);
             this.Controls.Add(this.HeightTx);
             this.Controls.Add(this.WidthTx);
             this.Controls.Add(this.comboBox);
-            this.Controls.Add(this.ProgressCount_label);
             this.Controls.Add(this.pictureBox);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.ProgressCount_label);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.UndoButton);
             this.Controls.Add(this.SaveButton);
@@ -221,11 +218,11 @@ namespace Yolo_Labeller
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Label ProgressCount_label;
         private System.Windows.Forms.ComboBox comboBox;
-        private System.Windows.Forms.TextBox WidthTx;
-        private System.Windows.Forms.TextBox HeightTx;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox WidthTx;
+        private System.Windows.Forms.TextBox HeightTx;
     }
 }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using OpenCvSharp.Extensions;
 
-namespace Yolo_Labeller
+namespace Tools.Yolo_Labeller
 {
     public partial class View : Form
     {

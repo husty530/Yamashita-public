@@ -5,11 +5,11 @@ using System.IO;
 using OpenCvSharp;
 using Yamashita.ML;
 
-namespace Samples.Yolo_Validation
+
+namespace Tools.Yolo_Validation
 {
     static class Process
     {
-
         private static IYolo _detector;
         private static List<(string Name, Mat Image, List<(int Label, Point Center, Size Size)> Labels)> _dataSet;
         private static string _className;

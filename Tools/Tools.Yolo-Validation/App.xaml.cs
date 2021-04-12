@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Samples.Yolo_Validation
+namespace Tools.Yolo_Validation
 {
     /// <summary>
     /// Interaction logic for App.xaml

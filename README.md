@@ -14,6 +14,7 @@
 ----- [YoloModel-tiny](/Samples/YoloModel-tiny) ... モデルのサンプル。独自モデルの作り方は[YoloSamples](https://github.com/husty530/YoloSamples)へ。  
 
 ### Tools
+----- [NncDataArranger](/Tools/Tools.NncDataArranger) ... Sony Neural Network Console の簡易なデータ作成ツール
 ----- [Yolo-Labeller](/Tools/Tools.Yolo-Labeller) ... Yoloの学習データを作るラベリングツール  
 ----- [Yolo-Validation](/Tools/Tools.Yolo-Validation) ... Yoloのモデルを評価するプログラム  
 

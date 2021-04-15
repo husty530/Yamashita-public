@@ -33,6 +33,10 @@ class Drawmode(enum.Enum):
 
 class Yolo:
 
+
+    # -------- Constructor -------- #
+
+    # Load model
     def __init__(self, cfg, names, weights, blobsize, drawmode, conf_thresh, nms_thresh):
         self.net = cv2.dnn.readNetFromDarknet(cfg, weights)
         self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
@@ -45,6 +49,11 @@ class Yolo:
         np.random.seed(1)
         self.colors = np.random.randint(0, 255, size=(len(self.classes), 3), dtype='uint8')
 
+
+    # -------- Methods -------- #
+
+    # arg    ... Input image
+    # return ... List of detection result
     def run(self, frame):
         blob = cv2.dnn.blobFromImage(frame, 1.0 / 255, self.blobsize, 0, True, False)
         self.net.setInput(blob)

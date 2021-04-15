@@ -1,6 +1,10 @@
 import socket
 
+
 class TcpServer:
+
+
+    # -------- Constructor -------- #
 
     def __init__(self, ip='127.0.0.1', port=3000):
         self.serversock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -10,6 +14,9 @@ class TcpServer:
         print('Waiting for connections...')
         self.clientsock, self.client_address = self.serversock.accept()
     
+
+    # -------- Methods -------- #
+
     def send(self, senddata):
         sendmsg = '{}\n'.format(senddata)
         self.clientsock.sendall(sendmsg.encode('utf-8'))
@@ -24,13 +31,20 @@ class TcpServer:
         self.clientsock.close()
         self.serversock.close()
 
+
 class TcpClient:
+
+
+    # -------- Constructor -------- #
 
     def __init__(self, ip='127.0.0.1', port=3000):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((ip, port))
         print("Connection is OK")
     
+
+    # -------- Methods -------- #
+
     def send(self, senddata):
         sendmsg = '{}\n'.format(senddata)
         self.client.send(sendmsg.encode('utf-8'))

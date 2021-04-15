@@ -3,6 +3,9 @@ import numpy as np
 
 class Kalman:
 
+    # -------- Constructor -------- #
+
+    # Design filter shape
     def __init__(self, initState, measureNoise, processNoise):
         self.k = len(initState)
         self.m = len(initState)
@@ -15,6 +18,11 @@ class Kalman:
         self.filter.measurementNoiseCov = measureNoise * np.eye(self.m, self.m, dtype = 'float64')
         self.filter.errorCovPost = 1. * np.eye(self.k, self.k, dtype = 'float64')
     
+
+    # -------- Methods -------- #
+
+    # arg    ... Measurement vector
+    # return ... Correct & Predict vector
     def update(self, measurement):
         correct = self.filter.correct(measurement)
         predict = self.filter.predict()

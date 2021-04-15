@@ -1,14 +1,14 @@
+
 import cv2
 
 class Capture:
 
     def __init__(self, src, size):
         self.cap = cv2.VideoCapture(src)
-        self.isOpened = self.cap.isOpened()
         self.width = size[0]
         self.height = size[1]
-        self.fps = self.cap.get(cv2.CAP_PROP_FPS)
-        self.frameCount = self.cap.get(cv2.CAP_PROP_FRAME_COUNT)
+        self.fps = (int)(self.cap.get(cv2.CAP_PROP_FPS))
+        self.frameCount = (int)(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
     
     def read(self):
         _, frame = self.cap.read()

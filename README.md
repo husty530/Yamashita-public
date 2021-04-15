@@ -33,6 +33,6 @@
 ### LIB-python
 ----- [kalman](LIB-python/kalman.py)  
 ----- [media](LIB-python/media.py) ... VideoIO周り  
------ [nnabla_inference](LIB-python/nnabla_inference.py) ... Sony Neural Network Consoleの推論出力用  
+----- [nnabla_inference](LIB-python/nnabla_inference.py) ... Sony Neural Network Libraryの推論出力用  
 ----- [tcp_socket](LIB-python/tcp_socket.py)  
 ----- [yolo](LIB-python/yolo.py)  

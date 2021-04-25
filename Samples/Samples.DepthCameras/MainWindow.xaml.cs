@@ -81,8 +81,8 @@ namespace Samples.DepthCameras
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            LR.Value = $"R - L = {r.Z - l.Z} px";
-                            TB.Value = $"B - T = {b.Z - t.Z} px";
+                            //LR.Value = $"↔ {r.Z - l.Z} mm";
+                            //TB.Value = $"↕ {b.Z - t.Z} mm";
                             ColorFrame.Value = imgs.BGR.ToBitmapSource();
                             DepthFrame.Value = d8.ToBitmapSource();
                         });
@@ -143,8 +143,8 @@ namespace Samples.DepthCameras
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
-                            LR.Value = $"R - L = {r.Z - l.Z} px";
-                            TB.Value = $"B - T = {b.Z - t.Z} px";
+                            //LR.Value = $"↔ {r.Z - l.Z} mm";
+                            //TB.Value = $"↕ {b.Z - t.Z} mm";
                             ColorFrame.Value = imgs.BGR.ToBitmapSource();
                             DepthFrame.Value = d8.ToBitmapSource();
                         });

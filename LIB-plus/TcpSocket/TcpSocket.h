@@ -12,7 +12,7 @@
 class TcpSocket
 {
 
-protected:
+private:
 
     int srcSock;
     int dstSock;

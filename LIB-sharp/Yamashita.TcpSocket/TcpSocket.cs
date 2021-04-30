@@ -100,7 +100,7 @@ namespace Yamashita.TcpSocket
             var recv = Receive<string>();
             var data = recv.Split(',')[1];
             var bytes = Convert.FromBase64String(data);
-            return Cv2.ImDecode(bytes, ImreadModes.Color);
+            return Cv2.ImDecode(bytes, ImreadModes.Unchanged);
         }
 
     }

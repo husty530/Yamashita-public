@@ -3,7 +3,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Yamashita.Control
 {
-    class KalmanFilter : IFilter
+    public class KalmanFilter : IFilter
     {
 
         // ------- Fields ------- //

@@ -1,7 +1,5 @@
 # Yamashita-public 
 
-[![](https://img.youtube.com/vi/Ov_aY8wiDdg/0.jpg)](https://www.youtube.com/watch?v=Ov_aY8wiDdg)
-
 # Contents
 詳細は各プロジェクトフォルダに記載しました。  
 

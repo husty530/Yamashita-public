@@ -14,10 +14,15 @@ namespace Tools.NncDataArranger
             var strs = new List<string[]>();
             while (sr.Peek() != -1)
                 strs.Add(sr.ReadLine().Split(","));
-            foreach (var s in strs[0])
+            for (int i = 0; i < strs[0].Length; i++)
             {
-                sw_train.Write($"{s},");
-                sw_test.Write($"{s},");
+                sw_train.Write($"{strs[0][i]}");
+                sw_test.Write($"{strs[0][i]}");
+                if (i != strs[0].Length - 1)
+                {
+                    sw_train.Write(",");
+                    sw_test.Write(",");
+                }
             }
             sw_train.WriteLine();
             sw_test.WriteLine();
@@ -29,14 +34,26 @@ namespace Tools.NncDataArranger
             {
                 if (count++ % (1.0 / testRate) == 0)
                 {
-                    foreach (var s in strs[i])
-                        sw_test.Write($"{s},");
+                    for (int j = 0; j < strs[i].Length; j++)
+                    {
+                        sw_test.Write($"{strs[i][j]}");
+                        if (j != strs[i].Length - 1)
+                        {
+                            sw_test.Write(",");
+                        }
+                    }
                     sw_test.WriteLine();
                 }
                 else
                 {
-                    foreach (var s in strs[i])
-                        sw_train.Write($"{s},");
+                    for (int j = 0; j < strs[i].Length; j++)
+                    {
+                        sw_train.Write($"{strs[i][j]}");
+                        if (j != strs[i].Length - 1)
+                        {
+                            sw_train.Write(",");
+                        }
+                    }
                     sw_train.WriteLine();
                 }
             }

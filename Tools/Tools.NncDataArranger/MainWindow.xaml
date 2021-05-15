@@ -26,6 +26,7 @@
             <ComboBox x:Name="ModeCombo" Width="170" SelectionChanged="ModeCombo_SelectionChanged">
                 <ComboBoxItem Content="Train-Test Split" IsSelected="True"/>
                 <ComboBoxItem Content="Video to Images"/>
+                <ComboBoxItem Content="Image Resize"/>
                 <ComboBoxItem Content="Json to Binary Mask Image"/>
                 <ComboBoxItem Content="Image-Mask Assignment"/>
             </ComboBox>

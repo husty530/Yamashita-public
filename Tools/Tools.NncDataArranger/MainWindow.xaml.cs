@@ -74,12 +74,17 @@ namespace Tools.NncDataArranger
                     var h1 = int.Parse(CfgTx.Value.Split(",")[1]);
                     Vid2Img.Run(InputLabel.Value, OutputLabel.Value, new OpenCvSharp.Size(w1, h1));
                     break;
-                case 2:             // Json to Binary Mask Image
+                case 2:             // Image Resize
                     var w2 = int.Parse(CfgTx.Value.Split(",")[0]);
                     var h2 = int.Parse(CfgTx.Value.Split(",")[1]);
-                    J2Mask.Run(InputLabel.Value, OutputLabel.Value, new OpenCvSharp.Size(w2, h2));
+                    ImgResize.Run(InputLabel.Value, OutputLabel.Value, new OpenCvSharp.Size(w2, h2));
                     break;
-                case 3:             // Image-Mask Assignment
+                case 3:             // Json to Binary Mask Image
+                    var w3 = int.Parse(CfgTx.Value.Split(",")[0]);
+                    var h3 = int.Parse(CfgTx.Value.Split(",")[1]);
+                    J2Mask.Run(InputLabel.Value, OutputLabel.Value, new OpenCvSharp.Size(w3, h3));
+                    break;
+                case 4:             // Image-Mask Assignment
                     ImgAssign.Run(InputLabel.Value, OutputLabel.Value);
                     break;
             }
@@ -101,13 +106,19 @@ namespace Tools.NncDataArranger
                     Instruction.Value = "Size";
                     CfgTx.Value = "640,480";
                     break;
-                case 2:             // Json to Binary Mask Image
+                case 2:             // Image Resize
                     InputButtonContent.Value = "Input Dir";
                     OutputButtonContent.Value = "Output Dir";
                     Instruction.Value = "Size";
                     CfgTx.Value = "640,480";
                     break;
-                case 3:             // Image-Mask Assignment
+                case 3:             // Json to Binary Mask Image
+                    InputButtonContent.Value = "Input Dir";
+                    OutputButtonContent.Value = "Output Dir";
+                    Instruction.Value = "Size";
+                    CfgTx.Value = "640,480";
+                    break;
+                case 4:             // Image-Mask Assignment
                     InputButtonContent.Value = "Image Dir";
                     OutputButtonContent.Value = "Mask Dir";
                     Instruction.Value = "";

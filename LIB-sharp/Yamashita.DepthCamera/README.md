@@ -3,6 +3,8 @@
 Kinect, Realsenseが同一のインターフェースで動きます。  
 使い方はIDepthCamera.csのとおり, ConnectとDisconnectだけ。  
   
+![interface.png](interface.png)  
+  
 ここでは出力のBgrXyzMatクラスについて説明します。  
 ざっとその機能を列挙すると、  
   

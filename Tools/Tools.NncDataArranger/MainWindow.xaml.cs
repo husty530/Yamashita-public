@@ -72,7 +72,8 @@ namespace Tools.NncDataArranger
                 case 1:             // Video to Images
                     var w1 = int.Parse(CfgTx.Value.Split(",")[0]);
                     var h1 = int.Parse(CfgTx.Value.Split(",")[1]);
-                    Vid2Img.Run(InputLabel.Value, OutputLabel.Value, new OpenCvSharp.Size(w1, h1));
+                    var skip = int.Parse(CfgTx.Value.Split(",")[2]);
+                    Vid2Img.Run(InputLabel.Value, OutputLabel.Value, new OpenCvSharp.Size(w1, h1), skip);
                     break;
                 case 2:             // Image Resize
                     var w2 = int.Parse(CfgTx.Value.Split(",")[0]);
@@ -103,8 +104,8 @@ namespace Tools.NncDataArranger
                 case 1:             // Video to Images
                     InputButtonContent.Value = "Input File";
                     OutputButtonContent.Value = "Output Dir";
-                    Instruction.Value = "Size";
-                    CfgTx.Value = "640,480";
+                    Instruction.Value = "Size,Skip";
+                    CfgTx.Value = "640,480,1";
                     break;
                 case 2:             // Image Resize
                     InputButtonContent.Value = "Input Dir";

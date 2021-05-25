@@ -19,7 +19,7 @@ namespace Tools.NncDataArranger
                     var poly = new List<Point>();
                     foreach (var p in j["points"])
                         poly.Add(new Point((int)p[0], (int)p[1]));
-                    Cv2.FillConvexPoly(img, poly, 255);
+                    Cv2.FillPoly(img, new List<Point>[] { poly }, 255);
                 }
                 Cv2.ImWrite($"{outputDir}\\{Path.GetFileNameWithoutExtension(file)}.png", img);
             }

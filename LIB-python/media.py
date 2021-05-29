@@ -11,7 +11,8 @@ class Capture:
         self.frameCount = (int)(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
     
     def read(self):
-        _, frame = self.cap.read()
+        ret, frame = self.cap.read()
+        if ret == False: return None
         frame = cv2.resize(frame, (self.width, self.height))
         return frame
     
@@ -21,7 +22,7 @@ class Capture:
 class Writer:
 
     def __init__(self, path, fps, size):
-        self.wrt = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*'XVID', fps, size))
+        self.wrt = cv2.VideoWriter(path, cv2.VideoWriter_fourcc(*'XVID'), fps, size)
     
     def write(self, frame):
         self.wrt.write(frame)

@@ -10,6 +10,8 @@ namespace Tools.NncDataArranger
             var files = Directory.GetFiles(inputDir);
             foreach (var file in files)
             {
+                var ex = Path.GetExtension(file);
+                if (ex != ".png" && ex != ".jpg") continue;
                 var names = file.Split("\\");
                 var name = names[names.Length - 1];
                 var img = Cv2.ImRead(file, ImreadModes.Unchanged);

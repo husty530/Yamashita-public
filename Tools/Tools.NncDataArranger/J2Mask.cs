@@ -13,6 +13,7 @@ namespace Tools.NncDataArranger
             var files = Directory.GetFiles(jsonDir);
             foreach (var file in files)
             {
+                if (Path.GetExtension(file) != ".json") continue;
                 var img = new Mat(size.Height, size.Width, MatType.CV_8U, 0);
                 foreach (var j in ((JObject)JsonConvert.DeserializeObject(File.ReadAllText(file)))["shapes"])
                 {

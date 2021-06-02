@@ -37,7 +37,7 @@ namespace Yamashita.DepthCamera
         /// Open Device
         /// </summary>
         /// <param name="config">User Settings</param>
-        public Kinect(DeviceConfiguration config, CaliblationType type, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
+        public Kinect(DeviceConfiguration config, CaliblationType type = CaliblationType.DepthBased, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
             _type = type;
             _pitchRad = (float)(pitchDeg * Math.PI / 180);

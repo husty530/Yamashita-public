@@ -6,6 +6,7 @@ using System.IO;
 using System.Reactive.Linq;
 using Reactive.Bindings;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using Microsoft.Azure.Kinect.Sensor;
 using OpenCvSharp.WpfExtensions;
 using Yamashita.DepthCamera;
 using Scalar = OpenCvSharp.Scalar;
@@ -24,11 +25,11 @@ namespace Samples.DepthCameras
         private IDisposable _videoConnector;
         private bool _isConnected;
         private VideoPlayer _player;
-        private Scalar red = new Scalar(0, 0, 255);
-        private Point left = new Point(130, 144);
-        private Point right = new Point(190, 144);
-        private Point top = new Point(160, 114);
-        private Point bottom = new Point(160, 174);
+        //private Scalar red = new Scalar(0, 0, 255);
+        //private Point left = new Point(130, 144);
+        //private Point right = new Point(190, 144);
+        //private Point top = new Point(160, 114);
+        //private Point bottom = new Point(160, 174);
 
         public ReactiveProperty<string> StartButtonFace { private set; get; } = new ReactiveProperty<string>();
         public ReactiveProperty<string> RecButtonFace { private set; get; } = new ReactiveProperty<string>();
@@ -74,10 +75,10 @@ namespace Samples.DepthCameras
                 _cameraConnector = _camera.Connect()
                     .Subscribe(imgs =>
                     {
-                        var l = imgs.GetPointInfo(left);
-                        var r = imgs.GetPointInfo(right);
-                        var t = imgs.GetPointInfo(top);
-                        var b = imgs.GetPointInfo(bottom);
+                        //var l = imgs.GetPointInfo(left);
+                        //var r = imgs.GetPointInfo(right);
+                        //var t = imgs.GetPointInfo(top);
+                        //var b = imgs.GetPointInfo(bottom);
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
@@ -136,10 +137,10 @@ namespace Samples.DepthCameras
                     .Subscribe(imgs =>
                     {
                         writer.WriteFrames(imgs);
-                        var l = imgs.GetPointInfo(left);
-                        var r = imgs.GetPointInfo(right);
-                        var t = imgs.GetPointInfo(top);
-                        var b = imgs.GetPointInfo(bottom);
+                        //var l = imgs.GetPointInfo(left);
+                        //var r = imgs.GetPointInfo(right);
+                        //var t = imgs.GetPointInfo(top);
+                        //var b = imgs.GetPointInfo(bottom);
                         var d8 = imgs.Depth8(300, 5000);
                         Dispatcher.Invoke(() =>
                         {
@@ -244,7 +245,15 @@ namespace Samples.DepthCameras
         {
             try
             {
-                _camera = new Kinect();
+                _camera = new Kinect(
+                    new DeviceConfiguration
+                    {
+                        ColorFormat = ImageFormat.ColorBGRA32,
+                        ColorResolution = ColorResolution.R720p,
+                        DepthMode = DepthMode.NFOV_2x2Binned,
+                        SynchronizedImagesOnly = true,
+                        CameraFPS = FPS.FPS15
+                    }, Kinect.CaliblationType.DepthBased);
             }
             catch
             {

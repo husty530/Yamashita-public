@@ -12,18 +12,23 @@ namespace Yamashita.DepthCamera
         // ------- Fields ------- //
 
         private readonly Device _device;
-        private readonly Transformation _transformation;
         private readonly KinectConverter _converter;
-        private readonly float pitchRad;
-        private readonly float yawRad;
-        private readonly float rollRad;
+        private readonly Transformation _transformation;
+        private readonly CaliblationType _type;
+        private readonly float _pitchRad;
+        private readonly float _yawRad;
+        private readonly float _rollRad;
 
 
         // ------- Properties ------- //
 
         public DeviceConfiguration Config { private set; get; }
 
-        public Size FrameSize { private set; get; }
+        public Size ColorFrameSize { private set; get; }
+
+        public Size DepthFrameSize { private set; get; }
+
+        public enum CaliblationType { DepthBased, Separated }
 
 
         // ------- Constructor ------- //
@@ -32,24 +37,28 @@ namespace Yamashita.DepthCamera
         /// Open Device
         /// </summary>
         /// <param name="config">User Settings</param>
-        public Kinect(DeviceConfiguration config, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
+        public Kinect(DeviceConfiguration config, CaliblationType type, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
-            pitchRad = (float)(pitchDeg * Math.PI / 180);
-            yawRad = (float)(yawDeg * Math.PI / 180);
-            rollRad = (float)(rollDeg * Math.PI / 180);
+            _type = type;
+            _pitchRad = (float)(pitchDeg * Math.PI / 180);
+            _yawRad = (float)(yawDeg * Math.PI / 180);
+            _rollRad = (float)(rollDeg * Math.PI / 180);
             _device = Device.Open();
             _device.StartCameras(config);
             _transformation = _device.GetCalibration().CreateTransformation();
-            var c = _device.GetCalibration().DepthCameraCalibration;
-            FrameSize = new Size(c.ResolutionWidth, c.ResolutionHeight);
+            var dcal = _device.GetCalibration().DepthCameraCalibration;
+            var ccal = _device.GetCalibration().ColorCameraCalibration;
+            DepthFrameSize = new Size(dcal.ResolutionWidth, dcal.ResolutionHeight);
+            ColorFrameSize = new Size(ccal.ResolutionWidth, ccal.ResolutionHeight);
+            if (_type == CaliblationType.DepthBased) ColorFrameSize = DepthFrameSize;
             Config = config;
-            _converter = new KinectConverter(FrameSize);
+            _converter = new KinectConverter(ColorFrameSize, DepthFrameSize);
         }
 
         /// <summary>
         /// Open Device (default)
         /// </summary>
-        public Kinect(float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
+        public Kinect(CaliblationType type = CaliblationType.DepthBased, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
             : this(new DeviceConfiguration
             {
                 ColorFormat = ImageFormat.ColorBGRA32,
@@ -58,7 +67,7 @@ namespace Yamashita.DepthCamera
                 SynchronizedImagesOnly = true,
                 CameraFPS = FPS.FPS15
             },
-            pitchDeg, yawDeg, rollDeg)
+            type, pitchDeg, yawDeg, rollDeg)
         { }
 
 
@@ -72,11 +81,15 @@ namespace Yamashita.DepthCamera
                 .Select(i =>
                 {
                     using var capture = _device.GetCapture();
-                    using var colorImg = _transformation.ColorImageToDepthCamera(capture);
+                    Image colorImg;
+                    if (_type != CaliblationType.DepthBased)
+                        colorImg = capture.Color;
+                    else
+                        colorImg = _transformation.ColorImageToDepthCamera(capture);
                     using var pointCloudImg = _transformation.DepthImageToPointCloud(capture.Depth);
                     _converter.ToColorMat(colorImg, ref colorMat);
                     _converter.ToPointCloudMat(pointCloudImg, ref pointCloudMat);
-                    return BgrXyzMat.Create(colorMat, pointCloudMat).Rotate(pitchRad, yawRad, rollRad);
+                    return BgrXyzMat.Create(colorMat, pointCloudMat).Rotate(_pitchRad, _yawRad, _rollRad);
                 })
                 .Publish()
                 .RefCount();

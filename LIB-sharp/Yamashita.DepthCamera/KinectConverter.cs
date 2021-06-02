@@ -8,16 +8,20 @@ namespace Yamashita.DepthCamera
 
         // ------- Fields ------- //
 
-        private readonly int width;
-        private readonly int height;
+        private readonly int _colorWidth;
+        private readonly int _colorHeight;
+        private readonly int _depthWidth;
+        private readonly int _depthHeight;
 
 
         // ------- Constructor ------- //
 
-        public KinectConverter(Size size)
+        public KinectConverter(Size colorSize, Size depthSize)
         {
-            this.width = size.Width;
-            this.height = size.Height;
+            _colorWidth = colorSize.Width;
+            _colorHeight = colorSize.Height;
+            _depthWidth = depthSize.Width;
+            _depthHeight = depthSize.Height;
         }
 
 
@@ -25,7 +29,7 @@ namespace Yamashita.DepthCamera
 
         public unsafe void ToColorMat(Image colorImg, ref Mat colorMat)
         {
-            if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(height, width, MatType.CV_8UC3);
+            if (colorMat.Type() != MatType.CV_8UC3) colorMat = new Mat(_colorHeight, _colorWidth, MatType.CV_8UC3);
             var cAry = colorImg.GetPixels<BGRA>().ToArray();
             var p = colorMat.DataPointer;
             int index = 0;
@@ -39,7 +43,7 @@ namespace Yamashita.DepthCamera
 
         public unsafe void ToPointCloudMat(Image pointCloudImg, ref Mat pointCloudMat)
         {
-            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(height, width, MatType.CV_16UC3);
+            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(_depthHeight, _depthWidth, MatType.CV_16UC3);
             var pdAry = pointCloudImg.GetPixels<Short3>().ToArray();
             var p = (ushort*)pointCloudMat.Data;
             int index = 0;

@@ -14,7 +14,7 @@ namespace Yamashita.DepthCamera
         private readonly Device _device;
         private readonly KinectConverter _converter;
         private readonly Transformation _transformation;
-        private readonly CaliblationType _type;
+        private readonly Matching _matching;
         private readonly float _pitchRad;
         private readonly float _yawRad;
         private readonly float _rollRad;
@@ -28,7 +28,7 @@ namespace Yamashita.DepthCamera
 
         public Size DepthFrameSize { private set; get; }
 
-        public enum CaliblationType { DepthBased, Separated }
+        public enum Matching { On, Off }
 
 
         // ------- Constructor ------- //
@@ -37,9 +37,9 @@ namespace Yamashita.DepthCamera
         /// Open Device
         /// </summary>
         /// <param name="config">User Settings</param>
-        public Kinect(DeviceConfiguration config, CaliblationType type = CaliblationType.DepthBased, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
+        public Kinect(DeviceConfiguration config, Matching matching = Matching.On, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
-            _type = type;
+            _matching = matching;
             _pitchRad = (float)(pitchDeg * Math.PI / 180);
             _yawRad = (float)(yawDeg * Math.PI / 180);
             _rollRad = (float)(rollDeg * Math.PI / 180);
@@ -50,7 +50,7 @@ namespace Yamashita.DepthCamera
             var ccal = _device.GetCalibration().ColorCameraCalibration;
             DepthFrameSize = new Size(dcal.ResolutionWidth, dcal.ResolutionHeight);
             ColorFrameSize = new Size(ccal.ResolutionWidth, ccal.ResolutionHeight);
-            if (_type == CaliblationType.DepthBased) ColorFrameSize = DepthFrameSize;
+            if (_matching == Matching.On) ColorFrameSize = DepthFrameSize;
             Config = config;
             _converter = new KinectConverter(ColorFrameSize, DepthFrameSize);
         }
@@ -58,7 +58,7 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// Open Device (default)
         /// </summary>
-        public Kinect(CaliblationType type = CaliblationType.DepthBased, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
+        public Kinect(Matching matching = Matching.On, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
             : this(new DeviceConfiguration
             {
                 ColorFormat = ImageFormat.ColorBGRA32,
@@ -67,7 +67,7 @@ namespace Yamashita.DepthCamera
                 SynchronizedImagesOnly = true,
                 CameraFPS = FPS.FPS15
             },
-            type, pitchDeg, yawDeg, rollDeg)
+            matching, pitchDeg, yawDeg, rollDeg)
         { }
 
 
@@ -82,7 +82,7 @@ namespace Yamashita.DepthCamera
                 {
                     using var capture = _device.GetCapture();
                     Image colorImg;
-                    if (_type != CaliblationType.DepthBased)
+                    if (_matching != Matching.On)
                         colorImg = capture.Color;
                     else
                         colorImg = _transformation.ColorImageToDepthCamera(capture);

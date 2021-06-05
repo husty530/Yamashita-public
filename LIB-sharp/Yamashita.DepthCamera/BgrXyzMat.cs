@@ -84,7 +84,13 @@ namespace Yamashita.DepthCamera
         /// Check if it's Empty.
         /// </summary>
         /// <returns></returns>
-        public bool Empty() => BGR.Empty();
+        public bool Empty() => BGR.Empty() || XYZ.Empty();
+
+        /// <summary>
+        /// Create deep copy of this object.
+        /// </summary>
+        /// <returns></returns>
+        public BgrXyzMat Clone() => new BgrXyzMat(BGR.Clone(), XYZ.Clone());
 
         /// <summary>
         /// Get Depth Image (Normalize value in 0-255)

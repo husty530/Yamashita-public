@@ -40,7 +40,7 @@ namespace Yamashita.DepthCamera
             Cv2.Resize(colorMat, colorMat, new Size(_width / 2, _height / 2));
         }
 
-        public void ToPointCloudMat(DepthFrame frame, ref Mat pointCloudMat)
+        public void ToPointCloudMat(Frame frame, ref Mat pointCloudMat)
         {
             if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(_height / 2, _width / 2, MatType.CV_16UC3);
             unsafe

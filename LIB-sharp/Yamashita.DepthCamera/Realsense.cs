@@ -18,7 +18,6 @@ namespace Yamashita.DepthCamera
         private readonly DisparityTransform _todepth;
         private readonly SpatialFilter _sfill;
         private readonly TemporalFilter _tfill;
-        private readonly HoleFillingFilter _hfill;
         private readonly RealsenseConverter _converter;
 
 
@@ -48,11 +47,8 @@ namespace Yamashita.DepthCamera
             _todepth = new DisparityTransform(false);
             _sfill = new SpatialFilter();
             _tfill = new TemporalFilter();
-            _hfill = new HoleFillingFilter();
             _converter = new RealsenseConverter(width, height);
         }
-
-        public Realsense() : this(640, 480) { }
 
 
         // ------- Methods ------- //
@@ -73,9 +69,8 @@ namespace Yamashita.DepthCamera
                     filterd = _sfill.Process(filterd);
                     filterd = _tfill.Process(filterd);
                     filterd = _todepth.Process(filterd);
-                    using var depth2 = _hfill.Process<DepthFrame>(filterd);
                     _converter.ToColorMat(color, ref colorMat);
-                    _converter.ToPointCloudMat(depth2, ref pointCloudMat);
+                    _converter.ToPointCloudMat(filterd, ref pointCloudMat);
                     return new BgrXyzMat(colorMat, pointCloudMat);
                 })
                 .Publish()

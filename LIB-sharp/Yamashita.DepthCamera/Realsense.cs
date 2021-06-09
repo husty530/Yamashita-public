@@ -19,11 +19,13 @@ namespace Yamashita.DepthCamera
         private readonly SpatialFilter _sfill;
         private readonly TemporalFilter _tfill;
         private readonly RealsenseConverter _converter;
+        private readonly bool _alignOn;
 
 
         // ------- Properties ------- //
 
-        public (int Width, int Height) FrameSize { private set; get; }
+        public (int Width, int Height) DepthFrameSize { private set; get; }
+        public (int Width, int Height) ColorFrameSize { private set; get; }
 
 
         // ------- Constructor ------- //
@@ -35,7 +37,8 @@ namespace Yamashita.DepthCamera
         /// <param name="height"></param>
         public Realsense(int width, int height)
         {
-            FrameSize = (width, height);
+            DepthFrameSize = (width, height);
+            ColorFrameSize = DepthFrameSize;
             _pipeline = new Pipeline();
             var cfg = new Config();
             cfg.EnableStream(Stream.Depth, width, height);
@@ -47,7 +50,32 @@ namespace Yamashita.DepthCamera
             _todepth = new DisparityTransform(false);
             _sfill = new SpatialFilter();
             _tfill = new TemporalFilter();
-            _converter = new RealsenseConverter(width, height);
+            _converter = new RealsenseConverter(width, height, width, height);
+            _alignOn = true;
+        }
+
+        /// <summary>
+        /// Open Device
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public Realsense(int cWidth, int cHeight, int dWidth, int dHeight)
+        {
+            ColorFrameSize = (cWidth, cHeight);
+            DepthFrameSize = (dWidth, dHeight);
+            _pipeline = new Pipeline();
+            var cfg = new Config();
+            cfg.EnableStream(Stream.Depth, dWidth, dHeight);
+            cfg.EnableStream(Stream.Color, cWidth, cHeight, Format.Rgb8);
+            _pipeline.Start(cfg);
+            _align = new Align(Stream.Color);
+            _dfill = new DecimationFilter();
+            _depthto = new DisparityTransform(true);
+            _todepth = new DisparityTransform(false);
+            _sfill = new SpatialFilter();
+            _tfill = new TemporalFilter();
+            _converter = new RealsenseConverter(cWidth, cHeight, dWidth, dHeight);
+            _alignOn = false;
         }
 
 
@@ -61,7 +89,7 @@ namespace Yamashita.DepthCamera
                 .Select(i =>
                 {
                     var frames = _pipeline.WaitForFrames();
-                    frames = _align.Process(frames).AsFrameSet();
+                    if (_alignOn) frames = _align.Process(frames).AsFrameSet();
                     using var color = frames.ColorFrame.DisposeWith(frames);
                     using var depth = frames.DepthFrame.DisposeWith(frames);
                     var filterd = _dfill.Process(depth);

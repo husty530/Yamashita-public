@@ -8,16 +8,20 @@ namespace Yamashita.DepthCamera
 
         // ------- Fields ------- //
 
-        private readonly int _width;
-        private readonly int _height;
+        private readonly int _cWidth;
+        private readonly int _cHeight;
+        private readonly int _dWidth;
+        private readonly int _dHeight;
 
 
         // ------- Constructor ------- //
 
-        public RealsenseConverter(int width, int height)
+        public RealsenseConverter(int cWidth, int cHeight, int dWidth, int dHeight)
         {
-            _width = width;
-            _height = height;
+            _cWidth = cWidth;
+            _cHeight = cHeight;
+            _dWidth = dWidth;
+            _dHeight = dHeight;
         }
 
 
@@ -25,7 +29,7 @@ namespace Yamashita.DepthCamera
 
         public void ToColorMat(VideoFrame frame, ref Mat colorMat)
         {
-            colorMat = new Mat(_height, _width, MatType.CV_8UC3);
+            colorMat = new Mat(_cHeight, _cWidth, MatType.CV_8UC3);
             unsafe
             {
                 var rgbData = (byte*)frame.Data;
@@ -37,12 +41,12 @@ namespace Yamashita.DepthCamera
                     pixels[i * 3 + 2] = rgbData[i * 3 + 0];
                 }
             }
-            Cv2.Resize(colorMat, colorMat, new Size(_width / 2, _height / 2));
+            Cv2.Resize(colorMat, colorMat, new Size(_cWidth / 2, _cHeight / 2));
         }
 
         public void ToPointCloudMat(Frame frame, ref Mat pointCloudMat)
         {
-            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(_height / 2, _width / 2, MatType.CV_16UC3);
+            if (pointCloudMat.Type() != MatType.CV_16UC3) pointCloudMat = new Mat(_dHeight / 2, _dWidth / 2, MatType.CV_16UC3);
             unsafe
             {
                 var pData = (float*)(new PointCloud().Process(frame).Data);

@@ -259,7 +259,7 @@ namespace Samples.DepthCameras
             {
                 try
                 {
-                    _camera = new Realsense(848, 480); // D
+                    _camera = new Realsense(424, 240, 640, 360); // D
                     //_camera = new Realsense(640, 480); // L
                 }
                 catch

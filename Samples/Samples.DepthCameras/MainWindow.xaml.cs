@@ -200,6 +200,7 @@ namespace Samples.DepthCameras
                 PlayPauseButton.IsEnabled = true;
                 PlayPauseButton.Visibility = Visibility.Visible;
                 PlaySlider.Visibility = Visibility.Visible;
+                ShutterButton.IsEnabled = true;
                 _player = new VideoPlayer(cofd.FileName);
                 PlaySlider.Maximum = _player.FrameCount;
                 _videoConnector = _player.Start(0)
@@ -224,12 +225,14 @@ namespace Samples.DepthCameras
                 _isConnected = false;
                 PlayPauseButton.Content = "▶";
                 PlaySlider.IsEnabled = true;
+                ShutterButton.IsEnabled = false;
             }
             else
             {
                 _isConnected = true;
                 PlaySlider.IsEnabled = false;
                 PlayPauseButton.Content = "| |";
+                ShutterButton.IsEnabled = true;
                 _videoConnector = _player.Start((int)PlaySlider.Value)
                     .Subscribe(ww =>
                     {

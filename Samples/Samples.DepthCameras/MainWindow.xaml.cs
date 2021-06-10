@@ -114,7 +114,7 @@ namespace Samples.DepthCameras
                     })
                     .Subscribe();
             }
-            if (_videoConnector != null)
+            if (_player != null)
             {
                 var frame = _player.GetOneFrameSet((int)PlaySlider.Value);
                 ImageIO.SaveAsZip(SaveDir.Value, "", frame);
@@ -200,7 +200,6 @@ namespace Samples.DepthCameras
                 PlayPauseButton.IsEnabled = true;
                 PlayPauseButton.Visibility = Visibility.Visible;
                 PlaySlider.Visibility = Visibility.Visible;
-                ShutterButton.IsEnabled = true;
                 _player = new VideoPlayer(cofd.FileName);
                 PlaySlider.Maximum = _player.FrameCount;
                 _videoConnector = _player.Start(0)
@@ -225,14 +224,14 @@ namespace Samples.DepthCameras
                 _isConnected = false;
                 PlayPauseButton.Content = "▶";
                 PlaySlider.IsEnabled = true;
-                ShutterButton.IsEnabled = false;
+                ShutterButton.IsEnabled = true;
             }
             else
             {
                 _isConnected = true;
                 PlaySlider.IsEnabled = false;
                 PlayPauseButton.Content = "| |";
-                ShutterButton.IsEnabled = true;
+                ShutterButton.IsEnabled = false;
                 _videoConnector = _player.Start((int)PlaySlider.Value)
                     .Subscribe(ww =>
                     {

@@ -103,14 +103,22 @@ namespace Samples.DepthCameras
 
         private void ShutterButton_Click(object sender, RoutedEventArgs e)
         {
-            _camera.Connect()
-                .TakeWhile(imgs =>
-                {
-                    if (imgs.Empty()) return true;
-                    ImageIO.SaveAsZip(SaveDir.Value, "", imgs);
-                    return false;
-                })
-                .Subscribe();
+            if (_cameraConnector != null)
+            {
+                _camera.Connect()
+                    .TakeWhile(imgs =>
+                    {
+                        if (imgs.Empty()) return true;
+                        ImageIO.SaveAsZip(SaveDir.Value, "", imgs);
+                        return false;
+                    })
+                    .Subscribe();
+            }
+            if (_videoConnector != null)
+            {
+                var frame = _player.GetOneFrameSet((int)PlaySlider.Value);
+                ImageIO.SaveAsZip(SaveDir.Value, "", frame);
+            }
         }
 
         private void RecButton_Click(object sender, RoutedEventArgs e)
@@ -128,9 +136,11 @@ namespace Samples.DepthCameras
                 PlaySlider.Visibility = Visibility.Hidden;
                 _isConnected = AttemptConnection();
                 if (!_isConnected) new Exception("Device Connection Failed.");
-                var fileNumber = 0;
-                while (File.Exists($"{SaveDir.Value}\\Movie_{fileNumber:D4}.yms")) fileNumber++;
-                var filePath = $"{SaveDir.Value}\\Movie_{fileNumber:D4}.yms";
+                //var fileNumber = 0;
+                //while (File.Exists($"{SaveDir.Value}\\Movie_{fileNumber:D4}.yms")) fileNumber++;
+
+                var time = DateTime.Now;
+                var filePath = $"{SaveDir.Value}\\Movie_{time.Year}{time.Month}{time.Day}{time.Hour}{time.Minute}{time.Second}{time.Millisecond}.yms";
                 var writer = new VideoRecorder(filePath);
                 _cameraConnector = _camera.Connect()
                     .Finally(() => writer.Dispose())

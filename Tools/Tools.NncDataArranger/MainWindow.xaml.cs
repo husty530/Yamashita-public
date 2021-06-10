@@ -88,6 +88,9 @@ namespace Tools.NncDataArranger
                 case 4:             // Image-Mask Assignment
                     ImgAssign.Run(InputLabel.Value, OutputLabel.Value);
                     break;
+                case 5:             // Extract Zip
+                    Zip2Img.Run(InputLabel.Value, OutputLabel.Value, CfgTx.Value);
+                    break;
             }
         }
 
@@ -124,6 +127,12 @@ namespace Tools.NncDataArranger
                     OutputButtonContent.Value = "Mask Dir";
                     Instruction.Value = "";
                     CfgTx.Value = "";
+                    break;
+                case 5:             // Extract Zip
+                    InputButtonContent.Value = "Input Dir";
+                    OutputButtonContent.Value = "Output Dir";
+                    Instruction.Value = "C D P";
+                    CfgTx.Value = "C";
                     break;
             }
         }

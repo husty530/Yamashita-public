@@ -29,6 +29,7 @@
                 <ComboBoxItem Content="Image Resize"/>
                 <ComboBoxItem Content="Json to Binary Mask Image"/>
                 <ComboBoxItem Content="Image-Mask Assignment"/>
+                <ComboBoxItem Content="Extract Zip"/>
             </ComboBox>
         </Viewbox>
         <Viewbox Grid.Row="0" Grid.Column="2" Margin="5">

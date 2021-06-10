@@ -253,7 +253,7 @@ namespace Samples.DepthCameras
                         DepthMode = DepthMode.NFOV_2x2Binned,
                         SynchronizedImagesOnly = true,
                         CameraFPS = FPS.FPS15
-                    }, Kinect.Matching.On);
+                    }, Kinect.Matching.Off);
             }
             catch
             {

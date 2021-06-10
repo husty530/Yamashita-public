@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using OpenCvSharp;
 
@@ -17,10 +18,13 @@ namespace Yamashita.DepthCamera
         /// <param name="baseName">To Identify</param>
         public static void SaveAsZip(string saveDirectory, string baseName, BgrXyzMat input)
         {
-            var zipFileNumber = 0;
-            if (!Directory.Exists(saveDirectory)) throw new System.Exception("Directory doesn't Exist!");
-            while (File.Exists($"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip")) zipFileNumber++;
-            var filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
+            //var zipFileNumber = 0;
+            //if (!Directory.Exists(saveDirectory)) throw new System.Exception("Directory doesn't Exist!");
+            //while (File.Exists($"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip")) zipFileNumber++;
+            //var filePath = $"{saveDirectory}\\Image_{baseName}{zipFileNumber:D4}.zip";
+
+            var time = DateTime.Now;
+            var filePath = $"{saveDirectory}\\Image_{baseName}{time.Year}{time.Month}{time.Day}{time.Hour}{time.Minute}{time.Second}{time.Millisecond}.zip";
             Cv2.ImWrite($"{filePath}_C.png", input.BGR);
             Cv2.ImWrite($"{filePath}_D.png", input.Depth16);
             Cv2.ImWrite($"{filePath}_P.png", input.XYZ);
@@ -40,7 +44,7 @@ namespace Yamashita.DepthCamera
         /// <returns></returns>
         public static BgrXyzMat OpenZip(string filePath)
         {
-            if (!File.Exists(filePath)) throw new System.Exception("File doesn't Exist!");
+            if (!File.Exists(filePath)) throw new Exception("File doesn't Exist!");
             using var archive = ZipFile.OpenRead(filePath);
             archive.GetEntry("C.png").ExtractToFile(@"C.png", true);
             archive.GetEntry("P.png").ExtractToFile(@"P.png", true);

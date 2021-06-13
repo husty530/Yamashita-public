@@ -24,6 +24,37 @@ namespace Yamashita.Control
 
         // ------- Constructor ------- //
 
+
+        /// <summary>
+        /// The most simple.
+        /// Use same Status and Observe parameter.
+        /// You can't input Control.
+        /// Noise covariance is default value.
+        /// </summary>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="filterStrength"></param>
+        public KalmanFilter(double[] initialStateVec, double filterStrength = 1.0)
+        {
+            k = initialStateVec.Length;
+            m = initialStateVec.Length;
+            X = DenseVector.OfArray(initialStateVec);
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            P = DenseMatrix.OfArray(new double[k, k]);
+            for (int i = 0; i < k; i++)
+            {
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = filterStrength;
+                Q[i, i] = 1.0 / filterStrength;
+                P[i, i] = 1.0;
+            }
+            AT = A.Transpose();
+            CT = C.Transpose();
+        }
+
         /// <summary>
         /// The most simple.
         /// Use same Status and Observe parameter.
@@ -109,6 +140,40 @@ namespace Yamashita.Control
             P = DenseMatrix.OfArray(new double[k, k]);
             for (int i = 0; i < k; i++)
                 P[i, i] = preError;
+            AT = A.Transpose();
+            CT = C.Transpose();
+        }
+
+        /// <summary>
+        /// The most simple.
+        /// Use same Status and Observe parameter.
+        /// You can input Control.
+        /// Noise covariance is default value.
+        /// </summary>        
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="controlMatrix">B (k * n)</param>
+        /// <param name="filterStrength"></param>
+        public KalmanFilter(double[] initialStateVec, double[] controlMatrix, double filterStrength = 1.0)
+        {
+
+            k = initialStateVec.Length;
+            m = initialStateVec.Length;
+            n = controlMatrix.Length / k;
+            X = DenseVector.OfArray(initialStateVec);
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            P = DenseMatrix.OfArray(new double[k, k]);
+            for (int i = 0; i < k; i++)
+            {
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = filterStrength;
+                Q[i, i] = 1.0 / filterStrength;
+                P[i, i] = 1.0;
+            }
             AT = A.Transpose();
             CT = C.Transpose();
         }

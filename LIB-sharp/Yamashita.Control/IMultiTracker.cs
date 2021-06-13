@@ -90,9 +90,7 @@ namespace Yamashita.Control
                             0, 0, 0, 0, 1, 0,
                             0, 0, 0, 0, 0, 1  };
             var state = new double[] { Center.X, Center.Y, 0.0, 0.0, Size.Width, Size.Height };
-            var mNoise = filterStrength;
-            var pNoise = 1.0 / filterStrength;
-            _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, mNoise, pNoise);
+            _filter = new KalmanFilter(state, transitionMatrix, measurementMatrix, filterStrength);
         }
 
 

@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools.Yolo-Labeller", "Tool
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools.Yolo-Validation", "Tools\Tools.Yolo-Validation\Tools.Yolo-Validation.csproj", "{399B626E-CF40-453B-B0E6-400A1CFCA91B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools.NncDataArranger", "Tools\Tools.NncDataArranger\Tools.NncDataArranger.csproj", "{190AA290-6741-443B-AE53-769D84ED72E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tools.NncDataArranger", "Tools\Tools.NncDataArranger\Tools.NncDataArranger.csproj", "{190AA290-6741-443B-AE53-769D84ED72E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

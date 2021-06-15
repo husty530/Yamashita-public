@@ -23,6 +23,8 @@ namespace Yamashita.TcpSocket
             }
             catch
             {
+                _client?.Dispose();
+                _stream?.Dispose();
                 Console.WriteLine("Connection failed!");
                 return;
             }

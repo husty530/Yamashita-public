@@ -4,6 +4,9 @@ namespace Yamashita.TcpSocket
 {
     public interface ITcpSocket
     {
+
+        public bool Available { get; }
+
         public abstract void Close();
 
         public void Send<T>(T sendmsg);

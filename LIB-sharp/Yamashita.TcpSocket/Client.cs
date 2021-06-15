@@ -38,8 +38,8 @@ namespace Yamashita.TcpSocket
         /// </summary>
         public override void Close()
         {
-            _stream.Close();
-            _client.Close();
+            _stream?.Close();
+            _client?.Close();
             Console.WriteLine("Closed.");
         }
 

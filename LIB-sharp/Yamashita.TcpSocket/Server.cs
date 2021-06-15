@@ -42,9 +42,9 @@ namespace Yamashita.TcpSocket
         /// </summary>
         public override void Close()
         {
-            _stream.Close();
-            _client.Close();
-            _listener.Stop();
+            _stream?.Close();
+            _client?.Close();
+            _listener?.Stop();
         }
 
     }

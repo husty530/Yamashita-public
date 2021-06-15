@@ -17,6 +17,11 @@ namespace Yamashita.TcpSocket
         protected NetworkStream _stream;
 
 
+        // ------- Properties ------- //
+
+        public bool Available => _stream != null;
+
+
         // ------- Methods ------- //
 
         public abstract void Close();

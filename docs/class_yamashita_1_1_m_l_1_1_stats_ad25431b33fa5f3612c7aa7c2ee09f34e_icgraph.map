@@ -1,5 +1,0 @@
-<map id="Yamashita.ML.Stats.SaveDataset" name="Yamashita.ML.Stats.SaveDataset">
-<area shape="rect" id="node1" title="Save model at the same directory of dataset file." alt="" coords="257,35,476,61"/>
-<area shape="rect" id="node2" href="$class_yamashita_1_1_m_l_1_1_svm.html#a754e85716b1bc31d709ab4fa8cda6ea1" title="Train with current Dataset." alt="" coords="24,5,191,32"/>
-<area shape="rect" id="node3" href="$class_yamashita_1_1_m_l_1_1_bayes_classifier.html#a2b1a0d5f333ac14ae9a464ac5e934ef8" title="Train with current Dataset." alt="" coords="5,57,209,98"/>
-</map>

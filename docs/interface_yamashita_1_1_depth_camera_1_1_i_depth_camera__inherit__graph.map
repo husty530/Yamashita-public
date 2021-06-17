@@ -1,5 +1,0 @@
-<map id="Yamashita.DepthCamera.IDepthCamera" name="Yamashita.DepthCamera.IDepthCamera">
-<area shape="rect" id="node1" title="Now supporting for Microsoft Azure Kinect &amp; Intel RealSense D415 &#45; 455, L515" alt="" coords="127,5,335,47"/>
-<area shape="rect" id="node2" href="$class_yamashita_1_1_depth_camera_1_1_kinect.html" title="Microsoft Azure Kinect C# wrapper" alt="" coords="5,95,213,121"/>
-<area shape="rect" id="node3" href="$class_yamashita_1_1_depth_camera_1_1_realsense.html" title="Intel RealSense D415 &#45; 455, L515 C# wrapper" alt="" coords="237,95,469,121"/>
-</map>

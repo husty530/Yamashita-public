@@ -1,6 +1,0 @@
-<map id="Yamashita.TcpSocket.ITcpSocket" name="Yamashita.TcpSocket.ITcpSocket">
-<area shape="rect" id="node1" title=" " alt="" coords="116,5,295,47"/>
-<area shape="rect" id="node2" href="$class_yamashita_1_1_tcp_socket_1_1_tcp_socket.html" title="This is abstract class so that you cannot create this instance. Use &#39;Server&#39; or &#39;Client&#39; classes." alt="" coords="97,95,313,121"/>
-<area shape="rect" id="node3" href="$class_yamashita_1_1_tcp_socket_1_1_client.html" title="Tcp socket client class" alt="" coords="5,169,192,196"/>
-<area shape="rect" id="node4" href="$class_yamashita_1_1_tcp_socket_1_1_server.html" title="Tcp socket server class" alt="" coords="217,169,407,196"/>
-</map>

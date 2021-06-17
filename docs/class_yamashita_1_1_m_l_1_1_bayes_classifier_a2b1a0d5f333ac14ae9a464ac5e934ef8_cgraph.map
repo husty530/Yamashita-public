@@ -1,4 +1,0 @@
-<map id="Yamashita.ML.BayesClassifier.Train" name="Yamashita.ML.BayesClassifier.Train">
-<area shape="rect" id="node1" title="Train with current Dataset." alt="" coords="5,5,209,47"/>
-<area shape="rect" id="node2" href="$class_yamashita_1_1_m_l_1_1_stats.html#ad25431b33fa5f3612c7aa7c2ee09f34e" title="Save model at the same directory of dataset file." alt="" coords="257,13,476,39"/>
-</map>

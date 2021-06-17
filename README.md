@@ -1,5 +1,7 @@
 # Yamashita-public 
 
+document -> https://husty530.github.io/Yamashita-public/annotated.html  
+
 # Contents
 詳細は各プロジェクトフォルダに記載しました。  
 

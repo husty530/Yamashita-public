@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$interface_yamashita_1_1_depth_camera_1_1_i_depth_camera.html" title="Now supporting for Microsoft Azure Kinect &amp; Intel RealSense D415 &#45; 455, L515" alt="" coords="5,23,213,65"/>
+<area shape="rect" id="node2" href="$class_yamashita_1_1_depth_camera_1_1_kinect.html" title="Microsoft Azure Kinect C# wrapper" alt="" coords="273,5,481,32"/>
+<area shape="rect" id="node3" href="$class_yamashita_1_1_depth_camera_1_1_realsense.html" title="Intel RealSense D415 &#45; 455, L515 C# wrapper" alt="" coords="261,56,493,83"/>
+</map>

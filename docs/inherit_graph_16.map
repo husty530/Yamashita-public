@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$interface_yamashita_1_1_tcp_socket_1_1_i_tcp_socket.html" title=" " alt="" coords="5,23,184,65"/>
+<area shape="rect" id="node2" href="$class_yamashita_1_1_tcp_socket_1_1_tcp_socket.html" title="This is abstract class so that you cannot create this instance. Use &#39;Server&#39; or &#39;Client&#39; classes." alt="" coords="232,31,448,57"/>
+<area shape="rect" id="node3" href="$class_yamashita_1_1_tcp_socket_1_1_client.html" title="Tcp socket client class" alt="" coords="498,5,685,32"/>
+<area shape="rect" id="node4" href="$class_yamashita_1_1_tcp_socket_1_1_server.html" title="Tcp socket server class" alt="" coords="496,56,687,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Yamashita.Control.MultiTracker" name="Yamashita.Control.MultiTracker">
+<area shape="rect" id="node1" title="Tracking objects in movie frames. It is initialized &amp; updated by detection result." alt="" coords="5,80,209,107"/>
+<area shape="rect" id="node2" href="$interface_yamashita_1_1_control_1_1_i_multi_tracker.html" title=" " alt="" coords="59,5,155,32"/>
+</map>

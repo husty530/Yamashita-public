@@ -1,0 +1,5 @@
+<map id="Yamashita.DepthCamera.Kinect.Connect" name="Yamashita.DepthCamera.Kinect.Connect">
+<area shape="rect" id="node1" title="Please &#39;Subscribe&#39;, which is a Rx function." alt="" coords="5,39,217,80"/>
+<area shape="rect" id="node2" href="$class_yamashita_1_1_depth_camera_1_1_bgr_xyz_mat.html#a0f69e7d5738d5ab6acc5cb8ff756e9d4" title="Same function as constructor." alt="" coords="265,5,456,47"/>
+<area shape="rect" id="node3" href="$class_yamashita_1_1_depth_camera_1_1_bgr_xyz_mat.html#a90b183e4abb71e5eba605b3c29bc2b25" title="Rotate 3D of right hand system." alt="" coords="265,71,456,112"/>
+</map>

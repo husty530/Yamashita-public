@@ -1,0 +1,5 @@
+<map id="Yamashita.Control.IFilter" name="Yamashita.Control.IFilter">
+<area shape="rect" id="node1" title=" " alt="" coords="111,5,277,32"/>
+<area shape="rect" id="node2" href="$class_yamashita_1_1_control_1_1_kalman_filter.html" title="Filtering &amp; control methods subject to Gaussian distribution" alt="" coords="5,80,183,121"/>
+<area shape="rect" id="node3" href="$class_yamashita_1_1_control_1_1_particle_filter.html" title="Filtering &amp; control methods subject to Gaussian distribution" alt="" coords="207,80,384,121"/>
+</map>

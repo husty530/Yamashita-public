@@ -3,6 +3,9 @@ using OpenCvSharp;
 
 namespace Yamashita.Feature
 {
+    /// <summary>
+    /// OpenCvSharp 'DFT' method wrapper.
+    /// </summary>
     public class Fourier2D
     {
 
@@ -19,9 +22,9 @@ namespace Yamashita.Feature
         // ------- Constructor ------- //
 
         /// <summary>
-        /// 2D Fourier transformation for Image Data.
+        /// 2D Fourier transformation for image data.
         /// </summary>
-        /// <param name="image"></param>
+        /// <param name="image">Must input CV_8U type</param>
         public Fourier2D(Mat image)
         {
             if (image.Type() != MatType.CV_8U) throw new Exception("MatType must be CV_8U.");
@@ -42,7 +45,7 @@ namespace Yamashita.Feature
         /// <summary>
         /// Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature">Frequency Feature of Image Data</param>
+        /// <param name="feature">Frequency feature of image data</param>
         unsafe public void Dft(out float[] feature)
         {
             Cv2.Dft(_complex, _complex);
@@ -77,7 +80,7 @@ namespace Yamashita.Feature
         /// <summary>
         /// Inverse Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature">Feature of Values</param>
+        /// <param name="feature">Feature of values</param>
         unsafe public void Idft(out float[] feature)
         {
             Cv2.Idft(_complex, _complex, DftFlags.Scale);

@@ -7,6 +7,9 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Yamashita.Control
 {
+    /// <summary>
+    /// Filtering & control methods subject to Gaussian distribution
+    /// </summary>
     public class ParticleFilter : IFilter
     {
 
@@ -32,10 +35,42 @@ namespace Yamashita.Control
 
         // ------- Constructor ------- //
 
+
         /// <summary>
         /// The most simple.
-        /// Use same Status and Observe parameter.
-        /// You can't input Control.
+        /// Use same status and observe parameter.
+        /// You can't input control.
+        /// Noise covariance is default value.
+        /// </summary>
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="filterStrength"></param>
+        /// <param name="N">Particles Count (default)</param>
+        public ParticleFilter(double[] initialStateVec, double filterStrength = 1.0, int N = 100)
+        {
+            k = initialStateVec.Length;
+            m = initialStateVec.Length;
+            this.N = N;
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            Particles = new List<Vector<double>>();
+            for (int i = 0; i < k; i++)
+            {
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = filterStrength;
+                Q[i, i] = 1.0 / filterStrength;
+            }
+            for (int i = 0; i < N; i++)
+                Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
+        }
+
+        /// <summary>
+        /// Use same status and observe parameter.
+        /// You can't input control.
         /// Noise covariance is default value.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
@@ -66,8 +101,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// In the case of that Observe differ from Status.
-        /// You can't input Control.
+        /// In the case of that observe differ from status.
+        /// You can't input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="transitionMatrix">A (k * k)</param>
@@ -96,8 +131,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// You can design Noise Covariance Matrix.
-        /// But can't input Control.
+        /// You can design noise covariance matrix.
+        /// But can't input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="transitionMatrix">A (k * k)</param>
@@ -123,8 +158,43 @@ namespace Yamashita.Control
 
         /// <summary>
         /// The most simple.
-        /// Use same Status and Observe parameter.
-        /// You can input Control.
+        /// Use same status and observe parameter.
+        /// You can input control.
+        /// Noise covariance is default value.
+        /// </summary>        
+        /// <param name="initialStateVec">X (k * 1)</param>
+        /// <param name="controlMatrix">B (k * n)</param>
+        /// <param name="filterStrength"></param>
+        /// <param name="N">Particles Count (default)</param>
+        public ParticleFilter(double[] initialStateVec, double[] controlMatrix, double filterStrength = 1.0, int N = 100)
+        {
+
+            k = initialStateVec.Length;
+            m = initialStateVec.Length;
+            n = controlMatrix.Length / k;
+            this.N = N;
+            B = new DenseMatrix(n, k, controlMatrix).Transpose();
+            C = DenseMatrix.OfArray(new double[m, k]);
+            A = DenseMatrix.OfArray(new double[k, k]);
+            R = DenseMatrix.OfArray(new double[m, m]);
+            Q = DenseMatrix.OfArray(new double[k, k]);
+            Particles = new List<Vector<double>>();
+            for (int i = 0; i < k; i++)
+            {
+                C[i, i] = 1;
+                A[i, i] = 1;
+                R[i, i] = filterStrength;
+                Q[i, i] = 1.0 / filterStrength;
+            }
+            for (int i = 0; i < N; i++)
+                Particles.Add(MakeVectorRandom(new DenseVector(initialStateVec)));
+            _denominator = Math.Sqrt(Math.Pow(2 * Math.PI, k) * R.Determinant());
+            RInv = R.Inverse();
+        }
+
+        /// <summary>
+        /// Use same status and observe parameter.
+        /// You can input control.
         /// Noise covariance is default value.
         /// </summary>        
         /// <param name="initialStateVec">X (k * 1)</param>
@@ -159,8 +229,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// In the case of that Observe differ from Status.
-        /// You can input Control.
+        /// In the case of that observe differ from status.
+        /// You can input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>
@@ -193,8 +263,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// You can design Noise Covariance Matrix.
-        /// But can input Control.
+        /// You can design noise covariance matrix.
+        /// But can input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>

@@ -2,6 +2,9 @@
 
 namespace Yamashita.DepthCamera
 {
+    /// <summary>
+    /// For using Point Cloud image
+    /// </summary>
     public class Vector3
     {
 

@@ -6,6 +6,9 @@ using Intel.RealSense;
 
 namespace Yamashita.DepthCamera
 {
+    /// <summary>
+    /// Intel RealSense D415 - 455, L515 C# wrapper
+    /// </summary>
     public class Realsense : IDepthCamera
     {
 
@@ -31,10 +34,10 @@ namespace Yamashita.DepthCamera
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Open Device
+        /// Open device
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="width">Regulated by each device configuration</param>
+        /// <param name="height">Regulated by each device configuration</param>
         public Realsense(int width, int height)
         {
             DepthFrameSize = (width, height);
@@ -55,10 +58,12 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Open Device
+        /// Open device
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="cWidth">Regulated by each device configuration</param>
+        /// <param name="cHeight">Regulated by each device configuration</param>
+        /// <param name="dWidth">Regulated by each device configuration</param>
+        /// <param name="dHeight">Regulated by each device configuration</param>
         public Realsense(int cWidth, int cHeight, int dWidth, int dHeight)
         {
             ColorFrameSize = (cWidth, cHeight);
@@ -81,6 +86,10 @@ namespace Yamashita.DepthCamera
 
         // ------- Methods ------- //
 
+        /// <summary>
+        /// Please 'Subscribe', which is a Rx function.
+        /// </summary>
+        /// <returns>Observable instance contains BgrXyzMat</returns>
         public IObservable<BgrXyzMat> Connect()
         {
             var colorMat = new Mat();
@@ -106,6 +115,10 @@ namespace Yamashita.DepthCamera
             return observable;
         }
 
+        /// <summary>
+        /// Close device.
+        /// And must not forget 'Dispose' subscribing instance.
+        /// </summary>
         public void Disconnect() => _pipeline?.Dispose();
 
     }

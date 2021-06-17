@@ -11,35 +11,36 @@ namespace Yamashita.DepthCamera
 {
     /// <summary>
     /// Playback BGRXYZ movie from binary file.
-    /// 
-    /// Data Structure
-    /// 
-    ///   byte        content
-    ///  
-    ///    1        Format Code
-    ///    8       Stream Length
-    ///    
-    ///    8        Time Stamp
-    ///    4         BGR Size
-    /// BGR Size     BGR Frame
-    ///    4         XYZ Size
-    /// XYZ Size     XYZ Frame
-    /// 
-    ///    .
-    ///    .
-    ///    .
-    ///    
-    ///    8      Frame 1 Position
-    ///    8      Frame 2 Position
-    ///    8      Frame 3 Position
-    ///   
-    ///    .
-    ///    .
-    ///    .
-    ///    
     /// </summary>
     public class VideoPlayer : IDisposable
     {
+
+        //
+        // Data Structure
+        // 
+        //   byte        content
+        //  
+        //    1        Format Code
+        //    8       Stream Length
+        //    
+        //    8        Time Stamp
+        //    4         BGR Size
+        // BGR Size     BGR Frame
+        //    4         XYZ Size
+        // XYZ Size     XYZ Frame
+        // 
+        //    .
+        //    .
+        //    .
+        //    
+        //    8      Frame 1 Position
+        //    8      Frame 2 Position
+        //    8      Frame 3 Position
+        //   
+        //    .
+        //    .
+        //    .
+        //    
 
         // ------- Fields ------- //
 
@@ -83,10 +84,10 @@ namespace Yamashita.DepthCamera
         // ------- Methods ------- //
 
         /// <summary>
-        /// Start Streaming (RefCount)
+        /// Please 'Subscribe', which is a Rx function.
         /// </summary>
-        /// <param name="position">Starting Frame Index</param>
-        /// <returns></returns>
+        /// <param name="position">Starting frame index</param>
+        /// <returns>Observable instance contains BgrXyzMat</returns>
         public IObservable<(BgrXyzMat Frames, int Position)> Start(int position)
         {
             if (position > -1 && position < FrameCount) _positionIndex = position;
@@ -102,8 +103,9 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
+        /// Get Color and Point Cloud frame
         /// </summary>
-        /// <param name="position">Frame Index</param>
+        /// <param name="position">Frame index</param>
         /// <returns></returns>
         public BgrXyzMat GetOneFrameSet(int position)
         {
@@ -111,6 +113,10 @@ namespace Yamashita.DepthCamera
             return ReadFrames().Frames;
         }
 
+        /// <summary>
+        /// Close player.
+        /// Must not forget 'Dispose' subscribing instance.
+        /// </summary>
         public void Dispose()
         {
             _binReader.Close();

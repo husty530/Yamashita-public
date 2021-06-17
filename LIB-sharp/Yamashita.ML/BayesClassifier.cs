@@ -6,6 +6,10 @@ using OpenCvSharp.ML;
 
 namespace Yamashita.ML
 {
+    /// <summary>
+    /// OpenCvSharp 'BayesClassifier' class wrapper.
+    /// This class has accumulate & save & load methods for machine learning.
+    /// </summary>
     public class BayesClassifier : Stats
     {
 
@@ -16,6 +20,10 @@ namespace Yamashita.ML
 
         // ------- Constructor ------- //
 
+        /// <summary>
+        /// OpenCvSharp 'BayesClassifier' class wrapper.
+        /// This class has accumulate & save & load methods for machine learning.
+        /// </summary>
         public BayesClassifier(Mode mode, string modelPath = "BayesModel.xml", string dataPath = "BayesTrainData.csv")
             : base(mode, modelPath, dataPath) { }
 

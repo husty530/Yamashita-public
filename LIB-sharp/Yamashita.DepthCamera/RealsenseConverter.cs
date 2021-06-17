@@ -3,6 +3,9 @@ using Intel.RealSense;
 
 namespace Yamashita.DepthCamera
 {
+    /// <summary>
+    /// Native API type -> OpenCvSharp format
+    /// </summary>
     public class RealsenseConverter
     {
 

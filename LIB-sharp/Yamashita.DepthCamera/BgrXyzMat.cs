@@ -13,17 +13,17 @@ namespace Yamashita.DepthCamera
         // ------- Properties ------- //
 
         /// <summary>
-        /// Color Image
+        /// Color image
         /// </summary>
         public Mat BGR { private set; get; }
 
         /// <summary>
-        /// Point Cloud Image
+        /// Point Cloud image
         /// </summary>
         public Mat XYZ { private set; get; }
 
         /// <summary>
-        /// Depth Image (0-65535)(mm)
+        /// Depth image (0-65535)(mm)
         /// </summary>
         public Mat Depth16 => XYZ.Split()[2];
 
@@ -33,8 +33,8 @@ namespace Yamashita.DepthCamera
         /// <summary>
         /// Hold Point Cloud with Color.
         /// </summary>
-        /// <param name="bgr">Color Image</param>
-        /// <param name="xyz">Point Cloud Image (must be same size of Color Image)</param>
+        /// <param name="bgr">Color image</param>
+        /// <param name="xyz">Point Cloud image (must be same size of Color image)</param>
         public BgrXyzMat(Mat bgr, Mat xyz)
         {
             BGR = bgr;
@@ -42,7 +42,7 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Decode from Byte Array.
+        /// Decode from byte array.
         /// </summary>
         /// <param name="BGRBytes"></param>
         /// <param name="XYZBytes"></param>
@@ -56,7 +56,7 @@ namespace Yamashita.DepthCamera
         // ------- Methods ------- //
 
         /// <summary>
-        /// Same function as Constructor.
+        /// Same function as constructor.
         /// </summary>
         /// <param name="bgr">Color Image</param>
         /// <param name="xyz">Point Cloud Image (must be same size of Color Image)</param>
@@ -65,7 +65,7 @@ namespace Yamashita.DepthCamera
             => new BgrXyzMat(bgr, xyz);
 
         /// <summary>
-        /// Decode from Byte Array.
+        /// Decode from byte array.
         /// </summary>
         /// <param name="BGRBytes"></param>
         /// <param name="XYZBytes"></param>
@@ -74,14 +74,14 @@ namespace Yamashita.DepthCamera
             => new BgrXyzMat(Cv2.ImDecode(BGRBytes, ImreadModes.Unchanged), Cv2.ImDecode(XYZBytes, ImreadModes.Unchanged));
 
         /// <summary>
-        /// Output Encoded Byte Array.
+        /// Output encoded byte array.
         /// </summary>
         /// <returns></returns>
         public (byte[] BGRBytes, byte[] XYZBytes) YmsEncode()
             => (BGR.ImEncode(), XYZ.ImEncode());
 
         /// <summary>
-        /// Check if it's Empty.
+        /// Check if it's empty.
         /// </summary>
         /// <returns></returns>
         public bool Empty() => BGR.Empty() || XYZ.Empty();
@@ -93,7 +93,7 @@ namespace Yamashita.DepthCamera
         public BgrXyzMat Clone() => new BgrXyzMat(BGR.Clone(), XYZ.Clone());
 
         /// <summary>
-        /// Get Depth Image (Normalize value in 0-255)
+        /// Get Depth image (Normalize value in 0-255)
         /// </summary>
         /// <param name="minDistance">(mm)</param>
         /// <param name="maxDistance">(mm)</param>
@@ -113,10 +113,10 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Get Information of where you input.
+        /// Get information of where you input.
         /// </summary>
         /// <param name="point">Pixel Coordinate</param>
-        /// <returns>Real 3D Coordinate with Color</returns>
+        /// <returns>Real 3D coordinate with color</returns>
         public unsafe BGRXYZ GetPointInfo(Point point)
         {
             var index = (point.Y * BGR.Cols + point.X) * 3;
@@ -132,9 +132,9 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Move All Point Cloud.
+        /// Move all Point Cloud.
         /// </summary>
-        /// <param name="delta">3D Vector of Transform (mm)</param>
+        /// <param name="delta">3D vector of transform (mm)</param>
         public unsafe BgrXyzMat Move(Vector3 delta)
         {
             var s = (short*)XYZ.Data;
@@ -149,9 +149,9 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Change Point Cloud Scale.
+        /// Change Point Cloud scale.
         /// </summary>
-        /// <param name="delta">Scale of XYZ Direction</param>
+        /// <param name="delta">Scale of XYZ direction</param>
         public unsafe BgrXyzMat Scale(Vector3 delta)
         {
             var s = (short*)XYZ.Data;
@@ -166,11 +166,11 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Rotate 3D of Right Hand System.
+        /// Rotate 3D of right hand system.
         /// </summary>
-        /// <param name="pitch">Pitch Angle (rad, Clockwise of X axis)</param>
-        /// <param name="yaw">Yaw Angle (rad, Clockwise of Y axis)</param>
-        /// <param name="roll">Roll Angle (rad, Clockwise of Z axis)</param>
+        /// <param name="pitch">Pitch angle (rad, clockwise of X axis)</param>
+        /// <param name="yaw">Yaw angle (rad, clockwise of Y axis)</param>
+        /// <param name="roll">Roll angle (rad, clockwise of Z axis)</param>
         public unsafe BgrXyzMat Rotate(float pitch, float yaw, float roll)
         {
             Mat rot = ZRot(roll) * YRot(yaw) * XRot(pitch);

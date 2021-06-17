@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.IO;
+using System.Linq;
 using Microsoft.Win32;
 using OpenCvSharp;
 using OpenCvSharp.WpfExtensions;
@@ -27,7 +28,8 @@ namespace Samples.Yolo_tiny
                 "..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.cfg",
                 "..\\..\\..\\..\\YoloModel-tiny\\coco.names", 
                 "..\\..\\..\\..\\YoloModel-tiny\\yolov4-tiny.weights", 
-                new OpenCvSharp.Size(640, 480)
+                new OpenCvSharp.Size(640, 480),
+                DrawingMode.Off
             );
             var op = new OpenFileDialog { Filter = "Image or Video(*.png, *.jpg, *.mp4, *.avi)|*.png;*.jpg;*mp4;*.avi" };
             if (op.ShowDialog() == true)
@@ -43,10 +45,12 @@ namespace Samples.Yolo_tiny
                         while (cap.Read(frame))
                         {
                             detector.Run(ref frame, out var results);
-                            Dispatcher.Invoke(() =>
-                            {
-                                Image.Source = frame.ToBitmapSource();
-                            });
+                            results
+                                .Where(r => r.Label == "person")
+                                .Where(r => r.Confidence > 0.5)
+                                .ToList()
+                                .ForEach(r => Cv2.Rectangle(frame, r.Box, new Scalar(0, 0, 255), 2));
+                            Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
                         }
                         
                     });
@@ -57,6 +61,26 @@ namespace Samples.Yolo_tiny
                     detector.Run(ref img, out var results);
                     Image.Source = img.ToBitmapSource();
                 }
+            }
+            else
+            {
+                cap?.Dispose();
+                cap = new VideoCapture(0);
+                Task.Run(() =>
+                {
+                    var frame = new Mat();
+                    while (cap.Read(frame))
+                    {
+                        detector.Run(ref frame, out var results);
+                        results
+                            .Where(r => r.Label == "person")
+                            .Where(r => r.Confidence > 0.5)
+                            .ToList()
+                            .ForEach(r => Cv2.Rectangle(frame, r.Box, new Scalar(0, 0, 255), 2));
+                        Dispatcher.Invoke(() => Image.Source = frame.ToBitmapSource());
+                    }
+
+                });
             }
         }
     }

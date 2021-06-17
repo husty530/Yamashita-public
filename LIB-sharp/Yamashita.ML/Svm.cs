@@ -6,6 +6,10 @@ using OpenCvSharp.ML;
 
 namespace Yamashita.ML
 {
+    /// <summary>
+    /// OpenCvSharp 'SVM' class wrapper.
+    /// This class has accumulate & save & load methods for machine learning.
+    /// </summary>
     public class Svm : Stats
     {
 
@@ -16,6 +20,10 @@ namespace Yamashita.ML
 
         // ------- Constructor ------- //
 
+        /// <summary>
+        /// OpenCvSharp 'SVM' class wrapper.
+        /// This class has accumulate & save & load methods for machine learning.
+        /// </summary>
         public Svm(Mode mode, string modelPath = "SvmModel.xml", string dataPath = "SvmTrainData.csv")
             : base(mode, modelPath, dataPath) { }
 

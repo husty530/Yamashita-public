@@ -7,35 +7,36 @@ namespace Yamashita.DepthCamera
 {
     /// <summary>
     /// Save BGRXYZ movie as binary file.
-    /// 
-    /// Data Structure
-    /// 
-    ///   byte        content
-    ///  
-    ///    1        Format Code
-    ///    8       Stream Length
-    ///    
-    ///    8        Time Stamp
-    ///    4         BGR Size
-    /// BGR Size     BGR Frame
-    ///    4         XYZ Size
-    /// XYZ Size     XYZ Frame
-    /// 
-    ///    .
-    ///    .
-    ///    .
-    ///    
-    ///    8      Frame 1 Position
-    ///    8      Frame 2 Position
-    ///    8      Frame 3 Position
-    ///   
-    ///    .
-    ///    .
-    ///    .
-    ///    
     /// </summary>
     public class VideoRecorder : IDisposable
     {
+
+        //
+        // Data Structure
+        // 
+        //   byte        content
+        //  
+        //    1        Format Code
+        //    8       Stream Length
+        //    
+        //    8        Time Stamp
+        //    4         BGR Size
+        // BGR Size     BGR Frame
+        //    4         XYZ Size
+        // XYZ Size     XYZ Frame
+        // 
+        //    .
+        //    .
+        //    .
+        //    
+        //    8      Frame 1 Position
+        //    8      Frame 2 Position
+        //    8      Frame 3 Position
+        //   
+        //    .
+        //    .
+        //    .
+        //    
 
         // ------- Fields ------- //
 
@@ -47,7 +48,7 @@ namespace Yamashita.DepthCamera
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Movie Recorder for Depth Camera
+        /// Movie recorder for Depth camera
         /// </summary>
         /// <param name="filePath"></param>
         public VideoRecorder(string filePath)
@@ -79,6 +80,9 @@ namespace Yamashita.DepthCamera
 
         }
 
+        /// <summary>
+        /// Finalize recording
+        /// </summary>
         public void Dispose()
         {
             _binWriter.Seek(8, SeekOrigin.Begin);

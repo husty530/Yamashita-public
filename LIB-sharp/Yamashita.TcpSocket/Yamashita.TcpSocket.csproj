@@ -8,7 +8,7 @@
     <PackageProjectUrl>https://github.com/husty530/Yamashita-public/tree/master/LIB-sharp/Yamashita.TcpSocket</PackageProjectUrl>
     <RepositoryUrl>https://github.com/husty530/Yamashita-public</RepositoryUrl>
     <Description>TcpSocket server and client program which can process String, Array and Mat Image.</Description>
-    <Version>1.0.12</Version>
+    <Version>1.0.13</Version>
   </PropertyGroup>
 
   <ItemGroup>

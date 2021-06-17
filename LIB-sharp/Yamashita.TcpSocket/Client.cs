@@ -3,13 +3,16 @@ using System.Net.Sockets;
 
 namespace Yamashita.TcpSocket
 {
+    /// <summary>
+    /// Tcp socket client class
+    /// </summary>
     public class Client : TcpSocket
     {
 
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Start Connection
+        /// Start connection
         /// </summary>
         /// <param name="ip"></param>
         /// <param name="port"></param>
@@ -23,10 +26,7 @@ namespace Yamashita.TcpSocket
             }
             catch
             {
-                _client?.Dispose();
-                _stream?.Dispose();
-                Console.WriteLine("Connection failed!");
-                return;
+                throw new Exception("Connection failed!");
             }
         }
 
@@ -34,7 +34,7 @@ namespace Yamashita.TcpSocket
         // ------- Methods ------- //
 
         /// <summary>
-        /// Close Client
+        /// Close client
         /// </summary>
         public override void Close()
         {

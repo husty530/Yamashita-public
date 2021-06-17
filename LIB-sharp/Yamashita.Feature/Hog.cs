@@ -3,6 +3,9 @@ using OpenCvSharp;
 
 namespace Yamashita.Feature
 {
+    /// <summary>
+    /// OpenCvSharp 'HOGDescriptor' class wrapper.
+    /// </summary>
     public class Hog
     {
 
@@ -15,12 +18,12 @@ namespace Yamashita.Feature
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Simple HOG Descriptor
+        /// Simple HOG descriptor
         /// </summary>
         /// <param name="imageSize"></param>
-        /// <param name="blockSize">For Normalization</param>
+        /// <param name="blockSize">For normalization</param>
         /// <param name="blockStride"></param>
-        /// <param name="cellSize">Unit Size for Computation</param>
+        /// <param name="cellSize">Unit size for computation</param>
         public Hog(Size? imageSize = null, Size? blockSize = null, Size? blockStride = null, Size? cellSize = null)
         {
             var s1 = (imageSize == null) ? new Size(64, 64) : imageSize;
@@ -35,10 +38,10 @@ namespace Yamashita.Feature
         // ------- Methods ------- //
 
         /// <summary>
-        /// Process one Frame.
+        /// Process one frame.
         /// </summary>
-        /// <param name="input">8 Bit Gray Image. It's going to be Resized automatically.</param>
-        /// <param name="result">Feature of Values</param>
+        /// <param name="input">8 bit gray-scale image. It's going to be resized automatically.</param>
+        /// <param name="result">Feature of values</param>
         public void Compute(Mat input, out float[] result)
         {
             if (input.Type() != MatType.CV_8U) new Exception("MatType should be 'CV_8U'.");

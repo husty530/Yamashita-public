@@ -5,6 +5,10 @@ using OpenCvSharp;
 
 namespace Yamashita.Control
 {
+    /// <summary>
+    /// Tracking objects in movie frames.
+    /// It is initialized & updated by detection result.
+    /// </summary>
     public class MultiTracker : IMultiTracker
     {
 
@@ -24,7 +28,7 @@ namespace Yamashita.Control
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Generate Tracker.
+        /// Generate tracker.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="iouThresh">Threshold for regarding as same object.</param>
@@ -45,7 +49,7 @@ namespace Yamashita.Control
 
         // ------- Methods ------- //
 
-        public void Update(ref Mat frame, List<(string Label, Point Center, Size Size)> detections, out List<(int Id, string Label, float Iou, Point Center, Size Size)> results)
+        public void Update(ref Mat frame, List<(string Label, Point Center, Size Size)> detections, out List<(int Id, string Label, float Iou, Point Center, Size Size, Rect Box)> results)
         {
             Assign(detections);
             results = UpdateMemory(frame).ToList();
@@ -82,7 +86,7 @@ namespace Yamashita.Control
             }
         }
 
-        private IEnumerable<(int Id, string Label, float Confidence, Point Center, Size Size)> UpdateMemory(Mat frame)
+        private IEnumerable<(int Id, string Label, float Confidence, Point Center, Size Size, Rect Box)> UpdateMemory(Mat frame)
         {
             var removeList = new List<Individual>();
             foreach (var tracker in _trackers)
@@ -101,17 +105,22 @@ namespace Yamashita.Control
                     }
                 }
                 tracker.Predict(tracker.Center, tracker.Size);
+                var box = new Rect(
+                    tracker.Center.X - tracker.Size.Width / 2,
+                    tracker.Center.Y - tracker.Size.Height / 2,
+                    tracker.Center.X + tracker.Size.Width / 2,
+                    tracker.Center.Y + tracker.Size.Height / 2);
                 if (tracker.DetectCount > _minDetectCount - 1)
                 {
                     if(_type == OutputType.Correct)
                     {
                         DrawRect(frame, tracker.Label, tracker.Id, tracker.Iou, tracker.Center, tracker.Size);
-                        yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.Center, tracker.Size);
+                        yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.Center, tracker.Size, box);
                     }
                     else
                     {
                         DrawRect(frame, tracker.Label, tracker.Id, tracker.Iou, tracker.NextCenter, tracker.NextSize);
-                        yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.NextCenter, tracker.NextSize);
+                        yield return (tracker.Id, tracker.Label, tracker.Iou, tracker.NextCenter, tracker.NextSize, box);
                     }
                 }
                 tracker.Iou = _iouThresh;

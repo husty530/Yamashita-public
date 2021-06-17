@@ -10,19 +10,19 @@ namespace Yamashita.Control
     {
 
         /// <summary>
-        /// Using Observe, Update Status.
+        /// Update status from observed input
         /// </summary>
         /// <param name="frame"></param>
-        /// <param name="detections">List of Detection Results</param>
+        /// <param name="detections">List of detected results</param>
         /// <param name="results"></param>
         public void Update(
             ref Mat frame,
             List<(string Label, Point Center, Size Size)> detections,
-            out List<(int Id, string Label, float Iou, Point Center, Size Size)> results
+            out List<(int Id, string Label, float Iou, Point Center, Size Size, Rect Box)> results
             );
 
         /// <summary>
-        /// Remove designatedID object.
+        /// Remove designated ID object.
         /// </summary>
         /// <param name="id">Target ID</param>
         public void Remove(int id);
@@ -31,7 +31,7 @@ namespace Yamashita.Control
 
 
     /// <summary>
-    /// For Management by MultiTracker
+    /// For management by MultiTracker
     /// </summary>
     class Individual
     {

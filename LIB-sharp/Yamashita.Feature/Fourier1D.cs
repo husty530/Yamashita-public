@@ -3,6 +3,9 @@ using OpenCvSharp;
 
 namespace Yamashita.Feature
 {
+    /// <summary>
+    /// OpenCvSharp 'DFT' method wrapper.
+    /// </summary>
     public class Fourier1D
     {
 
@@ -16,10 +19,10 @@ namespace Yamashita.Feature
         // ------- Constructor ------- //
 
         /// <summary>
-        /// 1D Fourier transformation for Time Series Data.
+        /// 1D Fourier transformation for time series data.
         /// </summary>
-        /// <param name="inputList">List of Value</param>
-        /// <param name="dt">Sampling Time</param>
+        /// <param name="inputList">List of value</param>
+        /// <param name="dt">Sampling time</param>
         public Fourier1D(List<double> inputList, double dt)
         {
             _samplingRate = 1.0 / dt;
@@ -35,7 +38,7 @@ namespace Yamashita.Feature
         /// <summary>
         /// Discrete Fourier Transformation
         /// </summary>
-        /// <param name="result">Histogram of Frequency and Value</param>
+        /// <param name="result">Histogram of frequency and value</param>
         unsafe public void Dft(out List<(double Frequency, float Value)> result)
         {
             Cv2.Dft(_complex, _complex);
@@ -50,7 +53,7 @@ namespace Yamashita.Feature
         /// <summary>
         /// Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature">Feature of Values</param>
+        /// <param name="feature">Feature of values</param>
         public void Dft(out float[] feature)
         {
             Dft(out List<(double Frequency, float Value)> list);
@@ -62,7 +65,7 @@ namespace Yamashita.Feature
         /// <summary>
         /// Inverse Discrete Fourier Transformation
         /// </summary>
-        /// <param name="result">Time and Value</param>
+        /// <param name="result">Time and value</param>
         unsafe public void Idft(out List<(double Time, float Value)> result)
         {
             Cv2.Idft(_complex, _complex, DftFlags.Scale);
@@ -76,7 +79,7 @@ namespace Yamashita.Feature
         /// <summary>
         /// Inverse Discrete Fourier Transformation
         /// </summary>
-        /// <param name="feature">Feature of Values</param>
+        /// <param name="feature">Feature of values</param>
         public void Idft(out float[] feature)
         {
             Idft(out List<(double Time, float Value)> list);
@@ -86,7 +89,7 @@ namespace Yamashita.Feature
         }
 
         /// <summary>
-        /// Band-pass Filter
+        /// Band-pass filter
         /// </summary>
         /// <param name="minFrequency"></param>
         /// <param name="maxFrequency"></param>

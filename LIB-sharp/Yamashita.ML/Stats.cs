@@ -19,7 +19,7 @@ namespace Yamashita.ML
         // ------- Constructor ------- //
 
         /// <summary>
-        /// For Yamashita's private Use
+        /// For Yamashita's private use
         /// </summary>
         /// <param name="mode">Train or Inference</param>
         /// <param name="modelPath">(.xml)</param>
@@ -44,6 +44,11 @@ namespace Yamashita.ML
 
         // ------- Methods ------- //
 
+        /// <summary>
+        /// Push back one vector data on dataset
+        /// </summary>
+        /// <param name="feature">Feature vector, such as HOG</param>
+        /// <param name="label">0 or 1 value for classification</param>
         public void AddData(float[] feature, int label)
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -52,6 +57,9 @@ namespace Yamashita.ML
             _labels.Add(label);
         }
 
+        /// <summary>
+        /// Remove n-1 index of data from dataset
+        /// </summary>
         public void RemoveLastData()
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -62,6 +70,9 @@ namespace Yamashita.ML
             }
         }
 
+        /// <summary>
+        /// Remove all data from dataset
+        /// </summary>
         public void ClearDataset()
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");
@@ -69,6 +80,10 @@ namespace Yamashita.ML
             _labels.Clear();
         }
 
+        /// <summary>
+        /// Save model at the same directory of dataset file.
+        /// </summary>
+        /// <param name="append"></param>
         public void SaveDataset(bool append)
         {
             if (_mode != Mode.Train) new Exception("Mode should be 'Train'.");

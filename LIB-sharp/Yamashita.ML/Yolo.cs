@@ -7,6 +7,9 @@ using OpenCvSharp.Dnn;
 
 namespace Yamashita.ML
 {
+    /// <summary>
+    /// Well-known object detection algorithum
+    /// </summary>
     public class Yolo : IYolo
     {
 
@@ -24,15 +27,15 @@ namespace Yamashita.ML
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Initialize Detector
+        /// Initialize detector
         /// </summary>
-        /// <param name="cfg"></param>
-        /// <param name="names"></param>
-        /// <param name="weights"></param>
-        /// <param name="blobSize"></param>
-        /// <param name="draw"></param>
-        /// <param name="confThresh"></param>
-        /// <param name="nmsThresh"></param>
+        /// <param name="cfg">(.cfg) file</param>
+        /// <param name="names">(.names) file</param>
+        /// <param name="weights">(.weights) file</param>
+        /// <param name="blobSize">Must be multiple of 32</param>
+        /// <param name="draw">Off or Point or Rectangle</param>
+        /// <param name="confThresh">Threshold of 0.0-1.0 confidence value</param>
+        /// <param name="nmsThresh">threshold of 0.0-1.0 NMS value</param>
         public Yolo(string cfg, string names, string weights, Size blobSize, DrawingMode draw = DrawingMode.Rectangle, float confThresh = 0.5f, float nmsThresh = 0.3f)
         {
             _blobSize = blobSize;
@@ -56,13 +59,13 @@ namespace Yamashita.ML
             results = new YoloResults(GetResults(outs, frame));
         }
 
-        private List<(string Label, float Confidence, Point Center, Size Size)> GetResults(Mat[] output, Mat image)
+        private List<(string Label, float Confidence, Point Center, Size Size, Rect Box)> GetResults(Mat[] output, Mat image)
         {
             var classIds = new List<int>();
             var confidences = new List<float>();
             var probabilities = new List<float>();
             var centers = new List<Point>();
-            var boxes = new List<Rect2d>();
+            var boxes = new List<Rect>();
             var w = image.Width;
             var h = image.Height;
             unsafe 
@@ -79,25 +82,25 @@ namespace Yamashita.ML
                             var probability = p[classIdPoint.X + 5];
                             if (probability > _threshold)
                             {
-                                var centerX = p[0] * w;
-                                var centerY = p[1] * h;
-                                var width = p[2] * w;
-                                var height = p[3] * h;
+                                var centerX = (int)(p[0] * w);
+                                var centerY = (int)(p[1] * h);
+                                var width = (int)(p[2] * w);
+                                var height = (int)(p[3] * h);
                                 classIds.Add(classIdPoint.X);
                                 confidences.Add(confidence);
                                 probabilities.Add(probability);
                                 centers.Add(new Point(centerX, centerY));
-                                boxes.Add(new Rect2d(centerX - width / 2, centerY - height / 2, width, height));
+                                boxes.Add(new Rect(centerX - width / 2, centerY - height / 2, width, height));
                             }
                         }
                     }
                 }
             }
-            var results = new List<(string Label, float Confidence, Point Center, Size Size)>();
+            var results = new List<(string Label, float Confidence, Point Center, Size Size, Rect Rectangle)>();
             CvDnn.NMSBoxes(boxes, confidences, _threshold, _nmsThreshold, out int[] indices);
             foreach (var i in indices)
             {
-                results.Add((_labels[classIds[i]], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height)));
+                results.Add((_labels[classIds[i]], confidences[i], centers[i], new Size(boxes[i].Width, boxes[i].Height), boxes[i]));
                 switch (_draw)
                 {
                     case (DrawingMode.Off):

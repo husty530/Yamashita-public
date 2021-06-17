@@ -5,17 +5,19 @@ using OpenCvSharp;
 
 namespace Yamashita.DepthCamera
 {
-
+    /// <summary>
+    /// Saving & Loading for images captured by depth cameras
+    /// </summary>
     public static class ImageIO
     {
 
         // ------- Methods ------- //
 
         /// <summary>
-        /// Save RGB, Depth, and PointCloud Image in Zip File.
+        /// Save RGB, Depth, and PointCloud image in zip file.
         /// </summary>
-        /// <param name="saveDirectory">Target Directory</param>
-        /// <param name="baseName">To Identify</param>
+        /// <param name="saveDirectory">Target directory</param>
+        /// <param name="baseName">To identify</param>
         public static void SaveAsZip(string saveDirectory, string baseName, BgrXyzMat input)
         {
             //var zipFileNumber = 0;
@@ -38,9 +40,9 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Extract Images from Zip File.
+        /// Extract images from zip file.
         /// </summary>
-        /// <param name="filePath">Zip File Path</param>
+        /// <param name="filePath">Zip file path</param>
         /// <returns></returns>
         public static BgrXyzMat OpenZip(string filePath)
         {

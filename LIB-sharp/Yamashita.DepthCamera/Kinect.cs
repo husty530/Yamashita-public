@@ -6,6 +6,9 @@ using Microsoft.Azure.Kinect.Sensor;
 
 namespace Yamashita.DepthCamera
 {
+    /// <summary>
+    /// Microsoft Azure Kinect C# wrapper
+    /// </summary>
     public class Kinect : IDepthCamera
     {
 
@@ -22,21 +25,27 @@ namespace Yamashita.DepthCamera
 
         // ------- Properties ------- //
 
+        /// <summary>
+        /// For device setup (resolution, fps, matching mode etc.)
+        /// </summary>
         public DeviceConfiguration Config { private set; get; }
 
         public Size ColorFrameSize { private set; get; }
 
         public Size DepthFrameSize { private set; get; }
 
+        /// <summary>
+        /// Whether each pixel is matched or seperated
+        /// </summary>
         public enum Matching { On, Off }
 
 
         // ------- Constructor ------- //
 
         /// <summary>
-        /// Open Device
+        /// Open device
         /// </summary>
-        /// <param name="config">User Settings</param>
+        /// <param name="config">User settings</param>
         public Kinect(DeviceConfiguration config, Matching matching = Matching.On, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
         {
             _matching = matching;
@@ -56,7 +65,7 @@ namespace Yamashita.DepthCamera
         }
 
         /// <summary>
-        /// Open Device (default)
+        /// Open device (default)
         /// </summary>
         public Kinect(Matching matching = Matching.On, float pitchDeg = -5.8f, float yawDeg = -1.3f, float rollDeg = 0f)
             : this(new DeviceConfiguration
@@ -73,6 +82,10 @@ namespace Yamashita.DepthCamera
 
         // ------- Methods ------- //
 
+        /// <summary>
+        /// Please 'Subscribe', which is a Rx function.
+        /// </summary>
+        /// <returns>Observable instance contains BgrXyzMat</returns>
         public IObservable<BgrXyzMat> Connect()
         {
             var colorMat = new Mat();
@@ -96,6 +109,10 @@ namespace Yamashita.DepthCamera
             return observable;
         }
 
+        /// <summary>
+        /// Close device.
+        /// Must not forget 'Dispose' subscribing instance.
+        /// </summary>
         public void Disconnect() => _device?.Dispose();
 
     }

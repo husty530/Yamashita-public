@@ -7,6 +7,10 @@ using OpenCvSharp;
 
 namespace Yamashita.TcpSocket
 {
+    /// <summary>
+    /// This is abstract class so that you cannot create this instance.
+    /// Use 'Server' or 'Client' classes.
+    /// </summary>
     public abstract class TcpSocket : ITcpSocket
     {
 
@@ -19,6 +23,9 @@ namespace Yamashita.TcpSocket
 
         // ------- Properties ------- //
 
+        /// <summary>
+        /// If stream can available
+        /// </summary>
         public bool Available => _stream != null;
 
 
@@ -26,16 +33,26 @@ namespace Yamashita.TcpSocket
 
         public abstract void Close();
 
+        /// <summary>
+        /// Send any object as byte array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sendmsg">Any type of object</param>
         public void Send<T>(T sendmsg)
         {
             var bytes = Encoding.UTF8.GetBytes($"{sendmsg}\n");
             _stream.Write(bytes, 0, bytes.Length);
         }
 
+        /// <summary>
+        /// Receive byte array & convert your preference type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>T object</returns>
         public T Receive<T>()
         {
             using var ms = new MemoryStream();
-            var bytes = new byte[1024];
+            var bytes = new byte[2048];
             var size = 0;
             do
             {
@@ -48,15 +65,23 @@ namespace Yamashita.TcpSocket
             return (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(receivedMsg);
         }
 
+        /// <summary>
+        /// Send byte array directly
+        /// </summary>
+        /// <param name="bytes">Byte array</param>
         public void SendBytes(byte[] bytes)
         {
             _stream.Write(bytes, 0, bytes.Length);
         }
 
+        /// <summary>
+        /// Receive byte array directly
+        /// </summary>
+        /// <returns>Byte array</returns>
         public byte[] ReceiveBytes()
         {
             using var ms = new MemoryStream();
-            var bytes = new byte[1024];
+            var bytes = new byte[2048];
             var size = 0;
             do
             {
@@ -67,6 +92,11 @@ namespace Yamashita.TcpSocket
             return ms.ToArray();
         }
 
+        /// <summary>
+        /// Send any object array as byte array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array">Any type of object array</param>
         public void SendArray<T>(T[] array)
         {
             var sb = new StringBuilder();
@@ -81,6 +111,11 @@ namespace Yamashita.TcpSocket
             _stream.Write(bytes, 0, bytes.Length);
         }
 
+        /// <summary>
+        /// Receive byte array & convert your preference type of array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>T object array</returns>
         public T[] ReceiveArray<T>()
         {
             var stringArray = Receive<string>().Split(',');
@@ -92,6 +127,10 @@ namespace Yamashita.TcpSocket
             return tArray;
         }
 
+        /// <summary>
+        /// Send 'Mat' image as encoded byte array
+        /// </summary>
+        /// <param name="image"></param>
         public void SendImage(Mat image)
         {
             Cv2.ImEncode(".png", image, out byte[] buf);
@@ -100,6 +139,10 @@ namespace Yamashita.TcpSocket
             Send(sendmsg);
         }
 
+        /// <summary>
+        /// Receive byte array & convert 'Mat' image
+        /// </summary>
+        /// <returns></returns>
         public Mat ReceiveImage()
         {
             var recv = Receive<string>();

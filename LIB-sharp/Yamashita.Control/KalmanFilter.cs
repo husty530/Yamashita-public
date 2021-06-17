@@ -3,6 +3,9 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Yamashita.Control
 {
+    /// <summary>
+    /// Filtering & control methods subject to Gaussian distribution
+    /// </summary>
     public class KalmanFilter : IFilter
     {
 
@@ -27,8 +30,8 @@ namespace Yamashita.Control
 
         /// <summary>
         /// The most simple.
-        /// Use same Status and Observe parameter.
-        /// You can't input Control.
+        /// Use same status and observe parameter.
+        /// You can't input control.
         /// Noise covariance is default value.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
@@ -56,9 +59,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// The most simple.
-        /// Use same Status and Observe parameter.
-        /// You can't input Control.
+        /// Use same status and observe parameter.
+        /// You can't input control.
         /// Noise covariance is default value.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
@@ -88,8 +90,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// In the case of that Observe differ from Status.
-        /// You can't input Control.
+        /// In the case of that observe differ from status.
+        /// You can't input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="transitionMatrix">A (k * k)</param>
@@ -119,8 +121,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// You can design Noise Covariance Matrix.
-        /// But can't input Control.
+        /// You can design noise covariance matrix.
+        /// But can't input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="transitionMatrix">A (k * k)</param>
@@ -146,8 +148,8 @@ namespace Yamashita.Control
 
         /// <summary>
         /// The most simple.
-        /// Use same Status and Observe parameter.
-        /// You can input Control.
+        /// Use same status and observe parameter.
+        /// You can input control.
         /// Noise covariance is default value.
         /// </summary>        
         /// <param name="initialStateVec">X (k * 1)</param>
@@ -179,9 +181,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// The most simple.
-        /// Use same Status and Observe parameter.
-        /// You can input Control.
+        /// Use same status and observe parameter.
+        /// You can input control.
         /// Noise covariance is default value.
         /// </summary>        
         /// <param name="initialStateVec">X (k * 1)</param>
@@ -215,8 +216,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// In the case of that Observe differ from Status.
-        /// You can input Control.
+        /// In the case of that observe differ from status.
+        /// You can input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>
@@ -249,8 +250,8 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// You can design Noise Covariance Matrix.
-        /// But can input Control.
+        /// You can design noise covariance matrix.
+        /// But can input control.
         /// </summary>
         /// <param name="initialStateVec">X (k * 1)</param>
         /// <param name="controlMatrix">B (k * n)</param>
@@ -295,7 +296,7 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// Predict next state, ControlVector is optional.
+        /// Predict next state, control vector is optional.
         /// </summary>
         /// <param name="controlVec"></param>
         /// <returns></returns>
@@ -309,11 +310,11 @@ namespace Yamashita.Control
         }
 
         /// <summary>
-        /// Do Correct and Predict.
+        /// Do 'Correct' and 'Predict'.
         /// </summary>
-        /// <param name="measurementVec"></param>
-        /// <param name="controlVec"></param>
-        /// <returns></returns>
+        /// <param name="measurementVec">Y (m * 1)</param>
+        /// <param name="controlVec">U (n * 1)</param>
+        /// <returns>Results as same type of input</returns>
         public (double[] Correct, double[] Predict) Update(double[] measurementVec, double[] controlVec = null)
         {
             var correct = Correct(measurementVec);

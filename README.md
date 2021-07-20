@@ -30,6 +30,7 @@
 
 ### LIB-python
 ----- [kalman](LIB-python/kalman.py)  
+----- [keras_inference](LIB-python/keras_inference.py) ... Kerasの推論出力用  
 ----- [media](LIB-python/media.py) ... VideoIO周り  
 ----- [nnabla_inference](LIB-python/nnabla_inference.py) ... Sony Neural Network Libraryの推論出力用  
 ----- [tcp_socket](LIB-python/tcp_socket.py)  
